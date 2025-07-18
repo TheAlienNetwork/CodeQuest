@@ -215,17 +215,17 @@
   animation: glow 2s ease-in-out infinite alternate;
 }
 
-/* Monaco Editor Overrides */
-.monaco-editor {
+/* Monaco Editor Overrides with Maximum Specificity */
+.monaco-editor,
+.monaco-editor .view-overlays,
+.monaco-editor .inputarea,
+.monaco-editor .monaco-editor-background {
   background: #1E1E1E !important;
   color: #D4D4D4 !important;
 }
 
-.monaco-editor .margin {
-  background: #1E1E1E !important;
-}
-
-.monaco-editor .monaco-editor-background {
+.monaco-editor .margin,
+.monaco-editor .glyph-margin {
   background: #1E1E1E !important;
 }
 
@@ -241,7 +241,33 @@
   color: #C6C6C6 !important;
 }
 
-/* Force Monaco syntax highlighting colors */
+/* Force Monaco syntax highlighting colors with maximum specificity */
+.monaco-editor .view-line span,
+.monaco-editor .view-line,
+.monaco-editor .mtk1,
+.monaco-editor .mtk2,
+.monaco-editor .mtk3,
+.monaco-editor .mtk4,
+.monaco-editor .mtk5,
+.monaco-editor .mtk6,
+.monaco-editor .mtk7,
+.monaco-editor .mtk8,
+.monaco-editor .mtk9,
+.monaco-editor .mtk10,
+.monaco-editor .mtk11,
+.monaco-editor .mtk12,
+.monaco-editor .mtk13,
+.monaco-editor .mtk14,
+.monaco-editor .mtk15,
+.monaco-editor .mtk16,
+.monaco-editor .mtk17,
+.monaco-editor .mtk18,
+.monaco-editor .mtk19,
+.monaco-editor .mtk20 {
+  color: inherit !important;
+}
+
+/* Apply specific colors based on token types */
 .monaco-editor .mtk1 { color: #9CDCFE !important; } /* Variables - Light Blue */
 .monaco-editor .mtk2 { color: #569CD6 !important; } /* Keywords - Blue */
 .monaco-editor .mtk3 { color: #CE9178 !important; } /* Strings - Orange */
@@ -255,27 +281,80 @@
 .monaco-editor .mtk11 { color: #D4D4D4 !important; } /* Operators - White */
 .monaco-editor .mtk12 { color: #DCDCAA !important; } /* Functions - Yellow */
 
-/* Python specific token colors with higher specificity */
-.monaco-editor .token.keyword { color: #569CD6 !important; }
-.monaco-editor .token.keyword.control { color: #C586C0 !important; }
-.monaco-editor .token.string { color: #CE9178 !important; }
-.monaco-editor .token.comment { color: #6A9955 !important; font-style: italic !important; }
-.monaco-editor .token.number { color: #B5CEA8 !important; }
-.monaco-editor .token.function { color: #DCDCAA !important; }
-.monaco-editor .token.variable { color: #9CDCFE !important; }
-.monaco-editor .token.identifier { color: #9CDCFE !important; }
-.monaco-editor .token.operator { color: #D4D4D4 !important; }
-.monaco-editor .token.delimiter { color: #D4D4D4 !important; }
-.monaco-editor .token.delimiter.bracket { color: #FFD700 !important; }
+/* Python specific token colors with highest specificity */
+.monaco-editor .token.keyword,
+.monaco-editor [class*="keyword"] { 
+  color: #569CD6 !important; 
+}
 
-/* Additional Monaco token classes */
-.monaco-editor .mtki { color: #9CDCFE !important; } /* Identifiers */
-.monaco-editor .mtkn { color: #B5CEA8 !important; } /* Numbers */
-.monaco-editor .mtks { color: #CE9178 !important; } /* Strings */
-.monaco-editor .mtkc { color: #6A9955 !important; font-style: italic !important; } /* Comments */
-.monaco-editor .mtkf { color: #DCDCAA !important; } /* Functions */
-.monaco-editor .mtko { color: #D4D4D4 !important; } /* Operators */
-.monaco-editor .mtkb { color: #FFD700 !important; } /* Brackets */
+.monaco-editor .token.keyword.control,
+.monaco-editor [class*="keyword"][class*="control"] { 
+  color: #C586C0 !important; 
+}
+
+.monaco-editor .token.string,
+.monaco-editor [class*="string"] { 
+  color: #CE9178 !important; 
+}
+
+.monaco-editor .token.comment,
+.monaco-editor [class*="comment"] { 
+  color: #6A9955 !important; 
+  font-style: italic !important; 
+}
+
+.monaco-editor .token.number,
+.monaco-editor [class*="number"] { 
+  color: #B5CEA8 !important; 
+}
+
+.monaco-editor .token.function,
+.monaco-editor [class*="function"] { 
+  color: #DCDCAA !important; 
+}
+
+.monaco-editor .token.variable,
+.monaco-editor .token.identifier,
+.monaco-editor [class*="variable"],
+.monaco-editor [class*="identifier"] { 
+  color: #9CDCFE !important; 
+}
+
+.monaco-editor .token.operator,
+.monaco-editor [class*="operator"] { 
+  color: #D4D4D4 !important; 
+}
+
+.monaco-editor .token.delimiter,
+.monaco-editor [class*="delimiter"] { 
+  color: #D4D4D4 !important; 
+}
+
+.monaco-editor .token.delimiter.bracket,
+.monaco-editor [class*="delimiter"][class*="bracket"] { 
+  color: #FFD700 !important; 
+}
+
+/* Additional Monaco token classes with higher specificity */
+.monaco-editor .mtki,
+.monaco-editor [class*="mtki"] { color: #9CDCFE !important; } /* Identifiers */
+.monaco-editor .mtkn,
+.monaco-editor [class*="mtkn"] { color: #B5CEA8 !important; } /* Numbers */
+.monaco-editor .mtks,
+.monaco-editor [class*="mtks"] { color: #CE9178 !important; } /* Strings */
+.monaco-editor .mtkc,
+.monaco-editor [class*="mtkc"] { color: #6A9955 !important; font-style: italic !important; } /* Comments */
+.monaco-editor .mtkf,
+.monaco-editor [class*="mtkf"] { color: #DCDCAA !important; } /* Functions */
+.monaco-editor .mtko,
+.monaco-editor [class*="mtko"] { color: #D4D4D4 !important; } /* Operators */
+.monaco-editor .mtkb,
+.monaco-editor [class*="mtkb"] { color: #FFD700 !important; } /* Brackets */
+
+/* Override any default white text with specific colors */
+.monaco-editor .view-line span:not([class*="mtk"]) {
+  color: #D4D4D4 !important;
+}
 
 /* Selection and cursor */
 .monaco-editor .selected-text {

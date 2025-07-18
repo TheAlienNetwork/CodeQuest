@@ -183,14 +183,20 @@ export default function CodeEditor({
       });
 
       // Define enhanced VS Code Dark+ theme with proper Python syntax highlighting
-      monaco.editor.defineTheme('vs-code-dark-plus', {
+      monaco.editor.defineTheme('python-dark-theme', {
         base: 'vs-dark',
-        inherit: true,
+        inherit: false,
         rules: [
+          // Default text - Light Blue/White
+          { token: '', foreground: 'D4D4D4' },
+          { token: 'identifier', foreground: '9CDCFE' },
+          
           // Comments - Green italic
           { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
           { token: 'comment.line', foreground: '6A9955', fontStyle: 'italic' },
           { token: 'comment.block', foreground: '6A9955', fontStyle: 'italic' },
+          { token: 'comment.line.double-slash', foreground: '6A9955', fontStyle: 'italic' },
+          { token: 'comment.block.documentation', foreground: '6A9955', fontStyle: 'italic' },
           
           // Strings - Orange
           { token: 'string', foreground: 'CE9178' },
@@ -199,6 +205,7 @@ export default function CodeEditor({
           { token: 'string.quoted.double', foreground: 'CE9178' },
           { token: 'string.quoted.triple', foreground: 'CE9178' },
           { token: 'string.escape', foreground: 'D7BA7D' },
+          { token: 'string.invalid', foreground: 'F44747' },
           
           // Numbers - Light Green
           { token: 'number', foreground: 'B5CEA8' },
@@ -214,16 +221,19 @@ export default function CodeEditor({
           { token: 'support.function', foreground: 'DCDCAA' },
           { token: 'support.function.builtin', foreground: 'DCDCAA' },
           { token: 'meta.function-call', foreground: 'DCDCAA' },
+          { token: 'support.function.builtin.python', foreground: 'DCDCAA' },
           
           // Variables - Light Blue
           { token: 'variable', foreground: '9CDCFE' },
           { token: 'variable.parameter', foreground: '9CDCFE' },
           { token: 'variable.other', foreground: '9CDCFE' },
-          { token: 'identifier', foreground: '9CDCFE' },
+          { token: 'variable.language.self', foreground: '569CD6' },
+          { token: 'variable.language.cls', foreground: '569CD6' },
           { token: 'meta.definition.variable', foreground: '9CDCFE' },
           
           // Operators - White
           { token: 'operator', foreground: 'D4D4D4' },
+          { token: 'keyword.operator', foreground: 'D4D4D4' },
           { token: 'keyword.operator.arithmetic', foreground: 'D4D4D4' },
           { token: 'keyword.operator.assignment', foreground: 'D4D4D4' },
           { token: 'keyword.operator.comparison', foreground: 'D4D4D4' },
@@ -234,12 +244,18 @@ export default function CodeEditor({
           { token: 'delimiter.parenthesis', foreground: 'FFD700' },
           { token: 'delimiter.square', foreground: 'FFD700' },
           { token: 'delimiter.curly', foreground: 'FFD700' },
+          { token: 'punctuation.bracket', foreground: 'FFD700' },
+          { token: 'punctuation.parenthesis', foreground: 'FFD700' },
+          { token: 'punctuation.square', foreground: 'FFD700' },
+          { token: 'punctuation.curly', foreground: 'FFD700' },
           
           // Python keywords - Blue/Purple
           { token: 'keyword', foreground: '569CD6' },
           { token: 'keyword.control', foreground: 'C586C0' },
-          { token: 'keyword.operator', foreground: 'D4D4D4' },
+          { token: 'keyword.control.flow', foreground: 'C586C0' },
+          { token: 'keyword.control.import', foreground: 'C586C0' },
           { token: 'keyword.other', foreground: 'C586C0' },
+          { token: 'storage.type', foreground: '569CD6' },
           
           // Classes - Teal
           { token: 'entity.name.class', foreground: '4EC9B0' },
@@ -255,15 +271,12 @@ export default function CodeEditor({
           
           // Delimiters - Default
           { token: 'delimiter', foreground: 'D4D4D4' },
+          { token: 'punctuation.delimiter', foreground: 'D4D4D4' },
+          { token: 'punctuation.separator', foreground: 'D4D4D4' },
           
           // Decorators - Purple
           { token: 'entity.name.decorator', foreground: 'C586C0' },
           { token: 'punctuation.decorator', foreground: 'C586C0' },
-          
-          // Python specific
-          { token: 'support.function.builtin.python', foreground: 'DCDCAA' },
-          { token: 'variable.language.self', foreground: '569CD6' },
-          { token: 'variable.language.cls', foreground: '569CD6' },
           
           // Invalid - Red
           { token: 'invalid', foreground: 'F44747', background: '2D1B1B' },
@@ -300,13 +313,13 @@ export default function CodeEditor({
         }
       });
 
-      // Set the theme as default
-      monaco.editor.setTheme('vs-code-dark-plus');
+      // Set the custom theme as default
+      monaco.editor.setTheme('python-dark-theme');
       
       const newEditor = monaco.editor.create(editorRef.current, {
         value: code,
         language: 'python',
-        theme: 'vs-code-dark-plus',
+        theme: 'python-dark-theme',
         automaticLayout: true,
         fontSize: 14,
         fontFamily: "'Cascadia Code', 'JetBrains Mono', 'Fira Code', 'SF Mono', Monaco, Menlo, 'Ubuntu Mono', monospace",
@@ -542,15 +555,22 @@ export default function CodeEditor({
         newEditor.getAction('editor.action.formatDocument')?.run();
       });
 
-      // Force syntax highlighting refresh
+      // Force syntax highlighting refresh and theme application
       setTimeout(() => {
         const model = newEditor.getModel();
         if (model) {
+          // Reapply the language and theme
           monaco.editor.setModelLanguage(model, 'python');
-          monaco.editor.setTheme('vs-code-dark-plus');
-          newEditor.updateOptions({ theme: 'vs-code-dark-plus' });
+          monaco.editor.setTheme('python-dark-theme');
+          newEditor.updateOptions({ 
+            theme: 'python-dark-theme',
+            automaticLayout: true 
+          });
+          
+          // Force a re-tokenization to apply syntax highlighting
+          model.setValue(model.getValue());
         }
-      }, 100);
+      }, 200);
 
       // Content change listener
       newEditor.onDidChangeModelContent(() => {
