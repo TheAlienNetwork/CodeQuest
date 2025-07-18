@@ -9,7 +9,7 @@ interface TerminalOutputProps {
   onClose: () => void;
 }
 
-export default function TerminalOutput({ output, error, isVisible, onClose }: TerminalOutputProps) {
+export function TerminalOutput({ output, error, isVisible, onClose }: TerminalOutputProps) {
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import CodeEditorWithHighlighting from '@/components/CodeEditorWithHighlighting';
-import TerminalOutput from '@/components/TerminalOutput';
+import { TerminalOutput } from '@/components/TerminalOutput';
 import AIChat from '@/components/AIChat';
 import QuestPanel from '@/components/QuestPanel';
 import XPBar from '@/components/XPBar';
@@ -50,9 +50,10 @@ interface CodeQuestProps {
   user: User;
   onUserUpdate: (user: User) => void;
   onLogout: () => void;
+  onShowProfile: () => void;
 }
 
-export default function CodeQuest({ user, onUserUpdate, onLogout }: CodeQuestProps) {
+export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile }: CodeQuestProps) {
   const [code, setCode] = useState('');
   const [terminalOutput, setTerminalOutput] = useState('');
   const [terminalError, setTerminalError] = useState('');
@@ -310,7 +311,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout }: CodeQuestPro
             showXPGain={showXPGain}
             onXPGainComplete={() => setShowXPGain(0)}
           />
-          <ProfileIcon user={user} onLogout={onLogout} />
+          <ProfileIcon user={user} onLogout={onLogout} onProfileClick={onShowProfile} />
         </div>
       </header>
 
