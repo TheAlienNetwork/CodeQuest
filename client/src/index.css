@@ -3,65 +3,240 @@
 @tailwind utilities;
 
 :root {
-  --cyber-darker: #0a0a0f;
-  --cyber-dark: #0f0f1f;
-  --cyber-primary: #1a1a2e;
-  --cyber-secondary: #16213e;
-  --cyber-accent: #0f3460;
-  --cyber-cyan: #22c5ff;
-  --cyber-purple: #8b5cf6;
-  --cyber-pink: #ec4899;
-  --cyber-green: #00ff88;
-  --cyber-yellow: #fbbf24;
-  --cyber-orange: #f97316;
-  --cyber-red: #ef4444;
-  --cyber-text: #ffffff;
-  --cyber-text-muted: #94a3b8;
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(60, 4.8%, 95.9%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+
+  /* Cyberpunk theme colors */
+  --cyber-dark: hsl(220, 39%, 8%);
+  --cyber-darker: hsl(220, 26%, 14%);
+  --cyber-gray: hsl(220, 13%, 18%);
+  --cyber-cyan: hsl(180, 100%, 50%);
+  --cyber-purple: hsl(262, 83%, 58%);
+  --cyber-green: hsl(142, 100%, 50%);
+  --cyber-blue: hsl(217, 91%, 60%);
+  --cyber-pink: hsl(330, 81%, 67%);
 }
 
-* {
-  box-sizing: border-box;
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background: var(--cyber-darker);
-  color: var(--cyber-text);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  overflow-x: hidden;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased;
+    background: var(--cyber-dark);
+    color: white;
+    overflow: hidden;
+    height: 100vh;
+  }
 }
 
-#root {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+@layer utilities {
+  .cyber-gradient {
+    background: linear-gradient(135deg, var(--cyber-dark) 0%, var(--cyber-gray) 100%);
+  }
+
+  .neon-border {
+    border: 1px solid var(--cyber-cyan);
+    box-shadow: 0 0 10px hsla(180, 100%, 50%, 0.3);
+  }
+
+  .neon-glow {
+    box-shadow: 0 0 20px hsla(180, 100%, 50%, 0.5);
+  }
+
+  .xp-bar-fill {
+    background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-purple));
+    animation: pulse-glow 2s infinite;
+    transition: width 1s ease-out;
+  }
+
+  .btn-cyber-sm {
+    background: linear-gradient(45deg, var(--cyber-cyan), var(--cyber-purple));
+    color: black;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  }
+
+  /* Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--cyber-gray);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--cyber-cyan);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--cyber-primary);
+  }
+
+  .btn-cyber-sm:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  }
+
+  .btn-cyber-sm:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .terminal-text {
+    color: var(--cyber-green);
+    text-shadow: 0 0 10px hsla(142, 100%, 50%, 0.5);
+  }
+
+  .quest-card {
+    background: linear-gradient(135deg, hsla(180, 100%, 50%, 0.1), hsla(262, 83%, 58%, 0.1));
+    border: 1px solid hsla(180, 100%, 50%, 0.3);
+  }
+
+  .level-badge {
+    background: linear-gradient(135deg, var(--cyber-cyan), var(--cyber-purple));
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  .code-editor {
+    background: var(--cyber-darker);
+    border: 1px solid hsl(220, 13%, 20%);
+  }
+
+  .chat-bubble-user {
+    background: linear-gradient(135deg, var(--cyber-cyan), var(--cyber-blue));
+  }
+
+  .chat-bubble-ai {
+    background: linear-gradient(135deg, var(--cyber-purple), var(--cyber-pink));
+  }
+
+  .btn-cyber {
+    background: linear-gradient(135deg, var(--cyber-cyan), var(--cyber-purple));
+    transition: all 0.3s ease;
+    color: black;
+    font-weight: bold;
+  }
+
+  .btn-cyber:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px hsla(180, 100%, 50%, 0.6);
+  }
+
+  .terminal-output {
+    background: hsl(0, 0%, 0%);
+    border: 1px solid var(--cyber-green);
+    color: var(--cyber-green);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .cyber-text-gradient {
+    background: linear-gradient(135deg, var(--cyber-cyan), var(--cyber-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
 
-/* Cyber theme background */
-body {
-  background: linear-gradient(135deg, var(--cyber-darker) 0%, var(--cyber-dark) 50%, var(--cyber-primary) 100%);
-  background-attachment: fixed;
-  position: relative;
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 20%, rgba(34, 197, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: -1;
+@keyframes glow {
+  0% { box-shadow: 0 0 5px var(--cyber-cyan); }
+  100% { box-shadow: 0 0 20px var(--cyber-cyan), 0 0 30px var(--cyber-cyan); }
 }
 
-/* Scrollbar styles */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+/* Monaco Editor Overrides */
+.monaco-editor {
+  background: var(--cyber-darker) !important;
+}
+
+.monaco-editor .margin {
+  background: var(--cyber-darker) !important;
+}
+
+.monaco-editor .monaco-editor-background {
+  background: var(--cyber-darker) !important;
+}
+
+.monaco-editor .current-line {
+  background: hsla(180, 100%, 50%, 0.1) !important;
+}
+
+.monaco-editor .line-numbers {
+  color: hsla(180, 100%, 50%, 0.6) !important;
+}
+
+/* Scrollbar styles for webkit browsers */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -92,113 +267,120 @@ body::before {
   border-radius: 3px;
 }
 
-/* Monaco Editor - let it handle its own styling */
-.monaco-editor {
-  background: #1E1E1E !important;
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 197, 255, 0.8);
 }
 
-/* Loading and transition states */
-.loading {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-.fade-in {
-  animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+/* Mobile chat scrolling */
+@media (max-width: 767px) {
+  .chat-messages {
+    max-height: 200px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
-/* Glow effects */
-.glow {
-  box-shadow: 0 0 20px rgba(34, 197, 255, 0.3);
+/* Custom scrollbar for lessons panel */
+.lessons-scroll::-webkit-scrollbar {
+  width: 6px;
 }
 
-.glow-purple {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+@media (min-width: 640px) {
+  .lessons-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
 }
 
-.glow-pink {
-  box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+.lessons-scroll::-webkit-scrollbar-track {
+  background: var(--cyber-gray);
+  border-radius: 4px;
 }
 
-/* Button hover effects */
-.cyber-button {
-  background: linear-gradient(45deg, var(--cyber-cyan), var(--cyber-purple));
-  border: none;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
+.lessons-scroll::-webkit-scrollbar-corner {
+  background: var(--cyber-gray);
+}
+
+/* Fix for tab positioning */
+.tab-container {
   position: relative;
-  overflow: hidden;
+  z-index: 10;
 }
 
-.cyber-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
+/* Ensure proper layout stacking */
+header {
+  position: relative;
+  z-index: 20;
 }
 
-.cyber-button:hover::before {
-  left: 100%;
+/* Fix for main content positioning */
+.main-content {
+  position: relative;
+  z-index: 1;
 }
 
-.cyber-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(34, 197, 255, 0.3);
+.lessons-scroll::-webkit-scrollbar-thumb {
+  background: var(--cyber-cyan);
+  border-radius: 3px;
 }
 
-/* Tab content styling */
-.tab-content {
-  background: rgba(15, 15, 31, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(34, 197, 255, 0.2);
-  border-radius: 0.75rem;
-  overflow: hidden;
+.lessons-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--cyber-cyan)/80;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .text-responsive {
-    font-size: 0.875rem;
+/* Mobile responsive utilities */
+@media (max-width: 1023px) {
+  .mobile-hidden {
+    display: none !important;
   }
-
-  .cyber-button {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.875rem;
+  
+  /* Mobile layout adjustments */
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
   }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  :root {
-    --cyber-cyan: #00d4ff;
-    --cyber-purple: #a855f7;
-    --cyber-pink: #f472b6;
+  
+  .mobile-scroll {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Stack panels vertically on mobile */
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+  
+  .mobile-full-width {
+    width: 100% !important;
   }
 }
 
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+@media (min-width: 1024px) {
+  .desktop-hidden {
+    display: none !important;
+  }
+}
+
+/* Touch targets for mobile */
+@media (max-width: 767px) {
+  button, .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Responsive text sizing */
+.responsive-text {
+  font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .responsive-text {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-text {
+    font-size: 1.125rem;
   }
 }
