@@ -97,6 +97,19 @@ User requested: Remove OpenAI dependency, create custom AI logic, add learning p
 ## Recent Changes (July 2025)
 
 ### Latest Fixes (July 18, 2025)
+- **Expanded Curriculum**: Added 10 additional quests for a total of 30 comprehensive lessons
+  - **Quest 26**: 🎯 The Target Practice - Interactive input/output game
+  - **Quest 27**: 🗝️ The Secret Keeper - Dictionary fundamentals
+  - **Quest 28**: 🎲 The Dice Master - Functions with parameters and random module
+  - **Quest 29**: 🏰 The Castle Builder - Nested loops and pattern creation
+  - **Quest 30**: 🧙‍♂️ The Wise Wizard - Object-oriented programming with classes
+  - Each quest includes 4-6 detailed concepts with comprehensive explanations
+- **Enhanced Learning Concepts**: Added 25+ new concept explanations in the Learning Panel
+  - Basic syntax, console output, variable assignment, data types
+  - Mathematical operations, type conversion, boolean logic, control flow
+  - F-strings, loop variables, counting, list creation, code reusability
+  - User interaction, string interpolation, dictionary operations
+  - Object-oriented programming, error handling, advanced Python features
 - **Layout Stability Fix**: Fixed issue where tabs and buttons would go under header when switching quests
   - Changed from fixed height calculations to proper flexbox layout
   - Added proper z-index layering (header: 30, tabs: 20, content: 10)

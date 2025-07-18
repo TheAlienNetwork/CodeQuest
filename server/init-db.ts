@@ -28,20 +28,25 @@ export async function initializeDatabase() {
       const existingQuests = await storage.getAllQuests();
       console.log('Existing quests count:', existingQuests.length);
       
-      if (existingQuests.length === 0) {
-        console.log('Loading quest data...');
-        console.log('Found', questsData.length, 'quests to insert');
+      // Check if we need to load new quests (expanded curriculum has 30 quests)
+      if (existingQuests.length < questsData.length) {
+        console.log(`Loading ${questsData.length - existingQuests.length} new quests...`);
+        console.log('Found', questsData.length, 'total quests in curriculum');
 
         for (const questData of questsData) {
-          await storage.createQuest(questData);
+          const existing = existingQuests.find(q => q.id === questData.id);
+          if (!existing) {
+            await storage.createQuest(questData);
+            console.log(`✅ Added quest ${questData.id}: ${questData.title}`);
+          }
         }
 
         // Verify quests were inserted
         const insertedQuests = await storage.getAllQuests();
         console.log('Total quests in database:', insertedQuests.length);
-        console.log("Loaded", questsData.length, "quests into database");
+        console.log("✅ Expanded curriculum loaded with", questsData.length, "total quests");
       } else {
-        console.log('Quests already loaded, skipping initialization');
+        console.log('Curriculum is up to date with all quests loaded');
       }
     } catch (error) {
       console.warn("Could not load quests into database, using fallback:", error.message);

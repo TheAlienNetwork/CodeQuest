@@ -1,0 +1,326 @@
+[
+  {
+    "id": 1,
+    "title": "🚀 Welcome to Python",
+    "description": "Your first quest begins! Print 'Hello, World!' to the console to start your coding adventure.",
+    "difficulty": "beginner",
+    "xpReward": 50,
+    "estimatedTime": "2 min",
+    "startingCode": "# Welcome to CodeQuest, brave adventurer!\n# Your first quest: Print 'Hello, World!' to the console\n\n",
+    "solutionCode": "print('Hello, World!')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Hello, World!"
+      }
+    ],
+    "concepts": ["print", "strings", "basic syntax", "console output"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 2,
+    "title": "🎒 The Magic Backpack",
+    "description": "Every adventurer needs a backpack! Create variables to store your name, age, and favorite weapon.",
+    "difficulty": "beginner",
+    "xpReward": 75,
+    "estimatedTime": "5 min",
+    "startingCode": "# Create your adventurer's profile\n# Store your name in a variable called 'name'\n# Store your age in a variable called 'age'\n# Store your favorite weapon in a variable called 'weapon'\n# Print all three variables\n\n",
+    "solutionCode": "name = 'Hero'\nage = 25\nweapon = 'Sword'\nprint(name)\nprint(age)\nprint(weapon)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Hero\n25\nSword"
+      }
+    ],
+    "concepts": ["variables", "strings", "integers", "variable assignment", "data types"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 3,
+    "title": "🧮 The Number Oracle",
+    "description": "The oracle speaks in numbers! Create variables for different number types and calculate your total power.",
+    "difficulty": "beginner",
+    "xpReward": 100,
+    "estimatedTime": "6 min",
+    "startingCode": "# The oracle reveals your stats\n# Create an integer variable 'strength' with value 10\n# Create a float variable 'magic_power' with value 7.5\n# Calculate your total power by adding them together\n# Print the result\n\n",
+    "solutionCode": "strength = 10\nmagic_power = 7.5\ntotal_power = strength + magic_power\nprint(total_power)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "17.5"
+      }
+    ],
+    "concepts": ["variables", "integers", "floats", "arithmetic", "mathematical operations", "type conversion"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 4,
+    "title": "🎭 The Storyteller's Choice",
+    "description": "You meet a storyteller who asks about your quest. Use an if statement to respond based on your level.",
+    "difficulty": "beginner",
+    "xpReward": 125,
+    "estimatedTime": "8 min",
+    "startingCode": "# The storyteller wants to know about your quest\nlevel = 1\n\n# If level is 1, print 'I am just starting my journey'\n# Otherwise, print 'I am an experienced adventurer'\n\n",
+    "solutionCode": "level = 1\n\nif level == 1:\n    print('I am just starting my journey')\nelse:\n    print('I am an experienced adventurer')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "I am just starting my journey"
+      }
+    ],
+    "concepts": ["conditionals", "if statements", "comparison operators", "boolean logic", "control flow"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 5,
+    "title": "🌟 The Spell Caster",
+    "description": "Cast spells using a for loop! Show your mastery of repetition magic.",
+    "difficulty": "beginner",
+    "xpReward": 150,
+    "estimatedTime": "10 min",
+    "startingCode": "# Cast 5 spells using a for loop\n# Each spell should print 'Casting spell X' where X is the spell number\n# Use range(1, 6) to get numbers 1 through 5\n\n",
+    "solutionCode": "for i in range(1, 6):\n    print(f'Casting spell {i}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Casting spell 1\nCasting spell 2\nCasting spell 3\nCasting spell 4\nCasting spell 5"
+      }
+    ],
+    "concepts": ["for loops", "range", "iteration", "f-strings", "loop variables"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 6,
+    "title": "🎯 The Target Practice",
+    "description": "Practice your aim with input and output! Create an interactive target practice game.",
+    "difficulty": "beginner",
+    "xpReward": 175,
+    "estimatedTime": "12 min",
+    "startingCode": "# Create a target practice game\n# Ask the user for their name\n# Ask how many arrows they want to shoot\n# Use a loop to simulate shooting arrows\n\n",
+    "solutionCode": "name = input('What is your name, archer? ')\narrows = int(input('How many arrows do you want to shoot? '))\n\nfor i in range(1, arrows + 1):\n    print(f'{name} shoots arrow {i}!')\n\nprint('Great shooting!')",
+    "testCases": [
+      {
+        "input": "Robin\n3",
+        "expectedOutput": "What is your name, archer? How many arrows do you want to shoot? Robin shoots arrow 1!\nRobin shoots arrow 2!\nRobin shoots arrow 3!\nGreat shooting!"
+      }
+    ],
+    "concepts": ["input", "type conversion", "user interaction", "for loops", "string interpolation"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 7,
+    "title": "📚 The Knowledge Keeper",
+    "description": "Store multiple items in a list and access them like a true knowledge keeper!",
+    "difficulty": "beginner",
+    "xpReward": 200,
+    "estimatedTime": "15 min",
+    "startingCode": "# Create a list of magical items\n# Add at least 5 items to your list\n# Print each item using a for loop\n# Print the total number of items\n\n",
+    "solutionCode": "magical_items = ['Sword', 'Shield', 'Potion', 'Scroll', 'Crystal']\n\nfor item in magical_items:\n    print(f'You have a {item}')\n\nprint(f'Total items: {len(magical_items)}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "You have a Sword\nYou have a Shield\nYou have a Potion\nYou have a Scroll\nYou have a Crystal\nTotal items: 5"
+      }
+    ],
+    "concepts": ["lists", "list creation", "for loops", "list iteration", "len function", "list elements"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 8,
+    "title": "🗝️ The Secret Keeper",
+    "description": "Use dictionaries to store secret information about your character!",
+    "difficulty": "intermediate",
+    "xpReward": 250,
+    "estimatedTime": "18 min",
+    "startingCode": "# Create a dictionary with your character's stats\n# Include: name, class, level, health, mana\n# Print each stat in a readable format\n\n",
+    "solutionCode": "character = {\n    'name': 'Hero',\n    'class': 'Warrior',\n    'level': 5,\n    'health': 100,\n    'mana': 50\n}\n\nfor key, value in character.items():\n    print(f'{key}: {value}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "name: Hero\nclass: Warrior\nlevel: 5\nhealth: 100\nmana: 50"
+      }
+    ],
+    "concepts": ["dictionaries", "key-value pairs", "dictionary creation", "dictionary iteration", "items method"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 9,
+    "title": "🎲 The Dice Master",
+    "description": "Create a function to roll dice and calculate your luck!",
+    "difficulty": "intermediate",
+    "xpReward": 300,
+    "estimatedTime": "20 min",
+    "startingCode": "# Create a function called roll_dice that takes number of sides\n# Import random module\n# Return a random number between 1 and the number of sides\n# Roll a 6-sided dice 3 times and print results\n\n",
+    "solutionCode": "import random\n\ndef roll_dice(sides):\n    return random.randint(1, sides)\n\nfor i in range(3):\n    result = roll_dice(6)\n    print(f'Roll {i+1}: {result}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Roll 1: 3\nRoll 2: 6\nRoll 3: 2"
+      }
+    ],
+    "concepts": ["functions", "parameters", "return values", "random module", "imports", "function calls"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 10,
+    "title": "🏰 The Castle Builder",
+    "description": "Build a castle using nested loops to create patterns!",
+    "difficulty": "intermediate",
+    "xpReward": 350,
+    "estimatedTime": "25 min",
+    "startingCode": "# Build a castle wall using nested loops\n# Create a 5x5 pattern using '#' characters\n# Each row should have 5 '#' characters\n\n",
+    "solutionCode": "for row in range(5):\n    for col in range(5):\n        print('#', end=' ')\n    print()  # New line after each row",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "# # # # # \n# # # # # \n# # # # # \n# # # # # \n# # # # # "
+      }
+    ],
+    "concepts": ["nested loops", "print formatting", "patterns", "end parameter", "loop control"],
+    "requiredLevel": 4
+  },
+  {
+    "id": 11,
+    "title": "🧙‍♂️ The Wise Wizard",
+    "description": "Create a wizard class with magical abilities!",
+    "difficulty": "intermediate",
+    "xpReward": 400,
+    "estimatedTime": "30 min",
+    "startingCode": "# Create a Wizard class\n# Add __init__ method with name and mana\n# Add cast_spell method that reduces mana by 10\n# Create a wizard and cast 3 spells\n\n",
+    "solutionCode": "class Wizard:\n    def __init__(self, name, mana):\n        self.name = name\n        self.mana = mana\n    \n    def cast_spell(self, spell_name):\n        if self.mana >= 10:\n            self.mana -= 10\n            print(f'{self.name} casts {spell_name}! Mana: {self.mana}')\n        else:\n            print(f'{self.name} is out of mana!')\n\nwizard = Wizard('Gandalf', 50)\nwizard.cast_spell('Fireball')\nwizard.cast_spell('Lightning')\nwizard.cast_spell('Heal')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Gandalf casts Fireball! Mana: 40\nGandalf casts Lightning! Mana: 30\nGandalf casts Heal! Mana: 20"
+      }
+    ],
+    "concepts": ["classes", "objects", "__init__", "methods", "self", "object-oriented programming"],
+    "requiredLevel": 5
+  },
+  {
+    "id": 12,
+    "title": "🌙 The Night Watch",
+    "description": "Use while loops to keep watch until dawn breaks!",
+    "difficulty": "intermediate",
+    "xpReward": 450,
+    "estimatedTime": "20 min",
+    "startingCode": "# Create a night watch simulation\n# Use a while loop to count hours until dawn (6 AM)\n# Start at hour 0 (midnight)\n# Print each hour of the watch\n\n",
+    "solutionCode": "hour = 0\nwhile hour < 6:\n    print(f'Hour {hour}: Standing watch...')\n    hour += 1\nprint('Dawn breaks! Watch is over.')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Hour 0: Standing watch...\nHour 1: Standing watch...\nHour 2: Standing watch...\nHour 3: Standing watch...\nHour 4: Standing watch...\nHour 5: Standing watch...\nDawn breaks! Watch is over."
+      }
+    ],
+    "concepts": ["while loops", "counters", "incrementation", "loop conditions", "boolean expressions"],
+    "requiredLevel": 4
+  },
+  {
+    "id": 13,
+    "title": "🗡️ The Arena Fighter",
+    "description": "Create a battle system with health, damage, and victory conditions!",
+    "difficulty": "advanced",
+    "xpReward": 500,
+    "estimatedTime": "35 min",
+    "startingCode": "# Create a battle system\n# Two fighters with health and attack power\n# They take turns attacking until one reaches 0 health\n# Print the battle progress\n\n",
+    "solutionCode": "class Fighter:\n    def __init__(self, name, health, attack):\n        self.name = name\n        self.health = health\n        self.attack = attack\n    \n    def attack_enemy(self, enemy):\n        enemy.health -= self.attack\n        print(f'{self.name} attacks {enemy.name} for {self.attack} damage!')\n        print(f'{enemy.name} health: {enemy.health}')\n\nfighter1 = Fighter('Hero', 100, 25)\nfighter2 = Fighter('Goblin', 80, 20)\n\nwhile fighter1.health > 0 and fighter2.health > 0:\n    fighter1.attack_enemy(fighter2)\n    if fighter2.health <= 0:\n        print(f'{fighter1.name} wins!')\n        break\n    fighter2.attack_enemy(fighter1)\n    if fighter1.health <= 0:\n        print(f'{fighter2.name} wins!')\n        break",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Hero attacks Goblin for 25 damage!\nGoblin health: 55\nGoblin attacks Hero for 20 damage!\nHero health: 80\nHero attacks Goblin for 25 damage!\nGoblin health: 30\nGoblin attacks Hero for 20 damage!\nHero health: 60\nHero attacks Goblin for 25 damage!\nGoblin health: 5\nGoblin attacks Hero for 20 damage!\nHero health: 40\nHero attacks Goblin for 25 damage!\nGoblin health: -20\nHero wins!"
+      }
+    ],
+    "concepts": ["classes", "while loops", "game logic", "conditional statements", "object interaction"],
+    "requiredLevel": 6
+  },
+  {
+    "id": 14,
+    "title": "🎯 The Exception Handler",
+    "description": "Handle errors gracefully like a true master coder!",
+    "difficulty": "advanced",
+    "xpReward": 550,
+    "estimatedTime": "25 min",
+    "startingCode": "# Create a safe division function\n# Handle division by zero errors\n# Ask user for two numbers and divide them safely\n# Keep asking until they enter 'quit'\n\n",
+    "solutionCode": "def safe_divide(a, b):\n    try:\n        result = a / b\n        return result\n    except ZeroDivisionError:\n        print('Error: Cannot divide by zero!')\n        return None\n    except ValueError:\n        print('Error: Please enter valid numbers!')\n        return None\n\nwhile True:\n    try:\n        num1 = input('Enter first number (or quit): ')\n        if num1.lower() == 'quit':\n            break\n        num2 = input('Enter second number: ')\n        \n        num1 = float(num1)\n        num2 = float(num2)\n        \n        result = safe_divide(num1, num2)\n        if result is not None:\n            print(f'Result: {result}')\n    except ValueError:\n        print('Please enter valid numbers!')",
+    "testCases": [
+      {
+        "input": "10\n2\nquit",
+        "expectedOutput": "Enter first number (or quit): Enter second number: Result: 5.0\nEnter first number (or quit): "
+      }
+    ],
+    "concepts": ["try-except", "error handling", "exceptions", "input validation", "while loops"],
+    "requiredLevel": 7
+  },
+  {
+    "id": 15,
+    "title": "🎪 The List Comprehension Master",
+    "description": "Master the art of list comprehensions to create powerful data transformations!",
+    "difficulty": "advanced",
+    "xpReward": 600,
+    "estimatedTime": "30 min",
+    "startingCode": "# Create list comprehensions to:\n# 1. Generate squares of numbers 1-10\n# 2. Filter even numbers from 1-20\n# 3. Create a list of character names with their lengths\n\n",
+    "solutionCode": "# Generate squares of numbers 1-10\nsquares = [x**2 for x in range(1, 11)]\nprint('Squares:', squares)\n\n# Filter even numbers from 1-20\nevens = [x for x in range(1, 21) if x % 2 == 0]\nprint('Even numbers:', evens)\n\n# Create list of character names with their lengths\nnames = ['Hero', 'Wizard', 'Archer', 'Warrior']\nname_lengths = [f'{name}: {len(name)}' for name in names]\nprint('Name lengths:', name_lengths)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Squares: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]\nEven numbers: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]\nName lengths: ['Hero: 4', 'Wizard: 6', 'Archer: 6', 'Warrior: 7']"
+      }
+    ],
+    "concepts": ["list comprehensions", "filtering", "mapping", "conditional expressions", "advanced Python"],
+    "requiredLevel": 8
+  },
+  {
+    "id": 16,
+    "title": "🌟 The Decorator Sage",
+    "description": "Learn the ancient art of decorators to enhance your functions!",
+    "difficulty": "expert",
+    "xpReward": 700,
+    "estimatedTime": "40 min",
+    "startingCode": "# Create a timing decorator\n# Measure how long functions take to execute\n# Apply it to a function that calculates fibonacci numbers\n\n",
+    "solutionCode": "import time\n\ndef timing_decorator(func):\n    def wrapper(*args, **kwargs):\n        start_time = time.time()\n        result = func(*args, **kwargs)\n        end_time = time.time()\n        print(f'{func.__name__} took {end_time - start_time:.4f} seconds')\n        return result\n    return wrapper\n\n@timing_decorator\ndef fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)\n\nresult = fibonacci(10)\nprint(f'Fibonacci(10) = {result}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "fibonacci took 0.0001 seconds\nFibonacci(10) = 55"
+      }
+    ],
+    "concepts": ["decorators", "function wrapping", "higher-order functions", "recursion", "timing"],
+    "requiredLevel": 10
+  },
+  {
+    "id": 17,
+    "title": "🎮 The Game Engine",
+    "description": "Build a complete text-based RPG game with multiple systems!",
+    "difficulty": "expert",
+    "xpReward": 800,
+    "estimatedTime": "50 min",
+    "startingCode": "# Create a complete RPG game with:\n# Player class with stats and inventory\n# Enemy class with different types\n# Battle system with multiple actions\n# Inventory system with items\n\n",
+    "solutionCode": "import random\n\nclass Player:\n    def __init__(self, name):\n        self.name = name\n        self.health = 100\n        self.mana = 50\n        self.attack = 20\n        self.inventory = ['Health Potion', 'Mana Potion']\n    \n    def use_item(self, item):\n        if item in self.inventory:\n            if item == 'Health Potion':\n                self.health = min(100, self.health + 30)\n                print(f'{self.name} uses Health Potion! Health: {self.health}')\n            elif item == 'Mana Potion':\n                self.mana = min(50, self.mana + 20)\n                print(f'{self.name} uses Mana Potion! Mana: {self.mana}')\n            self.inventory.remove(item)\n        else:\n            print(f'You don\\'t have {item}')\n\nclass Enemy:\n    def __init__(self, name, health, attack):\n        self.name = name\n        self.health = health\n        self.attack = attack\n\ndef battle(player, enemy):\n    print(f'Battle begins! {player.name} vs {enemy.name}')\n    \n    while player.health > 0 and enemy.health > 0:\n        # Player turn\n        action = input('Choose action (attack/item): ').lower()\n        \n        if action == 'attack':\n            damage = random.randint(15, 25)\n            enemy.health -= damage\n            print(f'{player.name} attacks for {damage} damage!')\n            print(f'{enemy.name} health: {enemy.health}')\n        elif action == 'item':\n            if player.inventory:\n                item = player.inventory[0]\n                player.use_item(item)\n            else:\n                print('No items available!')\n        \n        if enemy.health <= 0:\n            print(f'{player.name} wins!')\n            break\n        \n        # Enemy turn\n        damage = random.randint(10, 20)\n        player.health -= damage\n        print(f'{enemy.name} attacks for {damage} damage!')\n        print(f'{player.name} health: {player.health}')\n        \n        if player.health <= 0:\n            print(f'{enemy.name} wins!')\n            break\n\n# Game starts\nplayer = Player('Hero')\nenemy = Enemy('Orc', 80, 15)\nbattle(player, enemy)",
+    "testCases": [
+      {
+        "input": "attack\nattack\nattack\nattack",
+        "expectedOutput": "Battle begins! Hero vs Orc\nChoose action (attack/item): Hero attacks for 20 damage!\nOrc health: 60\nOrc attacks for 15 damage!\nHero health: 85\nChoose action (attack/item): Hero attacks for 20 damage!\nOrc health: 40\nOrc attacks for 15 damage!\nHero health: 70\nChoose action (attack/item): Hero attacks for 20 damage!\nOrc health: 20\nOrc attacks for 15 damage!\nHero health: 55\nChoose action (attack/item): Hero attacks for 20 damage!\nOrc health: 0\nHero wins!"
+      }
+    ],
+    "concepts": ["classes", "game logic", "user input", "random numbers", "inventory systems", "battle systems"],
+    "requiredLevel": 12
+  },
+  {
+    "id": 18,
+    "title": "🏗️ The System Architect",
+    "description": "Design a complex system with multiple interacting components!",
+    "difficulty": "expert",
+    "xpReward": 900,
+    "estimatedTime": "60 min",
+    "startingCode": "# Create a library management system with:\n# Book class with title, author, ISBN\n# Library class to manage books\n# User class for borrowing books\n# Methods for adding, removing, borrowing, returning books\n\n",
+    "solutionCode": "from datetime import datetime, timedelta\n\nclass Book:\n    def __init__(self, title, author, isbn):\n        self.title = title\n        self.author = author\n        self.isbn = isbn\n        self.is_borrowed = False\n        self.borrowed_by = None\n        self.due_date = None\n    \n    def __str__(self):\n        return f'{self.title} by {self.author}'\n\nclass User:\n    def __init__(self, name, user_id):\n        self.name = name\n        self.user_id = user_id\n        self.borrowed_books = []\n    \n    def borrow_book(self, book):\n        if not book.is_borrowed:\n            book.is_borrowed = True\n            book.borrowed_by = self.user_id\n            book.due_date = datetime.now() + timedelta(days=14)\n            self.borrowed_books.append(book)\n            print(f'{self.name} borrowed {book}')\n            return True\n        else:\n            print(f'{book} is already borrowed')\n            return False\n    \n    def return_book(self, book):\n        if book in self.borrowed_books:\n            book.is_borrowed = False\n            book.borrowed_by = None\n            book.due_date = None\n            self.borrowed_books.remove(book)\n            print(f'{self.name} returned {book}')\n            return True\n        else:\n            print(f'{self.name} hasn\\'t borrowed {book}')\n            return False\n\nclass Library:\n    def __init__(self, name):\n        self.name = name\n        self.books = []\n        self.users = []\n    \n    def add_book(self, book):\n        self.books.append(book)\n        print(f'Added {book} to library')\n    \n    def remove_book(self, isbn):\n        for book in self.books:\n            if book.isbn == isbn:\n                self.books.remove(book)\n                print(f'Removed {book} from library')\n                return True\n        print(f'Book with ISBN {isbn} not found')\n        return False\n    \n    def register_user(self, user):\n        self.users.append(user)\n        print(f'Registered user: {user.name}')\n    \n    def list_available_books(self):\n        available = [book for book in self.books if not book.is_borrowed]\n        print('Available books:')\n        for book in available:\n            print(f'  - {book}')\n        return available\n\n# Demo the system\nlibrary = Library('Central Library')\n\n# Add books\nbook1 = Book('The Hobbit', 'J.R.R. Tolkien', '978-0547928227')\nbook2 = Book('Python Programming', 'John Doe', '978-1234567890')\nlibrary.add_book(book1)\nlibrary.add_book(book2)\n\n# Register user\nuser = User('Alice', 'U001')\nlibrary.register_user(user)\n\n# Borrow and return books\nuser.borrow_book(book1)\nlibrary.list_available_books()\nuser.return_book(book1)\nlibrary.list_available_books()",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Added The Hobbit by J.R.R. Tolkien to library\nAdded Python Programming by John Doe to library\nRegistered user: Alice\nAlice borrowed The Hobbit by J.R.R. Tolkien\nAvailable books:\n  - Python Programming by John Doe\nAlice returned The Hobbit by J.R.R. Tolkien\nAvailable books:\n  - The Hobbit by J.R.R. Tolkien\n  - Python Programming by John Doe"
+      }
+    ],
+    "concepts": ["system design", "multiple classes", "object relationships", "data management", "datetime handling"],
+    "requiredLevel": 15
+  }
+]
