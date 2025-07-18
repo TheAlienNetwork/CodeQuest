@@ -103,18 +103,6 @@ export default function Login({ onLogin, onShowRegister }: LoginProps) {
                 {isLoading ? 'Logging in...' : 'Login'}
               </Button>
             </form>
-            <div className="mt-4 space-y-2">
-              <Button
-                onClick={() => {
-                  setEmail('admin@codequest.com');
-                  setPassword('admin123');
-                }}
-                variant="outline"
-                className="w-full text-[var(--cyber-cyan)] border-[var(--cyber-cyan)]/30 hover:bg-[var(--cyber-cyan)]/10"
-              >
-                🔧 Admin Quick Login
-              </Button>
-            </div>
             <div className="mt-4 text-center">
               <p className="text-gray-400">
                 Don't have an account?{' '}
