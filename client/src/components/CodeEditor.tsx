@@ -559,18 +559,124 @@ export default function CodeEditor({
       setTimeout(() => {
         const model = newEditor.getModel();
         if (model) {
-          // Reapply the language and theme
+          // Force Monaco to re-tokenize with our custom provider
+          monaco.languages.setTokensProvider('python', null);
+          
+          // Re-register our enhanced tokenizer
+          monaco.languages.setMonarchTokensProvider('python', {
+            defaultToken: 'identifier',
+            tokenPostfix: '.python',
+            
+            keywords: [
+              'and', 'as', 'assert', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else',
+              'except', 'exec', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is',
+              'lambda', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield'
+            ],
+            
+            builtins: [
+              'True', 'False', 'None', 'print', 'input', 'len', 'range', 'str', 'int', 'float', 
+              'bool', 'list', 'dict', 'set', 'tuple', 'type', 'isinstance', 'hasattr', 'getattr', 
+              'setattr', 'abs', 'all', 'any', 'bin', 'callable', 'chr', 'classmethod', 'compile',
+              'delattr', 'dir', 'divmod', 'enumerate', 'eval', 'filter', 'format', 'frozenset',
+              'globals', 'hash', 'help', 'id', 'iter', 'locals', 'map', 'max', 'min', 'next',
+              'object', 'oct', 'open', 'ord', 'pow', 'property', 'repr', 'reversed', 'round',
+              'sorted', 'staticmethod', 'sum', 'super', 'vars', 'zip'
+            ],
+            
+            operators: [
+              '=', '>', '<', '!', '~', '?', ':', '==', '<=', '>=', '!=', '&&', '||', '++', '--',
+              '+', '-', '*', '/', '&', '|', '^', '%', '<<', '>>', '>>>', '+=', '-=', '*=', '/=',
+              '&=', '|=', '^=', '%=', '<<=', '>>=', '>>>='
+            ],
+            
+            symbols: /[=><!~?:&|+\-*\/\^%]+/,
+            
+            tokenizer: {
+              root: [
+                // Function definitions and calls
+                [/\b([a-zA-Z_]\w*)\s*(?=\()/, 'function'],
+                
+                // Identifiers (must come after function check)
+                [/[a-zA-Z_]\w*/, {
+                  cases: {
+                    '@keywords': 'keyword',
+                    '@builtins': 'function',
+                    '@default': 'variable'
+                  }
+                }],
+                
+                // Whitespace
+                { include: '@whitespace' },
+                
+                // Numbers
+                [/\d*\.\d+([eE][\-+]?\d+)?/, 'number'],
+                [/0[xX][0-9a-fA-F]+/, 'number'],
+                [/\d+/, 'number'],
+                
+                // Strings
+                [/"([^"\\]|\\.)*$/, 'string.invalid'],
+                [/'([^'\\]|\\.)*$/, 'string.invalid'],
+                [/"/, 'string', '@string_double'],
+                [/'/, 'string', '@string_single'],
+                [/"""/, 'string', '@string_triple_double'],
+                [/'''/, 'string', '@string_triple_single'],
+                
+                // Delimiters and operators
+                [/[{}()\[\]]/, 'delimiter.bracket'],
+                [/@symbols/, 'operator'],
+                [/[,;]/, 'delimiter'],
+              ],
+              
+              whitespace: [
+                [/[ \t\r\n]+/, 'white'],
+                [/#.*$/, 'comment'],
+              ],
+              
+              string_double: [
+                [/[^\\"]+/, 'string'],
+                [/\\./, 'string.escape'],
+                [/"/, 'string', '@pop']
+              ],
+              
+              string_single: [
+                [/[^\\']+/, 'string'],
+                [/\\./, 'string.escape'],
+                [/'/, 'string', '@pop']
+              ],
+              
+              string_triple_double: [
+                [/[^"]+/, 'string'],
+                [/"""/, 'string', '@pop'],
+                [/"/, 'string']
+              ],
+              
+              string_triple_single: [
+                [/[^']+/, 'string'],
+                [/'''/, 'string', '@pop'],
+                [/'/, 'string']
+              ]
+            }
+          });
+          
+          // Re-apply the language and theme
           monaco.editor.setModelLanguage(model, 'python');
           monaco.editor.setTheme('python-dark-theme');
+          
+          // Force model to re-tokenize by setting the value
+          const currentValue = model.getValue();
+          model.setValue('');
+          model.setValue(currentValue);
+          
+          // Update editor options to ensure theme is applied
           newEditor.updateOptions({ 
             theme: 'python-dark-theme',
             automaticLayout: true 
           });
           
-          // Force a re-tokenization to apply syntax highlighting
-          model.setValue(model.getValue());
+          // Force a layout update
+          newEditor.layout();
         }
-      }, 200);
+      }, 300);
 
       // Content change listener
       newEditor.onDidChangeModelContent(() => {
