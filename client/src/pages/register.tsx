@@ -52,7 +52,7 @@ export default function Register({ onRegister, onShowLogin }: RegisterProps) {
 
       const result = await response.json();
 
-      if (result.success) {
+      if (response.ok && result.success) {
         onRegister(result.user);
         toast({
           title: "Welcome to CodeQuest!",
