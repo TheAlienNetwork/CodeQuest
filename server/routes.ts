@@ -214,7 +214,12 @@ export function registerRoutes(app: Application) {
       const result = await codeExecutionService.executeCode(code, userId);
       res.json(result);
     } catch (error) {
-      res.status(500).json({ error: "Failed to execute code" });
+      console.error('Code execution error:', error);
+      res.status(500).json({ 
+        error: "Code execution failed", 
+        output: "",
+        executionTime: 0 
+      });
     }
   });
 

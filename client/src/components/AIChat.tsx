@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Send, Bot, User, Lightbulb, BookOpen, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -74,6 +73,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
       timestamp: new Date(),
     };
 
+    // Add user message to chat immediately
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
@@ -81,32 +81,33 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          message: inputMessage.trim(),
+          message: userMessage.message,
           userId: user.id,
           questId: quest?.id || null,
         }),
       });
 
-      const result = await response.json();
-
-      if (result.aiMessage) {
-        setMessages(prev => [...prev, {
-          id: result.aiMessage.id,
-          message: result.aiMessage.message,
+      if (response.ok) {
+        const data = await response.json();
+        const aiMessage: ChatMessage = {
+          id: data.aiMessage.id,
+          message: data.aiMessage.message,
           isAI: true,
-          timestamp: new Date(result.aiMessage.timestamp),
-        }]);
-      }
-
-      if (result.user && onUserUpdate) {
-        onUserUpdate(result.user);
+          timestamp: new Date(data.aiMessage.timestamp),
+        };
+        setMessages(prev => [...prev, aiMessage]);
+        
+        // Update user XP if provided
+        if (data.user && onUserUpdate) {
+          onUserUpdate(data.user);
+        }
+      } else {
+        throw new Error('Failed to send message');
       }
     } catch (error) {
-      console.error('Failed to send message:', error);
+      console.error('Error sending message:', error);
       setMessages(prev => [...prev, {
         id: Date.now(),
         message: 'Sorry, I encountered an error. Please try again.',
@@ -165,33 +166,35 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
   };
 
   const handleGetSolution = async () => {
-    if (!user || !quest || user.xp < 50) return;
+    if (!user || !quest) return;
 
     setIsLoading(true);
     try {
-      const solutionMessage = {
-        id: Date.now(),
-        message: `🎯 Solution for "${quest.title}":\n\n\`\`\`python\n${quest.solutionCode || 'No solution available'}\n\`\`\`\n\n*Cost: 50 XP*`,
-        isAI: true,
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, solutionMessage]);
-
-      // Deduct XP for solution
-      const response = await fetch(`/api/user/${user.id}`, {
-        method: 'PUT',
+      const response = await fetch('/api/solution', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
         body: JSON.stringify({
-          xp: user.xp - 50
+          userId: user.id,
+          questId: quest.id,
         }),
       });
 
-      if (response.ok && onUserUpdate) {
-        const updatedUser = await response.json();
-        onUserUpdate(updatedUser);
+      if (response.ok) {
+        const data = await response.json();
+        const solutionMessage = {
+          id: Date.now(),
+          message: `🎯 Solution: ${data.solution}`,
+          isAI: true,
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, solutionMessage]);
+
+        if (data.user && onUserUpdate) {
+          onUserUpdate(data.user);
+        }
       }
     } catch (error) {
       console.error('Failed to get solution:', error);
@@ -200,99 +203,157 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
     }
   };
 
-  return (
-    <div className="h-full flex flex-col bg-[var(--cyber-gray)]">
-      <div className="p-4 border-b border-[var(--cyber-cyan)]/30">
-        <h3 className="font-bold text-[var(--cyber-cyan)] flex items-center gap-2">
-          <Bot className="w-5 h-5" />
-          AI Tutor
-        </h3>
-        <p className="text-xs text-gray-400 mt-1">
-          Your coding companion for hints and guidance
-        </p>
+  const handleGetExplanation = async () => {
+    if (!user || !quest) return;
 
-        {/* AI Tutor Action Buttons */}
-        {user && quest && (
-          <div className="mt-3 space-y-2">
-            <Button
-              onClick={handleGetHint}
-              disabled={isLoading}
-              size="sm"
-              className="w-full bg-[var(--cyber-purple)] text-white hover:bg-[var(--cyber-purple)]/80"
-            >
-              <Lightbulb className="w-4 h-4 mr-2" />
-              Get Hint (Free)
-            </Button>
-            <Button
-              onClick={handleGetSolution}
-              disabled={isLoading || (user.xp < 50)}
-              size="sm"
-              className="w-full bg-[var(--cyber-yellow)] text-black hover:bg-[var(--cyber-yellow)]/80"
-            >
-              <Zap className="w-4 h-4 mr-2" />
-              Show Solution (50 XP)
-            </Button>
-            {user.xp < 50 && (
-              <p className="text-xs text-gray-400">Need 50 XP for solution</p>
-            )}
-          </div>
-        )}
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/explanation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          userId: user.id,
+          questId: quest.id,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const explanationMessage = {
+          id: Date.now(),
+          message: `📖 Explanation: ${data.explanation}`,
+          isAI: true,
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, explanationMessage]);
+
+        if (data.user && onUserUpdate) {
+          onUserUpdate(data.user);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to get explanation:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (!user) {
+    return (
+      <div className="h-full bg-[var(--cyber-dark)] text-white p-6 flex items-center justify-center">
+        <div className="text-center">
+          <Bot className="w-12 h-12 mx-auto mb-4 text-[var(--cyber-primary)]" />
+          <h3 className="text-lg font-semibold mb-2">AI Tutor</h3>
+          <p className="text-gray-400">Please log in to chat with your AI tutor</p>
+        </div>
       </div>
+    );
+  }
 
-      <div className="flex-1 p-4 overflow-auto chat-scrollbar">
-        <div className="space-y-4">
-          {messages.length === 0 && (
-            <div className="text-center text-gray-400 py-8">
-              <Bot className="w-12 h-12 mx-auto mb-2 opacity-50" />
-              <p>Hi {user?.adventurersName || 'Adventurer'}! 👋</p>
-              <p className="text-sm mt-1">Ask me anything about your quest!</p>
-            </div>
-          )}
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex gap-3 ${
-                message.isAI ? 'items-start' : 'items-start justify-end'
-              }`}
-            >
-              {message.isAI && (
-                <div className="w-8 h-8 bg-[var(--cyber-cyan)] rounded-full flex items-center justify-center flex-shrink-0">
-                  <Bot className="w-4 h-4 text-black" />
-                </div>
-              )}
-              <div
-                className={`max-w-[80%] p-3 rounded-lg text-sm whitespace-pre-wrap ${
-                  message.isAI
-                    ? 'bg-[var(--cyber-dark)] text-white border border-[var(--cyber-cyan)]/30'
-                    : 'bg-[var(--cyber-cyan)] text-black ml-auto'
-                }`}
-              >
-                {message.message}
-              </div>
-              {!message.isAI && (
-                <div className="w-8 h-8 bg-[var(--cyber-purple)] rounded-full flex items-center justify-center flex-shrink-0">
-                  <User className="w-4 h-4 text-white" />
-                </div>
-              )}
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
+  return (
+    <div className="h-full bg-[var(--cyber-dark)] text-white flex flex-col">
+      {/* Header */}
+      <div className="p-4 border-b border-[var(--cyber-accent)]">
+        <div className="flex items-center gap-2">
+          <Bot className="w-6 h-6 text-[var(--cyber-primary)]" />
+          <h2 className="text-lg font-semibold">AI Tutor</h2>
+          <div className="ml-auto text-sm text-gray-400">
+            {quest ? `Quest: ${quest.title}` : 'General Help'}
+          </div>
         </div>
       </div>
 
-      <div className="p-4 border-t border-[var(--cyber-cyan)]/30">
+      {/* Quick Actions */}
+      <div className="p-4 border-b border-[var(--cyber-accent)]">
+        <div className="flex gap-2 flex-wrap">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleGetHint}
+            disabled={isLoading || !quest}
+            className="flex items-center gap-1"
+          >
+            <Lightbulb className="w-4 h-4" />
+            Get Hint (-10 XP)
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleGetSolution}
+            disabled={isLoading || !quest}
+            className="flex items-center gap-1"
+          >
+            <Zap className="w-4 h-4" />
+            Get Solution (-50 XP)
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleGetExplanation}
+            disabled={isLoading || !quest}
+            className="flex items-center gap-1"
+          >
+            <BookOpen className="w-4 h-4" />
+            Get Explanation (-20 XP)
+          </Button>
+        </div>
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.length === 0 ? (
+          <div className="text-center text-gray-400">
+            <Bot className="w-12 h-12 mx-auto mb-4 text-[var(--cyber-primary)]" />
+            <p>Hello {user.adventurersName}! I'm your AI tutor.</p>
+            <p className="text-sm mt-2">Ask me anything about your coding quest!</p>
+          </div>
+        ) : (
+          messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex gap-3 ${message.isAI ? 'flex-row' : 'flex-row-reverse'}`}
+            >
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                message.isAI ? 'bg-[var(--cyber-primary)]' : 'bg-[var(--cyber-accent)]'
+              }`}>
+                {message.isAI ? <Bot className="w-5 h-5 text-black" /> : <User className="w-5 h-5 text-white" />}
+              </div>
+              <div className={`flex-1 ${message.isAI ? 'text-left' : 'text-right'}`}>
+                <div className={`inline-block p-3 rounded-lg max-w-[80%] ${
+                  message.isAI
+                    ? 'bg-[var(--cyber-surface)] text-white'
+                    : 'bg-[var(--cyber-primary)] text-black'
+                }`}>
+                  <p className="whitespace-pre-wrap">{message.message}</p>
+                </div>
+                <div className="text-xs text-gray-500 mt-1">
+                  {new Date(message.timestamp).toLocaleTimeString()}
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Input */}
+      <div className="p-4 border-t border-[var(--cyber-accent)]">
         <div className="flex gap-2">
           <Input
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask for help or hints..."
-            className="flex-1 bg-[var(--cyber-dark)] border-[var(--cyber-cyan)]/30 text-white"
+            placeholder="Ask me anything about coding..."
+            disabled={isLoading}
+            className="flex-1 bg-[var(--cyber-surface)] border-[var(--cyber-accent)] text-white placeholder-gray-400"
           />
           <Button
             onClick={sendMessage}
-            disabled={!inputMessage.trim() || isLoading}
-            className="bg-[var(--cyber-cyan)] text-black hover:bg-[var(--cyber-cyan)]/80"
+            disabled={isLoading || !inputMessage.trim()}
+            className="bg-[var(--cyber-primary)] hover:bg-[var(--cyber-primary)]/80 text-black"
           >
             <Send className="w-4 h-4" />
           </Button>

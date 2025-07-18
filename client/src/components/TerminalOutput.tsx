@@ -51,6 +51,7 @@ function TerminalOutput({ output, error, isVisible, onClose }: TerminalOutputPro
 
           {error && (
             <div className="mt-2 whitespace-pre-wrap text-red-400">
+              <div className="text-red-300 font-semibold">Error:</div>
               {error}
             </div>
           )}

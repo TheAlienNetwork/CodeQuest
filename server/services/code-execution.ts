@@ -32,7 +32,7 @@ export class CodeExecutionService {
       fs.writeFileSync(filePath, code);
 
       // Execute Python code with timeout and resource limits
-      const { stdout, stderr } = await execAsync(`python "${filePath}"`, {
+      const { stdout, stderr } = await execAsync(`python3 "${filePath}"`, {
         timeout: 10000, // 10 second timeout
         maxBuffer: 1024 * 1024, // 1MB buffer
         cwd: this.tempDir,
@@ -55,9 +55,23 @@ export class CodeExecutionService {
     } catch (error: any) {
       const executionTime = Date.now() - startTime;
       
+      // Enhanced error handling with better user-friendly messages
+      let errorMessage = error.stderr || error.message || 'Unknown execution error';
+      
+      // Parse common Python errors and provide helpful messages
+      if (errorMessage.includes('SyntaxError')) {
+        errorMessage += '\n\n💡 Tip: Check for missing colons, parentheses, or indentation issues.';
+      } else if (errorMessage.includes('NameError')) {
+        errorMessage += '\n\n💡 Tip: Make sure all variables are defined before using them.';
+      } else if (errorMessage.includes('IndentationError')) {
+        errorMessage += '\n\n💡 Tip: Python uses indentation to define code blocks. Make sure your indentation is consistent.';
+      } else if (errorMessage.includes('TypeError')) {
+        errorMessage += '\n\n💡 Tip: Check if you\'re using the correct data types for your operations.';
+      }
+      
       return {
         output: error.stdout || '',
-        error: error.stderr || error.message || 'Unknown execution error',
+        error: errorMessage,
         exitCode: error.code || 1,
         executionTime
       };
