@@ -323,6 +323,12 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
 
   const handleNextQuest = async () => {
     try {
+      // Prevent layout changes during transition
+      const mainContent = document.querySelector('.main-content');
+      if (mainContent) {
+        mainContent.classList.add('quest-transition');
+      }
+
       const response = await apiRequest('POST', '/api/complete-quest', {
         userId: user.id,
         questId: quest?.id,
@@ -331,10 +337,14 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
       const result = await response.json();
 
       if (result.nextQuest) {
-        setCode(result.nextQuest.startingCode || '');
+        // Update state in sequence to prevent layout disruption
         setQuestCompleted(false);
+        setCode(result.nextQuest.startingCode || '');
         setActiveTab('quest');
+        
+        // Refetch quest data
         refetch();
+        
         if (result.user) {
           onUserUpdate(result.user);
         }
@@ -349,12 +359,26 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           description: "You've completed all available quests!",
         });
       }
+
+      // Remove transition class after a brief delay
+      setTimeout(() => {
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+          mainContent.classList.remove('quest-transition');
+        }
+      }, 100);
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to load next quest",
         variant: "destructive",
       });
+      
+      // Remove transition class on error too
+      const mainContent = document.querySelector('.main-content');
+      if (mainContent) {
+        mainContent.classList.remove('quest-transition');
+      }
     }
   };
 
@@ -412,9 +436,9 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   }
 
   return (
-    <div className="bg-[var(--cyber-dark)] text-white overflow-hidden min-h-screen">
+    <div className="bg-[var(--cyber-dark)] text-white min-h-screen flex flex-col">
       {/* Top Header with XP Bar */}
-      <header className="bg-[var(--cyber-darker)] border-b border-[var(--cyber-cyan)]/30 px-6 py-4">
+      <header className="bg-[var(--cyber-darker)] border-b border-[var(--cyber-cyan)]/30 px-6 py-4 flex-shrink-0 z-10">
         <div className="flex items-center justify-between">
           <XPBar
             user={user}
@@ -426,7 +450,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
       </header>
 
       {/* Main Content Area */}
-      <div className="flex h-[calc(100vh-88px)] overflow-hidden main-content">
+      <div className="flex flex-1 overflow-hidden main-content">
         {/* Left Panel - Code Editor */}
         <div className="w-3/5 flex flex-col border-r border-[var(--cyber-cyan)]/30">
           <div className="flex-1 min-h-0">
@@ -457,9 +481,9 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
         </div>
 
         {/* Right Panel - Tabs for Quest/Learning & AI Chat */}
-        <div className="w-2/5 flex flex-col min-h-0 max-h-full">
+        <div className="w-2/5 flex flex-col min-h-0 max-h-full relative">
           {/* Tab Navigation */}
-          <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-2 sm:px-4 py-2 flex-shrink-0 tab-container">
+          <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-2 sm:px-4 py-2 flex-shrink-0 tab-container relative z-20">
             <div className="flex space-x-1 overflow-x-auto">
               <button
                 onClick={() => setActiveTab('quest')}
@@ -495,7 +519,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           </div>
 
           {/* Tab Content */}
-          <div className="flex-1 bg-[var(--cyber-gray)] overflow-hidden min-h-0 max-h-full">
+          <div className="flex-1 bg-[var(--cyber-gray)] overflow-hidden min-h-0 max-h-full relative z-10">
             {activeTab === 'quest' ? (
               <QuestPanel quest={quest} />
             ) : activeTab === 'learning' ? (
@@ -521,7 +545,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           </div>
           
           {/* AI Chat - Fixed Height */}
-          <div className="h-80 sm:h-96 flex-shrink-0 border-t border-[var(--cyber-cyan)]/30">
+          <div className="h-80 sm:h-96 flex-shrink-0 border-t border-[var(--cyber-cyan)]/30 relative z-10">
             <AIChat 
               user={currentUser || user}
               quest={selectedQuestId ? { id: selectedQuestId, title: '', description: '' } : quest}

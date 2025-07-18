@@ -358,8 +358,26 @@ header {
 .main-content {
   position: relative;
   z-index: 1;
-  height: calc(100vh - 88px);
-  max-height: calc(100vh - 88px);
+  flex: 1;
+  min-height: 0;
+}
+
+/* Ensure tab container stays above content */
+.tab-container {
+  z-index: 20;
+  position: relative;
+  background: var(--cyber-gray) !important;
+}
+
+/* Prevent layout shifts during quest transitions */
+.quest-transition {
+  transition: none !important;
+}
+
+/* Ensure proper stacking context */
+header {
+  z-index: 30 !important;
+  position: relative !important;
 }
 
 /* Tab responsive styles */
