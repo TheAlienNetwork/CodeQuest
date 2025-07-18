@@ -41,23 +41,9 @@ export interface IStorage {
   getUserSubmissions(userId: number): Promise<CodeSubmission[]>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private quests: Map<number, Quest>;
-  private chatMessages: Map<number, ChatMessage>;
-  private codeSubmissions: Map<number, CodeSubmission>;
-  private currentId: number;
-
+export class DatabaseStorage implements IStorage {
   constructor() {
-    this.users = new Map();
-    this.quests = new Map();
-    this.chatMessages = new Map();
-    this.codeSubmissions = new Map();
-    this.currentId = 1;
-
-    // Load initial quests from JSON
-    this.loadQuests();
-    this.createDefaultUser();
+    // Initialize with database connection from db.ts
   }
 
   private loadQuests() {
