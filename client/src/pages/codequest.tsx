@@ -435,7 +435,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   return (
     <div className="bg-[var(--cyber-dark)] text-white min-h-screen flex flex-col">
       {/* Top Header with XP Bar */}
-      <header className="bg-[var(--cyber-darker)] border-b border-[var(--cyber-cyan)]/30 px-6 py-4 flex-shrink-0 z-10">
+      <header className="bg-[var(--cyber-darker)] border-b border-[var(--cyber-cyan)]/30 px-6 py-4 flex-shrink-0 z-50 relative">
         <div className="flex items-center justify-between">
           <XPBar
             user={user}
@@ -447,9 +447,9 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
       </header>
 
       {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden main-content">
+      <div className="flex flex-1 overflow-hidden main-content relative z-10">
         {/* Left Panel - Code Editor */}
-        <div className="w-3/5 flex flex-col border-r border-[var(--cyber-cyan)]/30">
+        <div className="w-3/5 flex flex-col border-r border-[var(--cyber-cyan)]/30 relative z-10">
           <div className="flex-1 min-h-0">
             <CodeEditorWithHighlighting
               code={code}
@@ -475,9 +475,9 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
         </div>
 
         {/* Right Panel - Tabs for Quest/Learning & AI Chat */}
-        <div className="w-2/5 flex flex-col min-h-0 max-h-full relative">
+        <div className="w-2/5 flex flex-col min-h-0 max-h-full relative z-10">
           {/* Tab Navigation */}
-          <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-2 sm:px-4 py-2 flex-shrink-0 tab-container relative z-20">
+          <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-2 sm:px-4 py-2 flex-shrink-0 tab-container relative z-30">
             <div className="flex space-x-1 overflow-x-auto">
               <button
                 onClick={() => setActiveTab('quest')}
@@ -513,7 +513,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           </div>
 
           {/* Tab Content */}
-          <div className="flex-1 bg-[var(--cyber-gray)] overflow-hidden min-h-0 max-h-full relative z-10">
+          <div className="flex-1 bg-[var(--cyber-gray)] overflow-hidden min-h-0 max-h-full relative z-20">
             {activeTab === 'quest' ? (
               <QuestPanel quest={quest} />
             ) : activeTab === 'learning' ? (
@@ -539,7 +539,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           </div>
           
           {/* AI Chat - Fixed Height */}
-          <div className="h-80 sm:h-96 flex-shrink-0 border-t border-[var(--cyber-cyan)]/30 relative z-10">
+          <div className="h-80 sm:h-96 flex-shrink-0 border-t border-[var(--cyber-cyan)]/30 relative z-20">
             <AIChat 
               user={currentUser || user}
               quest={selectedQuestId ? { id: selectedQuestId, title: '', description: '' } : quest}
@@ -551,7 +551,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
 
       {/* Level Up Modal */}
       {showLevelUp && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[9999]">
           <div className="bg-[var(--cyber-dark)] border-2 border-[var(--cyber-cyan)] rounded-xl p-8 text-center max-w-md animate-float">
             <div className="text-6xl mb-4">🎉</div>
             <h2 className="text-3xl font-bold text-[var(--cyber-cyan)] mb-2">LEVEL UP!</h2>
