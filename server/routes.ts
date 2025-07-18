@@ -43,6 +43,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       res.json(quest);
     } catch (error) {
+      console.error("Quest fetch error:", error);
       res.status(500).json({ error: "Failed to fetch quest" });
     }
   });
