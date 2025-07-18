@@ -134,7 +134,7 @@ export default function Profile({ user, onBack, onUserUpdate }: ProfileProps) {
               <div className="text-sm text-gray-400">Level</div>
             </div>
             <div className="bg-[var(--cyber-dark)] p-4 rounded-lg text-center">
-              <div className="text-2xl font-bold text-[var(--cyber-yellow)]">{user.completedQuests?.length || 0}</div>
+              <div className="text-2xl font-bold text-[var(--cyber-yellow)]">{user.completedQuests.length}</div>
               <div className="text-sm text-gray-400">Quests Done</div>
             </div>
             <div className="bg-[var(--cyber-dark)] p-4 rounded-lg text-center">
