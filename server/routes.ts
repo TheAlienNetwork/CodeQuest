@@ -2,11 +2,95 @@ import { Application } from "express";
 import { createServer } from "http";
 import { z } from "zod";
 import { insertUserSchema, insertQuestSchema, insertChatMessageSchema, insertCodeSubmissionSchema } from "@shared/schema";
-import { IStorage } from "./storage";
+import { IStorage, storage } from "./storage";
 import { codeExecutionService } from "./services/code-execution";
 import { aiService } from "./services/ai-service";
+export function registerRoutes(app: Application) {
+  // Authentication routes
+  app.post('/api/register', async (req, res) => {
+    try {
+      const { email, adventurersName, password } = req.body;
+      
+      // Check if user already exists
+      const existingUser = await storage.getUserByEmail(email);
+      if (existingUser) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'User with this email already exists' 
+        });
+      }
 
-export function registerRoutes(app: Application, storage: IStorage) {
+      // Create new user with first quest assigned
+      const newUser = await storage.createUser({
+        email,
+        adventurersName,
+        password, // In production, hash this password
+        currentQuest: 1, // Assign first quest to new users
+      });
+
+      // Remove password from response
+      const { password: _, ...userWithoutPassword } = newUser;
+
+      res.json({
+        success: true,
+        user: userWithoutPassword,
+        message: 'Account created successfully'
+      });
+    } catch (error) {
+      console.error('Registration error:', error);
+      res.status(400).json({
+        success: false,
+        error: 'Invalid registration data'
+      });
+    }
+  });
+
+  app.post('/api/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      // Find user by email (including admin users)
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'User not found' 
+        });
+      }
+
+      // Check password (in production, use proper password hashing)
+      if (user.password !== password) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Invalid password' 
+        });
+      }
+
+      // For admin users, add admin flag
+      let userResponse = { ...user };
+      if (email === 'admin@codequest.com') {
+        userResponse = {
+          ...user,
+          isAdmin: true
+        };
+      }
+
+      // Remove password from response
+      const { password: _, ...userWithoutPassword } = userResponse;
+
+      res.json({
+        success: true,
+        user: userWithoutPassword,
+        message: 'Login successful'
+      });
+    } catch (error) {
+      console.error('Login error:', error);
+      res.status(400).json({
+        success: false,
+        error: 'Invalid login credentials'
+      });
+    }
+  });
   // Get current user
   app.get("/api/user/:userId", async (req, res) => {
     try {
