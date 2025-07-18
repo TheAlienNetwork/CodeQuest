@@ -68,6 +68,7 @@
     background: var(--cyber-dark);
     color: white;
     overflow: hidden;
+    height: 100vh;
   }
 }
 
@@ -309,7 +310,7 @@
     display: none !important;
   }
   
-  /* Mobile scrolling fixes */
+  /* Mobile layout adjustments */
   body {
     overflow-x: hidden;
     overflow-y: auto;
@@ -318,6 +319,15 @@
   .mobile-scroll {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Stack panels vertically on mobile */
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+  
+  .mobile-full-width {
+    width: 100% !important;
   }
 }
 

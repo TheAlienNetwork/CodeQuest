@@ -368,30 +368,36 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
       </header>
 
       {/* Main Content Area */}
-      <div className="flex h-[calc(100vh-80px)]">
+      <div className="flex h-[calc(100vh-80px)] overflow-hidden">
         {/* Left Panel - Code Editor */}
-        <div className="w-3/5 flex flex-col">
-          <CodeEditorWithHighlighting
-            code={code}
-            onChange={setCode}
-            onRunCode={handleRunCode}
-            onAnalyzeCode={handleAnalyzeCode}
-            onGetHint={handleGetHint}
-            isRunning={isRunning}
-            isAnalyzing={isAnalyzing}
-          />
+        <div className="w-3/5 flex flex-col border-r border-[var(--cyber-cyan)]/30">
+          <div className="flex-1 min-h-0">
+            <CodeEditorWithHighlighting
+              code={code}
+              onChange={setCode}
+              onRunCode={handleRunCode}
+              onAnalyzeCode={handleAnalyzeCode}
+              onGetHint={handleGetHint}
+              isRunning={isRunning}
+              isAnalyzing={isAnalyzing}
+            />
+          </div>
 
           {/* Terminal Output */}
-          <TerminalOutput
-            output={terminalOutput}
-            error={terminalError}
-            isVisible={showTerminal}
-            onClose={() => setShowTerminal(false)}
-          />
+          {showTerminal && (
+            <div className="h-48 flex-shrink-0 border-t border-[var(--cyber-cyan)]/30">
+              <TerminalOutput
+                output={terminalOutput}
+                error={terminalError}
+                isVisible={showTerminal}
+                onClose={() => setShowTerminal(false)}
+              />
+            </div>
+          )}
         </div>
 
         {/* Right Panel - Tabs for Quest/Learning & AI Chat */}
-        <div className="w-2/5 flex flex-col overflow-hidden">
+        <div className="w-2/5 flex flex-col min-h-0">
           {/* Tab Navigation */}
           <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-4 py-2 flex-shrink-0">
             <div className="flex space-x-1">
@@ -429,14 +435,11 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           </div>
 
           {/* Tab Content */}
-          <div className="flex-1 bg-[var(--cyber-gray)] overflow-y-auto">
+          <div className="flex-1 bg-[var(--cyber-gray)] overflow-y-auto min-h-0">
             {activeTab === 'quest' ? (
-              <>
-                <QuestPanel quest={quest} />
-                
-              </>
+              <QuestPanel quest={quest} />
             ) : activeTab === 'learning' ? (
-              <div className="flex-1 p-4">
+              <div className="h-full p-4">
                 <LearningPanel
                   quest={quest}
                   userLevel={user?.level || 1}
@@ -445,7 +448,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
                 />
               </div>
             ) : (
-              <div className="flex-1">
+              <div className="h-full">
                 <LessonsPanel
                   userId={user.id}
                   onSelectQuest={(questId) => {
@@ -456,11 +459,12 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
               </div>
             )}
           </div>
-          {/* AI Chat */}
-          <div className="flex-shrink-0 border-t border-[var(--cyber-cyan)]/30 overflow-hidden">
+          
+          {/* AI Chat - Fixed Height */}
+          <div className="h-80 flex-shrink-0 border-t border-[var(--cyber-cyan)]/30">
             <AIChat 
               user={currentUser || user}
-              quest={selectedQuestId ? { id: selectedQuestId, title: '', description: '' } : undefined}
+              quest={selectedQuestId ? { id: selectedQuestId, title: '', description: '' } : quest}
               onUserUpdate={onUserUpdate}
             />
           </div>
