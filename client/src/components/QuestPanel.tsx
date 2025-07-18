@@ -38,14 +38,14 @@ export default function QuestPanel({ quest }: QuestPanelProps) {
   };
 
   return (
-    <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 p-4">
+    <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 p-3 sm:p-4 lg:p-6">
       <div className="quest-card rounded-lg p-4">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-bold text-[var(--cyber-cyan)]">
-            <Star className="w-5 h-5 inline mr-2" />
+        <div className="flex items-center justify-between mb-2 sm:mb-4">
+          <h3 className="text-lg sm:text-xl font-bold text-[var(--cyber-cyan)]">
+            <Star className="w-5 h-5 sm:w-6 sm:h-6 inline mr-2" />
             Current Quest
           </h3>
-          <div className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${getDifficultyColor(quest.difficulty)}`}>
+          <div className={`px-3 py-1 rounded-full text-xs sm:text-sm font-bold uppercase ${getDifficultyColor(quest.difficulty)}`}>
             {quest.difficulty}
           </div>
         </div>

@@ -141,12 +141,12 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
 
   return (
     <div className="h-full bg-[var(--cyber-dark)] text-white overflow-hidden flex flex-col">
-      <div className="p-6 flex-shrink-0">
-        <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2 text-[var(--cyber-cyan)]">
+      <div className="p-3 sm:p-4 lg:p-6 flex-shrink-0">
+        <div className="mb-4 sm:mb-6">
+        <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-1 sm:mb-2 text-[var(--cyber-cyan)]">
           🎓 Learning Curriculum
         </h2>
-        <p className="text-gray-300 mb-4">
+        <p className="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">
           Track your progress through the complete Python learning journey
         </p>
         
@@ -172,14 +172,14 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
         </div>
 
         {/* Difficulty Filter */}
-        <div className="flex gap-2 mb-4">
+        <div className="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
           {['all', 'beginner', 'intermediate', 'advanced', 'expert'].map((diff) => (
             <Button
               key={diff}
               variant={selectedDifficulty === diff ? "default" : "outline"}
               size="sm"
               onClick={() => setSelectedDifficulty(diff)}
-              className={`capitalize ${
+              className={`capitalize text-xs sm:text-sm px-2 sm:px-3 py-1 ${
                 selectedDifficulty === diff 
                   ? 'bg-[var(--cyber-cyan)] text-black hover:bg-[var(--cyber-cyan)]/80' 
                   : 'border-[var(--cyber-cyan)] text-[var(--cyber-cyan)] bg-[var(--cyber-gray)] hover:bg-[var(--cyber-cyan)]/20'
@@ -192,7 +192,7 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
       </div>
       
       {/* Quest List - Scrollable Area */}
-      <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-4 lessons-scroll" style={{
+      <div className="flex-1 overflow-y-auto px-3 sm:px-4 lg:px-6 pb-3 sm:pb-6 space-y-2 sm:space-y-4 lessons-scroll" style={{
         scrollbarWidth: 'thin',
         scrollbarColor: 'var(--cyber-cyan) var(--cyber-gray)'
       }}>

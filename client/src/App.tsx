@@ -45,7 +45,7 @@ function App() {
       try {
         const parsedUser = JSON.parse(savedUser);
         console.log('Parsed user:', parsedUser);
-        
+
         // Validate user exists in database by making a quick API call
         fetch(`/api/user/${parsedUser.id}`)
           .then(response => {

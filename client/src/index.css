@@ -272,14 +272,62 @@
 
 /* Custom scrollbar for lessons panel */
 .lessons-scroll::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
+}
+
+@media (min-width: 640px) {
+  .lessons-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+}
+
+.lessons-scroll::-webkit-scrollbar-track {
+  background: var(--cyber-gray);
 }
 
 .lessons-scroll::-webkit-scrollbar-thumb {
-  background: rgba(34, 197, 255, 0.4);
+  background: var(--cyber-cyan);
   border-radius: 3px;
 }
 
 .lessons-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(34, 197, 255, 0.6);
+  background: var(--cyber-cyan)/80;
+}
+
+/* Mobile responsive utilities */
+@media (max-width: 1023px) {
+  .mobile-hidden {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .desktop-hidden {
+    display: none !important;
+  }
+}
+
+/* Touch targets for mobile */
+@media (max-width: 767px) {
+  button, .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Responsive text sizing */
+.responsive-text {
+  font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .responsive-text {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-text {
+    font-size: 1.125rem;
+  }
 }
