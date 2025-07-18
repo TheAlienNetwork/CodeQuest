@@ -9,7 +9,7 @@ interface TerminalOutputProps {
   onClose: () => void;
 }
 
-export function TerminalOutput({ output, error, isVisible, onClose }: TerminalOutputProps) {
+function TerminalOutput({ output, error, isVisible, onClose }: TerminalOutputProps) {
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,28 +42,30 @@ export function TerminalOutput({ output, error, isVisible, onClose }: TerminalOu
       >
         <div className="terminal-text">
           <div className="text-[var(--cyber-cyan)]">$ python main.py</div>
-          
+
           {output && (
             <div className="mt-2 whitespace-pre-wrap text-white">
               {output}
             </div>
           )}
-          
+
           {error && (
             <div className="mt-2 whitespace-pre-wrap text-red-400">
               {error}
             </div>
           )}
-          
+
           {output && !error && (
             <div className="mt-2 text-[var(--cyber-cyan)]">
               ✓ Code executed successfully!
             </div>
           )}
-          
+
           <div className="mt-4 text-gray-500">$</div>
         </div>
       </div>
     </div>
   );
 }
+
+export { TerminalOutput };

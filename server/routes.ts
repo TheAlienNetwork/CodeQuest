@@ -12,6 +12,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize database
   await initializeDatabase();
   
+  // Health check endpoint
+  app.get('/api/health', async (req, res) => {
+    try {
+      const questCount = await storage.getAllQuests();
+      res.json({ 
+        status: 'healthy', 
+        timestamp: new Date().toISOString(),
+        questCount: questCount.length 
+      });
+    } catch (error) {
+      res.status(500).json({ 
+        status: 'unhealthy', 
+        error: error.message 
+      });
+    }
+  });
+  
   // Use auth routes
   app.use('/api', authRoutes);
   

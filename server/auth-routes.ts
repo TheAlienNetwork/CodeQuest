@@ -19,11 +19,12 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // Create new user
+    // Create new user with first quest assigned
     const newUser = await storage.createUser({
       email,
       adventurersName,
       password, // In production, hash this password
+      currentQuest: 1, // Assign first quest to new users
     });
 
     // Remove password from response

@@ -69,10 +69,11 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   const { toast } = useToast();
 
   // Fetch current quest
-  const { data: quest, refetch: refetchQuest, isLoading: questLoading, error: questError } = useQuery<Quest>({
+  const { data: quest, isLoading: questLoading, error: questError, refetch } = useQuery<Quest>({
     queryKey: ['/api/quest', user?.id],
     enabled: !!user?.id,
-    retry: 1,
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 
   // Initialize code editor with quest starting code
@@ -305,10 +306,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   if (questLoading) {
     return (
       <div className="min-h-screen bg-[var(--cyber-dark)] flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--cyber-cyan)] mx-auto mb-4"></div>
-          <p className="text-[var(--cyber-cyan)]">Loading your quest...</p>
-        </div>
+        <div className="text-[var(--cyber-cyan)] text-xl">Loading CodeQuest...</div>
       </div>
     );
   }
@@ -316,14 +314,23 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   if (questError) {
     return (
       <div className="min-h-screen bg-[var(--cyber-dark)] flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-red-400 mb-4">⚠️ Failed to load quest</div>
-          <button 
-            onClick={() => refetchQuest()}
-            className="btn-cyber px-4 py-2 rounded"
-          >
-            Retry
-          </button>
+        <div className="text-center space-y-4">
+          <div className="text-red-400 text-xl">⚠️ Failed to load quest</div>
+          <p className="text-gray-400">Don't worry! You can still explore the interface.</p>
+          <div className="space-x-4">
+            <button 
+              onClick={() => refetch()}
+              className="btn-cyber"
+            >
+              Retry Loading Quest
+            </button>
+            <button 
+              onClick={() => window.location.reload()}
+              className="btn-cyber bg-[var(--cyber-pink)] hover:bg-[var(--cyber-pink)]/80"
+            >
+              Reload Application
+            </button>
+          </div>
         </div>
       </div>
     );

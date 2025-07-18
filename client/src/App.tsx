@@ -50,7 +50,10 @@ function App() {
       } catch (error) {
         console.error('Error parsing saved user:', error);
         localStorage.removeItem('codequest-user');
+        setCurrentView('login');
       }
+    } else {
+      setCurrentView('login');
     }
     console.log('Setting loading to false');
     setIsLoading(false);
