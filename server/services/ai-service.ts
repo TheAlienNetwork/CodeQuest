@@ -32,6 +32,45 @@ export class AIService {
       'recursion': 'Functions that call themselves',
       'error handling': 'Managing exceptions and errors in code'
     },
+
+    questSolutions: {
+      1: `print("Hello, World!")`,
+      2: `name = "Tyler"
+age = 18
+item = "sword"
+print(name)
+print(age)
+print(item)`,
+      3: `x = 10
+y = 5
+print(x + y)
+print(x - y)
+print(x * y)
+print(x / y)`,
+      4: `for i in range(5):
+    print(i)`,
+      5: `for i in range(1, 11):
+    print(i)`,
+      6: `name = input("What is your name? ")
+print(f"Hello, {name}!")`,
+      7: `age = int(input("Enter your age: "))
+if age >= 18:
+    print("You are an adult!")
+else:
+    print("You are a minor!")`,
+      8: `count = 0
+while count < 5:
+    print(count)
+    count += 1`,
+      9: `def greet(name):
+    return f"Hello, {name}!"
+
+result = greet("Alice")
+print(result)`,
+      10: `fruits = ["apple", "banana", "orange"]
+for fruit in fruits:
+    print(fruit)`,
+    },
     
     commonMistakes: {
       'indentation': 'Python uses indentation to define code blocks',

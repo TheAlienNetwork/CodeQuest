@@ -11,6 +11,10 @@ interface LearningPanelProps {
     concepts: string[];
     xpReward: number;
     estimatedTime: string;
+    testCases?: Array<{
+      input: string;
+      expectedOutput: string;
+    }>;
   } | null;
   userLevel: number;
   onNextQuest: () => void;
@@ -98,6 +102,7 @@ export default function LearningPanel({ quest, userLevel, onNextQuest, showNextB
 
   const sections = [
     { id: 'overview', label: 'Overview', icon: '🎯' },
+    { id: 'expected', label: 'Expected Output', icon: '📋' },
     { id: 'concepts', label: 'Concepts', icon: '🧠' },
     { id: 'tips', label: 'Tips', icon: '💡' },
   ];
@@ -162,6 +167,34 @@ export default function LearningPanel({ quest, userLevel, onNextQuest, showNextB
                 </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {activeSection === 'expected' && (
+          <div className="space-y-4">
+            <h4 className="font-bold text-white mb-3">Expected Output</h4>
+            {quest.testCases && quest.testCases.length > 0 ? (
+              <div className="space-y-3">
+                {quest.testCases.map((testCase, index) => (
+                  <div key={index} className="bg-[var(--cyber-dark)] border border-[var(--cyber-cyan)]/30 rounded-lg p-4">
+                    {testCase.input && (
+                      <div className="mb-2">
+                        <div className="text-xs font-medium text-gray-400 mb-1">Input:</div>
+                        <pre className="text-[var(--cyber-cyan)] font-mono text-sm">{testCase.input}</pre>
+                      </div>
+                    )}
+                    <div>
+                      <div className="text-xs font-medium text-gray-400 mb-1">Expected Output:</div>
+                      <pre className="text-[var(--cyber-green)] font-mono text-sm whitespace-pre-wrap">{testCase.expectedOutput}</pre>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-[var(--cyber-dark)] border border-[var(--cyber-cyan)]/30 rounded-lg p-4">
+                <p className="text-gray-400 text-sm">No specific output expected - focus on implementing the required functionality.</p>
+              </div>
+            )}
           </div>
         )}
 

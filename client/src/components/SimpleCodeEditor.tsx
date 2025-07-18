@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Play, Bot, Lightbulb } from 'lucide-react';
+import PythonSyntaxHighlighter from './PythonSyntaxHighlighter';
 
 interface SimpleCodeEditorProps {
   code: string;
@@ -88,7 +89,7 @@ export default function SimpleCodeEditor({
       </div>
 
       {/* Editor */}
-      <div className="flex-1 flex bg-[var(--cyber-dark)] text-white font-mono">
+      <div className="flex-1 flex bg-[var(--cyber-dark)] text-white font-mono relative">
         {/* Line Numbers */}
         <div className="bg-[var(--cyber-gray)] border-r border-[var(--cyber-cyan)]/30 px-3 py-4 select-none">
           {lineNumbers.map((num) => (
@@ -98,23 +99,33 @@ export default function SimpleCodeEditor({
           ))}
         </div>
 
-        {/* Code Area */}
-        <textarea
-          ref={textareaRef}
-          value={code}
-          onChange={(e) => onChange(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className="flex-1 bg-transparent text-white font-mono text-sm leading-6 p-4 resize-none outline-none"
-          style={{
-            fontFamily: 'JetBrains Mono, Consolas, "Courier New", monospace',
-            lineHeight: '1.5',
-            tabSize: 4,
-            color: '#ffffff',
-            backgroundColor: 'transparent',
-          }}
-          placeholder="# Write your Python code here..."
-          spellCheck={false}
-        />
+        {/* Code Area with Syntax Highlighting */}
+        <div className="flex-1 relative">
+          {/* Syntax Highlighted Background */}
+          <div className="absolute inset-0 p-4 pointer-events-none overflow-hidden">
+            <PythonSyntaxHighlighter 
+              code={code} 
+              className="leading-6"
+            />
+          </div>
+
+          {/* Code Area (Transparent overlay) */}
+          <textarea
+            ref={textareaRef}
+            value={code}
+            onChange={(e) => onChange(e.target.value)}
+            onKeyDown={handleKeyDown}
+            className="absolute inset-0 bg-transparent text-transparent font-mono text-sm leading-6 p-4 resize-none outline-none caret-white"
+            style={{
+              fontFamily: 'JetBrains Mono, Consolas, "Courier New", monospace',
+              lineHeight: '1.5',
+              tabSize: 4,
+              backgroundColor: 'transparent',
+            }}
+            placeholder="# Write your Python code here..."
+            spellCheck={false}
+          />
+        </div>
       </div>
 
       {/* Status Bar */}

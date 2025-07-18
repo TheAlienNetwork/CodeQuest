@@ -81,7 +81,7 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
   const progressPercentage = (completedCount / totalQuests) * 100;
 
   return (
-    <div className="h-full bg-[var(--cyber-dark)] text-white p-6 overflow-auto">
+    <div className="h-full bg-[var(--cyber-dark)] text-white p-6 overflow-auto lessons-scrollbar">
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-2 text-[var(--cyber-cyan)]">
           🎓 Learning Curriculum
