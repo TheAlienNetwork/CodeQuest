@@ -172,6 +172,10 @@ export class DatabaseStorage implements IStorage {
     return quest || undefined;
   }
 
+  async deleteQuest(id: number): Promise<void> {
+    await db.delete(quests).where(eq(quests.id, id));
+  }
+
   async createQuest(questData: any): Promise<Quest> {
     const [quest] = await db
       .insert(quests)
