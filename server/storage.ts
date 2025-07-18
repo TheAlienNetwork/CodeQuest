@@ -300,15 +300,27 @@ export class DatabaseStorage implements IStorage {
     return user || undefined;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
     return user || undefined;
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
+  async createUser(userData: any): Promise<User> {
     const [user] = await db
       .insert(users)
-      .values(insertUser)
+      .values({
+        email: userData.email,
+        adventurersName: userData.adventurersName,
+        password: userData.password,
+        xp: userData.xp || 0,
+        level: userData.level || 1,
+        rank: userData.rank || "Code Newbie",
+        achievements: userData.achievements || 0,
+        streak: userData.streak || 0,
+        currentQuest: userData.currentQuest || 1,
+        completedQuests: userData.completedQuests || [],
+        profileImageUrl: userData.profileImageUrl || null
+      })
       .returning();
     return user;
   }
@@ -419,5 +431,5 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-// Use MemStorage for now since database connection issues
-export const storage = new MemStorage();
+// Use DatabaseStorage now that PostgreSQL is properly configured
+export const storage = new DatabaseStorage();
