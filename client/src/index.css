@@ -1,10 +1,3 @@
-` tags.
-
-```
-CSS modifications to prevent layout shifts during quest transitions and ensure proper stacking context.
-```
-
-<replit_final_file>
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -111,65 +104,6 @@ CSS modifications to prevent layout shifts during quest transitions and ensure p
     box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
   }
 
-  /* Custom scrollbar styling */
-  ::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: var(--cyber-gray);
-    border-radius: 6px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, var(--cyber-cyan), var(--cyber-purple));
-    border-radius: 6px;
-    border: 1px solid var(--cyber-dark);
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, var(--cyber-purple), var(--cyber-pink));
-    box-shadow: 0 0 8px var(--cyber-cyan);
-  }
-
-  ::-webkit-scrollbar-corner {
-    background: var(--cyber-gray);
-  }
-
-  /* Enhanced lessons scroll styling - Force visibility */
-  .lessons-scroll {
-    scrollbar-width: auto !important;
-    scrollbar-color: var(--cyber-cyan) var(--cyber-gray) !important;
-  }
-
-  .lessons-scroll::-webkit-scrollbar {
-    width: 16px !important;
-    height: 16px !important;
-    display: block !important;
-  }
-
-  .lessons-scroll::-webkit-scrollbar-track {
-    background: var(--cyber-gray) !important;
-    border-radius: 8px !important;
-  }
-
-  .lessons-scroll::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, var(--cyber-cyan) 0%, var(--cyber-purple) 50%, var(--cyber-pink) 100%) !important;
-    border-radius: 8px !important;
-    border: 2px solid var(--cyber-dark) !important;
-    box-shadow: inset 0 0 3px rgba(0, 255, 255, 0.3) !important;
-    min-height: 40px !important;
-  }
-
-  .lessons-scroll::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, var(--cyber-purple) 0%, var(--cyber-pink) 50%, var(--cyber-cyan) 100%) !important;
-    box-shadow: 0 0 15px var(--cyber-cyan), inset 0 0 8px rgba(0, 255, 255, 0.5) !important;
-  }
-
-  .lessons-scroll::-webkit-scrollbar-corner {
-    background: var(--cyber-gray) !important;
-  }
-
   .btn-cyber-sm:hover {
     transform: translateY(-1px);
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
@@ -233,6 +167,63 @@ CSS modifications to prevent layout shifts during quest transitions and ensure p
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Fix for tab positioning - Higher z-index and proper stacking */
+  .tab-container {
+    position: relative;
+    z-index: 50 !important;
+    min-height: 48px;
+    background: var(--cyber-gray) !important;
+  }
+
+  /* Ensure proper layout stacking */
+  header {
+    position: relative;
+    z-index: 60 !important;
+  }
+
+  /* Fix for main content positioning */
+  .main-content {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Prevent layout shifts during quest transitions */
+  .quest-transition {
+    transition: none !important;
+  }
+
+  .quest-transition * {
+    transition: none !important;
+  }
+
+  /* Tab responsive styles */
+  .tab-container .flex {
+    min-width: max-content;
+  }
+
+  .tab-container button {
+    min-width: fit-content;
+    z-index: 51 !important;
+    position: relative;
+  }
+
+  /* Fix for panel heights */
+  .lessons-panel {
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+  }
+
+  /* Force hardware acceleration for smoother transitions */
+  .main-content,
+  .tab-container,
+  header {
+    transform: translateZ(0);
+    will-change: transform;
   }
 }
 
@@ -328,88 +319,38 @@ CSS modifications to prevent layout shifts during quest transitions and ensure p
   }
 }
 
-/* Custom scrollbar for lessons panel */
-.lessons-scroll::-webkit-scrollbar {
-  width: 6px;
+/* Enhanced lessons scroll styling - Force visibility */
+.lessons-scroll {
+  scrollbar-width: auto !important;
+  scrollbar-color: var(--cyber-cyan) var(--cyber-gray) !important;
 }
 
-@media (min-width: 640px) {
-  .lessons-scroll::-webkit-scrollbar {
-    width: 8px;
-  }
+.lessons-scroll::-webkit-scrollbar {
+  width: 16px !important;
+  height: 16px !important;
+  display: block !important;
 }
 
 .lessons-scroll::-webkit-scrollbar-track {
-  background: var(--cyber-gray);
-  border-radius: 4px;
-}
-
-.lessons-scroll::-webkit-scrollbar-corner {
-  background: var(--cyber-gray);
-}
-
-/* Fix for tab positioning */
-.tab-container {
-  position: relative;
-  z-index: 10;
-  min-height: 48px;
-}
-
-/* Ensure proper layout stacking */
-header {
-  position: relative;
-  z-index: 20;
-}
-
-/* Fix for main content positioning */
-.main-content {
-  position: relative;
-  z-index: 1;
-  flex: 1;
-  min-height: 0;
-}
-
-/* Ensure tab container stays above content */
-.tab-container {
-  z-index: 20;
-  position: relative;
   background: var(--cyber-gray) !important;
-}
-
-/* Prevent layout shifts during quest transitions */
-.quest-transition {
-  transition: none !important;
-}
-
-/* Ensure proper stacking context */
-header {
-  z-index: 30 !important;
-  position: relative !important;
-}
-
-/* Tab responsive styles */
-.tab-container .flex {
-  min-width: max-content;
-}
-
-.tab-container button {
-  min-width: fit-content;
-}
-
-/* Fix for panel heights */
-.lessons-panel {
-  height: 100%;
-  max-height: 100%;
-  overflow: hidden;
+  border-radius: 8px !important;
 }
 
 .lessons-scroll::-webkit-scrollbar-thumb {
-  background: var(--cyber-cyan);
-  border-radius: 3px;
+  background: linear-gradient(180deg, var(--cyber-cyan) 0%, var(--cyber-purple) 50%, var(--cyber-pink) 100%) !important;
+  border-radius: 8px !important;
+  border: 2px solid var(--cyber-dark) !important;
+  box-shadow: inset 0 0 3px rgba(0, 255, 255, 0.3) !important;
+  min-height: 40px !important;
 }
 
 .lessons-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--cyber-cyan)/80;
+  background: linear-gradient(180deg, var(--cyber-purple) 0%, var(--cyber-pink) 50%, var(--cyber-cyan) 100%) !important;
+  box-shadow: 0 0 15px var(--cyber-cyan), inset 0 0 8px rgba(0, 255, 255, 0.5) !important;
+}
+
+.lessons-scroll::-webkit-scrollbar-corner {
+  background: var(--cyber-gray) !important;
 }
 
 /* Mobile responsive utilities */
@@ -468,51 +409,4 @@ header {
   .responsive-text {
     font-size: 1.125rem;
   }
-}
-
-/* Custom scrollbar for lessons panel */
-.lessons-scroll::-webkit-scrollbar {
-  width: 8px;
-}
-
-.lessons-scroll::-webkit-scrollbar-track {
-  background: var(--cyber-dark);
-  border-radius: 4px;
-}
-
-.lessons-scroll::-webkit-scrollbar-thumb {
-  background: var(--cyber-cyan);
-  border-radius: 4px;
-}
-
-.lessons-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--cyber-purple);
-}
-
-/* Prevent layout shifts during quest transitions */
-.quest-transition {
-  transition: none !important;
-}
-
-.quest-transition * {
-  transition: none !important;
-}
-
-/* Ensure proper stacking context */
-.main-content {
-  position: relative;
-  z-index: 1;
-}
-
-.tab-container {
-  position: relative;
-  z-index: 30;
-}
-
-/* Force hardware acceleration for smoother transitions */
-.main-content,
-.tab-container,
-header {
-  transform: translateZ(0);
-  will-change: transform;
 }
