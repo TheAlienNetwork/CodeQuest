@@ -126,19 +126,19 @@ export default function Profile({ user, onBack, onUserUpdate }: ProfileProps) {
           {/* Stats Section */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div className="bg-[var(--cyber-dark)] p-4 rounded-lg text-center">
-              <div className="text-2xl font-bold text-[var(--cyber-cyan)]">{user.xp}</div>
+              <div className="text-2xl font-bold text-[var(--cyber-cyan)]">{user.xp || 0}</div>
               <div className="text-sm text-gray-400">Total XP</div>
             </div>
             <div className="bg-[var(--cyber-dark)] p-4 rounded-lg text-center">
-              <div className="text-2xl font-bold text-[var(--cyber-pink)]">{user.level}</div>
+              <div className="text-2xl font-bold text-[var(--cyber-pink)]">{user.level || 1}</div>
               <div className="text-sm text-gray-400">Level</div>
             </div>
             <div className="bg-[var(--cyber-dark)] p-4 rounded-lg text-center">
-              <div className="text-2xl font-bold text-[var(--cyber-yellow)]">{user.completedQuests.length}</div>
+              <div className="text-2xl font-bold text-[var(--cyber-yellow)]">{user.completedQuests?.length || 0}</div>
               <div className="text-sm text-gray-400">Quests Done</div>
             </div>
             <div className="bg-[var(--cyber-dark)] p-4 rounded-lg text-center">
-              <div className="text-2xl font-bold text-[var(--cyber-green)]">{user.streak}</div>
+              <div className="text-2xl font-bold text-[var(--cyber-green)]">{user.streak || 0}</div>
               <div className="text-sm text-gray-400">Day Streak</div>
             </div>
           </div>
