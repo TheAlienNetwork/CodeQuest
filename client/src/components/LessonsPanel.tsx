@@ -33,10 +33,23 @@ interface LessonsPanelProps {
 export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProps) {
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
 
-  const { data: user, isLoading: userLoading } = useQuery<User>({ queryKey: [`/api/user/${userId}`] });
-  const { data: allQuests, isLoading: questsLoading } = useQuery<Quest[]>({ queryKey: ['/api/quests'] });
+  const { data: user, isLoading: userLoading, error: userError } = useQuery<User>({ queryKey: [`/api/user/${userId}`] });
+  const { data: allQuests, isLoading: questsLoading, error: questsError } = useQuery<Quest[]>({ queryKey: ['/api/quests'] });
 
-  if (userLoading || questsLoading || !user || !allQuests || allQuests.length === 0) {
+  // Show error state if there are errors
+  if (userError || questsError) {
+    return (
+      <div className="h-full bg-[var(--cyber-dark)] text-white p-6 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-xl mb-2">⚠️ Error loading curriculum</div>
+          <div className="text-gray-400">Please refresh the page</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show loading state
+  if (userLoading || questsLoading) {
     return (
       <div className="h-full bg-[var(--cyber-dark)] text-white p-6 flex items-center justify-center">
         <div className="text-center">
@@ -46,6 +59,21 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
       </div>
     );
   }
+
+  // Show no data message if no data exists
+  if (!allQuests || allQuests.length === 0) {
+    return (
+      <div className="h-full bg-[var(--cyber-dark)] text-white p-6 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-xl mb-2">📚 No quests available</div>
+          <div className="text-gray-400">Please check your connection and try again</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Use fallback user data if not available
+  const currentUser = user || { id: userId, level: 1, xp: 0, completedQuests: [], currentQuest: 1 };
 
   const filteredQuests = allQuests.filter(quest => 
     selectedDifficulty === 'all' || quest.difficulty === selectedDifficulty
@@ -62,11 +90,11 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
   };
 
   const getQuestStatus = (questId: number) => {
-    if (user.completedQuests?.includes(questId)) {
+    if (currentUser.completedQuests?.includes(questId)) {
       return 'completed';
-    } else if (questId === user.currentQuest) {
+    } else if (questId === currentUser.currentQuest) {
       return 'current';
-    } else if (questId < user.currentQuest) {
+    } else if (questId <= currentUser.currentQuest) {
       return 'available';
     } else {
       return 'locked';
@@ -83,7 +111,7 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
     }
   };
 
-  const completedCount = user.completedQuests?.length || 0;
+  const completedCount = currentUser.completedQuests?.length || 0;
   const totalQuests = allQuests.length;
   const progressPercentage = (completedCount / totalQuests) * 100;
 
@@ -109,11 +137,11 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
           <div className="flex items-center gap-4 text-sm text-gray-400">
             <div className="flex items-center gap-1">
               <Trophy className="w-4 h-4" />
-              <span>Level {user.level}</span>
+              <span>Level {currentUser.level}</span>
             </div>
             <div className="flex items-center gap-1">
               <Star className="w-4 h-4" />
-              <span>{user.xp} XP</span>
+              <span>{currentUser.xp} XP</span>
             </div>
           </div>
         </div>

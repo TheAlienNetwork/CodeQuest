@@ -434,9 +434,9 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
               <>
                 <QuestPanel quest={quest} />
                 <AIChat
-                  userId={user.id}
-                  questId={quest?.id}
-                  onXPGain={handleXPGain}
+                  user={user}
+                  quest={quest}
+                  onUserUpdate={onUserUpdate}
                 />
               </>
             ) : activeTab === 'learning' ? (
