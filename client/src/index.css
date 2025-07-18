@@ -282,16 +282,21 @@
 
 /* Custom scrollbar for lessons panel */
 .lessons-scroll::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 @media (min-width: 640px) {
   .lessons-scroll::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
   }
 }
 
 .lessons-scroll::-webkit-scrollbar-track {
+  background: var(--cyber-gray);
+  border-radius: 4px;
+}
+
+.lessons-scroll::-webkit-scrollbar-corner {
   background: var(--cyber-gray);
 }
 

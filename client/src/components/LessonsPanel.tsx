@@ -140,7 +140,7 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
   const progressPercentage = (completedCount / totalQuests) * 100;
 
   return (
-    <div className="h-full bg-[var(--cyber-dark)] text-white overflow-hidden flex flex-col">
+    <div className="h-full bg-[var(--cyber-dark)] text-white overflow-hidden flex flex-col max-h-full">
       <div className="p-3 sm:p-4 lg:p-6 flex-shrink-0">
         <div className="mb-4 sm:mb-6">
         <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-1 sm:mb-2 text-[var(--cyber-cyan)]">
@@ -192,9 +192,10 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
       </div>
       
       {/* Quest List - Scrollable Area */}
-      <div className="flex-1 overflow-y-auto px-3 sm:px-4 lg:px-6 pb-3 sm:pb-6 space-y-2 sm:space-y-4 lessons-scroll" style={{
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-4 lg:px-6 pb-3 sm:pb-6 space-y-2 sm:space-y-4 lessons-scroll min-h-0" style={{
         scrollbarWidth: 'thin',
-        scrollbarColor: 'var(--cyber-cyan) var(--cyber-gray)'
+        scrollbarColor: 'var(--cyber-cyan) var(--cyber-gray)',
+        maxHeight: 'calc(100vh - 400px)'
       }}>
         {filteredQuests.map((quest) => {
           const status = getQuestStatus(quest.id);
@@ -266,9 +267,9 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
       </div>
 
       {/* Achievement Section */}
-      <div className="flex-shrink-0 p-6 border-t border-[var(--cyber-cyan)]/30">
-        <div className="p-4 bg-[var(--cyber-gray)] rounded-lg">
-          <h3 className="text-lg font-semibold text-[var(--cyber-cyan)] mb-2">
+      <div className="flex-shrink-0 p-3 sm:p-4 lg:p-6 border-t border-[var(--cyber-cyan)]/30">
+        <div className="p-3 sm:p-4 bg-[var(--cyber-gray)] rounded-lg">
+          <h3 className="text-base sm:text-lg font-semibold text-[var(--cyber-cyan)] mb-2">
             🏆 Achievements
           </h3>
           <div className="grid grid-cols-2 gap-2 text-sm">
