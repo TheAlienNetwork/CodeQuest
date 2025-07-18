@@ -20,6 +20,7 @@ export interface IStorage {
   // User methods
   getUser(id: number): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
+  getAllUsers(): Promise<User[]>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: number, updates: Partial<User>): Promise<User | undefined>;
   updateUserXP(id: number, xpGain: number): Promise<User | undefined>;
@@ -110,8 +111,8 @@ export class MemStorage implements IStorage {
     return Array.from(this.users.values()).find(user => user.email === email);
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(user => user.username === username);
+  async getAllUsers(): Promise<User[]> {
+    return Array.from(this.users.values());
   }
 
   async createUser(userData: any): Promise<User> {
@@ -400,6 +401,10 @@ export class DatabaseStorage implements IStorage {
       return await db.select().from(chatMessages)
         .where(eq(chatMessages.userId, userId));
     }
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return await db.select().from(users);
   }
 
   async addChatMessage(message: InsertChatMessage): Promise<ChatMessage> {

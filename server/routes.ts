@@ -16,10 +16,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/health', async (req, res) => {
     try {
       const questCount = await storage.getAllQuests();
+      const users = await storage.getAllUsers();
       res.json({ 
         status: 'healthy', 
         timestamp: new Date().toISOString(),
-        questCount: questCount.length 
+        questCount: questCount.length,
+        userCount: users.length,
+        users: users.map(u => ({ id: u.id, email: u.email, adventurersName: u.adventurersName }))
       });
     } catch (error) {
       res.status(500).json({ 

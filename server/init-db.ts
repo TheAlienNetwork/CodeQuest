@@ -54,26 +54,27 @@ export async function initializeDatabase() {
     // Create admin user if it doesn't exist
     const adminEmail = 'admin@codequest.com';
     try {
-      const adminExists = await storage.getUser(adminEmail);
+      const adminExists = await storage.getUserByEmail(adminEmail);
 
       if (!adminExists) {
-        await storage.createUser({
+        const adminUser = await storage.createUser({
           email: adminEmail,
           adventurersName: 'Admin',
-          password: 'admin123'
+          password: 'admin123',
+          xp: 999999,
+          level: 100,
+          rank: 'System Administrator',
+          achievements: 999,
+          streak: 999,
+          currentQuest: 1,
+          completedQuests: []
         });
-        console.log('✅ Admin user created');
+        console.log('✅ Admin user created with ID:', adminUser.id);
       } else {
-        console.log('✅ Admin user already exists');
+        console.log('✅ Admin user already exists with ID:', adminExists.id);
       }
     } catch (error) {
-      // Admin doesn't exist, create it
-      await storage.createUser({
-        email: adminEmail,
-        adventurersName: 'Admin',
-        password: 'admin123'
-      });
-      console.log('✅ Admin user created');
+      console.error('Error creating admin user:', error);
     }
 
     return true;

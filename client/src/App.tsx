@@ -45,18 +45,39 @@ function App() {
       try {
         const parsedUser = JSON.parse(savedUser);
         console.log('Parsed user:', parsedUser);
-        setUser(parsedUser);
-        setCurrentView('game');
+        
+        // Validate user exists in database by making a quick API call
+        fetch(`/api/user/${parsedUser.id}`)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error('User not found in database');
+            }
+          })
+          .then(userData => {
+            setUser(userData);
+            setCurrentView('game');
+          })
+          .catch(error => {
+            console.error('Error validating saved user:', error);
+            localStorage.removeItem('codequest-user');
+            setCurrentView('login');
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
       } catch (error) {
         console.error('Error parsing saved user:', error);
         localStorage.removeItem('codequest-user');
         setCurrentView('login');
+        setIsLoading(false);
       }
     } else {
       setCurrentView('login');
+      setIsLoading(false);
     }
     console.log('Setting loading to false');
-    setIsLoading(false);
   }, []);
 
   const handleLogin = (loggedInUser: User) => {
