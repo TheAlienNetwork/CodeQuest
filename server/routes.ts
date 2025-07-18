@@ -35,7 +35,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/quest/:userId", async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
+      console.log(`Fetching quest for user ${userId}`);
+      
+      if (isNaN(userId)) {
+        return res.status(400).json({ error: "Invalid user ID" });
+      }
+      
       const quest = await storage.getQuestForUser(userId);
+      console.log(`Found quest for user ${userId}:`, quest ? quest.id : 'none');
       
       if (!quest) {
         return res.status(404).json({ error: "No quest found for user" });
@@ -44,7 +51,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(quest);
     } catch (error) {
       console.error("Quest fetch error:", error);
-      res.status(500).json({ error: "Failed to fetch quest" });
+      res.status(500).json({ error: "Failed to fetch quest", details: error.message });
     }
   });
 

@@ -316,9 +316,20 @@ export class DatabaseStorage implements IStorage {
 
   async getQuestForUser(userId: number): Promise<Quest | undefined> {
     const user = await this.getUser(userId);
-    if (!user || !user.currentQuest) return undefined;
+    if (!user) return undefined;
 
-    return await this.getQuest(user.currentQuest);
+    // If user doesn't have a current quest, assign the first quest
+    if (!user.currentQuest) {
+      const [firstQuest] = await db.select().from(quests).orderBy(quests.id).limit(1);
+      if (firstQuest) {
+        await this.updateUser(userId, { currentQuest: firstQuest.id });
+        return firstQuest;
+      }
+      return undefined;
+    }
+
+    const [quest] = await db.select().from(quests).where(eq(quests.id, user.currentQuest));
+    return quest || undefined;
   }
 
   async getChatMessages(userId: number, questId?: number): Promise<ChatMessage[]> {

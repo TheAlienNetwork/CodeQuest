@@ -27,9 +27,16 @@ export async function initializeDatabase() {
     try {
       const existingQuests = await storage.getAllQuests();
       if (existingQuests.length === 0) {
+        console.log('Loading quest data...');
+        console.log('Found', questsData.length, 'quests to insert');
+
         for (const questData of questsData) {
           await storage.createQuest(questData);
         }
+
+        // Verify quests were inserted
+        const insertedQuests = await storage.getAllQuests();
+        console.log('Total quests in database:', insertedQuests.length);
         console.log("Loaded", questsData.length, "quests into database");
       }
     } catch (error) {

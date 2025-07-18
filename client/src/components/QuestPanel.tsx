@@ -1,4 +1,4 @@
-import { Clock, Gem, Star } from 'lucide-react';
+import { Clock, Gem, Star, Target } from 'lucide-react';
 
 interface QuestPanelProps {
   quest: {
