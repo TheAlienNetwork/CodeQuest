@@ -90,6 +90,29 @@
     animation: pulse-glow 2s infinite;
     transition: width 1s ease-out;
   }
+
+  .btn-cyber-sm {
+    background: linear-gradient(45deg, var(--cyber-cyan), var(--cyber-purple));
+    color: black;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  }
+
+  .btn-cyber-sm:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  }
+
+  .btn-cyber-sm:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
   
   .terminal-text {
     color: var(--cyber-green);

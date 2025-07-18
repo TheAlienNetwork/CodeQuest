@@ -128,6 +128,16 @@ export class MemStorage implements IStorage {
     if (!user) return undefined;
 
     const updatedUser = { ...user, ...updates };
+    
+    // If currentQuest is being updated, mark previous quest as completed
+    if (updates.currentQuest && updates.currentQuest !== user.currentQuest) {
+      const completedQuests = [...(user.completedQuests || [])];
+      if (user.currentQuest && !completedQuests.includes(user.currentQuest)) {
+        completedQuests.push(user.currentQuest);
+      }
+      updatedUser.completedQuests = completedQuests;
+    }
+    
     this.users.set(id, updatedUser);
     return updatedUser;
   }

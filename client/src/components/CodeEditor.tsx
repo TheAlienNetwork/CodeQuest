@@ -58,6 +58,8 @@ export default function CodeEditor({
         scrollBeyondLastLine: false,
         minimap: { enabled: false },
         padding: { top: 16, bottom: 16 },
+        wordWrap: 'on',
+        wrappingIndent: 'indent',
         suggest: {
           showKeywords: true,
           showSnippets: true,
@@ -71,8 +73,8 @@ export default function CodeEditor({
           enabled: true,
         },
         autoIndent: 'full',
-        formatOnType: true,
-        formatOnPaste: true,
+        formatOnType: false,
+        formatOnPaste: false,
       });
 
       // Define custom theme
@@ -125,8 +127,12 @@ export default function CodeEditor({
   }, [monaco, code, onChange]);
 
   useEffect(() => {
-    if (editor && editor.getValue() !== code) {
+    if (editor && code !== undefined && editor.getValue() !== code) {
+      const position = editor.getPosition();
       editor.setValue(code);
+      if (position) {
+        editor.setPosition(position);
+      }
     }
   }, [code, editor]);
 

@@ -158,14 +158,37 @@ export class AIService {
   }
 
   private checkOutput(code: string, expectedOutput: string): boolean {
-    // This is a simplified check - in a real implementation, you'd execute the code
-    // For now, we'll do basic pattern matching
-    const normalizedCode = code.toLowerCase().replace(/\s+/g, ' ');
-    const normalizedExpected = expectedOutput.toLowerCase().replace(/\s+/g, ' ');
+    // More accurate code analysis
+    const normalizedCode = code.toLowerCase().replace(/\s+/g, ' ').trim();
+    const normalizedExpected = expectedOutput.toLowerCase().replace(/\s+/g, ' ').trim();
     
-    return normalizedCode.includes(normalizedExpected) || 
-           normalizedCode.includes(`print("${expectedOutput}")`) ||
-           normalizedCode.includes(`print('${expectedOutput}')`);
+    // Check for exact print statement matches
+    const printStatements = [
+      `print("${expectedOutput}")`,
+      `print('${expectedOutput}')`,
+      `print(${expectedOutput})`,
+      `print("${normalizedExpected}")`,
+      `print('${normalizedExpected}')`
+    ];
+    
+    // Check if any print statement matches exactly
+    for (const statement of printStatements) {
+      if (normalizedCode.includes(statement.toLowerCase())) {
+        return true;
+      }
+    }
+    
+    // For basic variable assignments and simple expressions
+    if (expectedOutput.match(/^\d+\.?\d*$/)) {
+      // If expected output is a number, check for calculations
+      const numValue = parseFloat(expectedOutput);
+      if (normalizedCode.includes(`print(${numValue})`) || 
+          normalizedCode.includes(`print(${numValue}.0)`)) {
+        return true;
+      }
+    }
+    
+    return false;
   }
 
   private analyzeCodeQuality(code: string): { suggestions: string[] } {

@@ -109,31 +109,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
                          executionResult.output.trim() === testCase.expectedOutput.trim()
                        );
 
-      // Update user XP if code is correct
-      let updatedUser = user;
-      if (isCorrect) {
-        updatedUser = await storage.updateUserXP(userId, quest.xpReward) || user;
-      }
+      // Use AI analysis for additional correctness check
+      const aiCorrect = analysis.isCorrect && isCorrect;
 
-      // Add XP for using AI analysis
-      updatedUser = await storage.updateUserXP(userId, analysis.xpEarned) || updatedUser;
+      // Award XP based on correctness
+      let xpEarned = 0;
+      let updatedUser = user;
+      
+      if (aiCorrect) {
+        xpEarned = quest.xpReward;
+        updatedUser = await storage.updateUserXP(userId, xpEarned) || user;
+      } else if (analysis.xpEarned > 0) {
+        xpEarned = analysis.xpEarned;
+        updatedUser = await storage.updateUserXP(userId, xpEarned) || user;
+      }
 
       // Save code submission
       await storage.addCodeSubmission({
         userId,
         questId: quest.id,
         code,
-        isCorrect,
+        isCorrect: aiCorrect,
         output: executionResult.output,
         feedback: analysis.feedback,
-        xpEarned: isCorrect ? quest.xpReward + analysis.xpEarned : analysis.xpEarned,
+        xpEarned: xpEarned,
       });
 
       res.json({
         ...analysis,
-        isCorrect,
+        isCorrect: aiCorrect,
         executionResult,
-        xpEarned: isCorrect ? quest.xpReward + analysis.xpEarned : analysis.xpEarned,
+        xpEarned: xpEarned,
         user: updatedUser,
       });
     } catch (error) {

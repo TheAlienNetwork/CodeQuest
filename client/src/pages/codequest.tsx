@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import CodeEditor from '@/components/CodeEditor';
+import SimpleCodeEditor from '@/components/SimpleCodeEditor';
 import TerminalOutput from '@/components/TerminalOutput';
 import AIChat from '@/components/AIChat';
 import QuestPanel from '@/components/QuestPanel';
@@ -290,7 +290,7 @@ export default function CodeQuest() {
       <div className="flex h-[calc(100vh-80px)]">
         {/* Left Panel - Code Editor */}
         <div className="w-3/5 flex flex-col">
-          <CodeEditor
+          <SimpleCodeEditor
             code={code}
             onChange={setCode}
             onRunCode={handleRunCode}
