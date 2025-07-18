@@ -97,6 +97,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get specific quest by ID
+  app.get("/api/quest-by-id/:questId", async (req, res) => {
+    try {
+      const questId = parseInt(req.params.questId);
+      const quest = await storage.getQuest(questId);
+      
+      if (!quest) {
+        return res.status(404).json({ error: "Quest not found" });
+      }
+
+      res.json(quest);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch quest" });
+    }
+  });
+
   // Get all quests for user level
   app.get("/api/quests/:userId", async (req, res) => {
     try {

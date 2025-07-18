@@ -3,26 +3,58 @@ import { Button } from '@/components/ui/button';
 import { Play, Bot, Lightbulb } from 'lucide-react';
 import PythonSyntaxHighlighter from './PythonSyntaxHighlighter';
 
+interface User {
+  id: number;
+  level: number;
+  xp: number;
+  adventurersName: string;
+  currentQuest: number;
+  completedQuests: number[];
+}
+
+interface Quest {
+  id: number;
+  title: string;
+  description: string;
+  startingCode: string;
+  testCases: Array<{
+    input: string;
+    expectedOutput: string;
+  }>;
+}
+
 interface SimpleCodeEditorProps {
-  code: string;
+  user: User | null;
+  quest: Quest | null;
   onChange: (code: string) => void;
   onRunCode: () => void;
   onAnalyzeCode: () => void;
   onGetHint: () => void;
   isRunning: boolean;
   isAnalyzing: boolean;
+  onUserUpdate?: (user: User) => void;
 }
 
+const defaultCode = `
+def solve():
+    # Write your code here
+    print("Hello, world!")
+
+solve()
+`;
+
 export default function SimpleCodeEditor({
-  code,
+  user,
+  quest,
   onChange,
   onRunCode,
   onAnalyzeCode,
   onGetHint,
   isRunning,
-  isAnalyzing
+  isAnalyzing,
+  onUserUpdate
 }: SimpleCodeEditorProps) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [code, setCode] = useState(quest?.startingCode || defaultCode);
   const [lineNumbers, setLineNumbers] = useState<number[]>([]);
 
   useEffect(() => {
@@ -37,7 +69,7 @@ export default function SimpleCodeEditor({
       const end = e.currentTarget.selectionEnd;
       const newValue = code.substring(0, start) + '    ' + code.substring(end);
       onChange(newValue);
-      
+
       // Set cursor position after the tab
       setTimeout(() => {
         if (textareaRef.current) {

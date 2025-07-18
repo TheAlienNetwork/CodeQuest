@@ -49,7 +49,7 @@ export default function XPBar({ user, showXPGain, onXPGainComplete }: XPBarProps
           <span className="ml-2">Lvl {user.level}</span>
         </div>
       </div>
-      
+
       {/* XP Bar */}
       <div className="flex items-center space-x-4 flex-1 max-w-md ml-8">
         <div className="flex-1 bg-[var(--cyber-gray)] rounded-full h-4 overflow-hidden neon-border">
@@ -62,7 +62,7 @@ export default function XPBar({ user, showXPGain, onXPGainComplete }: XPBarProps
           <span className={isAnimating ? 'animate-pulse' : ''}>{displayXP}</span> / {nextLevelXP} XP
         </div>
       </div>
-      
+
       {/* User Stats */}
       <div className="flex items-center space-x-4">
         <div className="text-sm text-gray-400">
