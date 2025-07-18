@@ -48,7 +48,7 @@ export default function ProfileIcon({ user, onProfileClick, onLogout }: ProfileI
           <div className="flex flex-col space-y-1 leading-none">
             <p className="font-medium text-[var(--cyber-cyan)]">{user.adventurersName}</p>
             <p className="text-xs text-gray-400">{user.email}</p>
-            <p className="text-xs text-[var(--cyber-yellow)]">
+            <p className="text-xs text-[#ff9900]">
               Level {user.level} • {user.rank}
             </p>
           </div>
