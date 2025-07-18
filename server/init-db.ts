@@ -72,6 +72,16 @@ export async function initializeDatabase() {
         console.log('✅ Admin user created with ID:', adminUser.id);
       } else {
         console.log('✅ Admin user already exists with ID:', adminExists.id);
+        // Update admin user with proper values
+        await storage.updateUser(adminExists.id, {
+          xp: 999999,
+          level: 100,
+          rank: 'System Administrator',
+          achievements: 999,
+          streak: 999,
+          currentQuest: 1
+        });
+        console.log('✅ Admin user updated with enhanced privileges');
       }
     } catch (error) {
       console.error('Error creating admin user:', error);

@@ -49,34 +49,7 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = loginUserSchema.parse(req.body);
     
-    // Check for admin login
-    if (email === 'admin@codequest.com' && password === 'admin123') {
-      const adminUser = {
-        id: 999,
-        email: 'admin@codequest.com',
-        adventurersName: 'Admin',
-        username: 'admin',
-        xp: 999999,
-        level: 100,
-        rank: 'System Administrator',
-        achievements: 999,
-        streak: 999,
-        currentQuest: null,
-        completedQuests: [],
-        profileImageUrl: null,
-        isAdmin: true,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      };
-      
-      return res.json({
-        success: true,
-        user: adminUser,
-        message: 'Admin login successful'
-      });
-    }
-    
-    // Find user by email
+    // Find user by email (including admin users)
     const user = await storage.getUserByEmail(email);
     if (!user) {
       return res.status(400).json({ 
@@ -93,14 +66,24 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // Remove password from response
-    const { password: _, ...userWithoutPassword } = user;
+    // For admin users, add admin flag
+    let userResponse = { ...user };
+    if (email === 'admin@codequest.com') {
+      userResponse = {
+        ...user,
+        isAdmin: true
+      };
+    }
 
-    res.json({
+    // Remove password from response
+    const { password: _, ...userWithoutPassword } = userResponse;
+
+    return res.json({
       success: true,
       user: userWithoutPassword,
-      message: 'Login successful'
+      message: email === 'admin@codequest.com' ? 'Admin login successful' : 'Login successful'
     });
+
   } catch (error) {
     console.error('Login error:', error);
     res.status(400).json({
