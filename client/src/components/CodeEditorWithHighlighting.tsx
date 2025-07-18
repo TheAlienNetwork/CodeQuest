@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Bot, Lightbulb } from 'lucide-react';
+import { Play, Bot, Lightbulb, Eye, HelpCircle } from 'lucide-react';
 
 interface CodeEditorProps {
   code: string;
@@ -8,6 +8,8 @@ interface CodeEditorProps {
   onRunCode: () => void;
   onAnalyzeCode: () => void;
   onGetHint: () => void;
+  onGetSolution: () => void;
+  onGetExplanation: () => void;
   isRunning: boolean;
   isAnalyzing: boolean;
 }
@@ -18,6 +20,8 @@ export default function CodeEditorWithHighlighting({
   onRunCode,
   onAnalyzeCode,
   onGetHint,
+  onGetSolution,
+  onGetExplanation,
   isRunning,
   isAnalyzing
 }: CodeEditorProps) {
@@ -258,7 +262,21 @@ export default function CodeEditorWithHighlighting({
             className="btn-cyber-sm"
           >
             <Lightbulb className="w-4 h-4 mr-1" />
-            Hint
+            Hint (-10 XP)
+          </Button>
+          <Button
+            onClick={onGetSolution}
+            className="btn-cyber-sm"
+          >
+            <Eye className="w-4 h-4 mr-1" />
+            Solution (-25 XP)
+          </Button>
+          <Button
+            onClick={onGetExplanation}
+            className="btn-cyber-sm"
+          >
+            <HelpCircle className="w-4 h-4 mr-1" />
+            Explain (-15 XP)
           </Button>
         </div>
       </div>
@@ -276,6 +294,20 @@ export default function CodeEditorWithHighlighting({
 
         {/* Editor Area */}
         <div className="flex-1 relative">
+          {/* Syntax Highlighting Overlay */}
+          <div
+            ref={highlightRef}
+            className="absolute inset-0 p-4 font-mono text-sm leading-6 pointer-events-none overflow-hidden whitespace-pre-wrap break-words"
+            style={{
+              fontFamily: 'JetBrains Mono, Consolas, "Courier New", monospace',
+              lineHeight: '1.5',
+              color: 'transparent',
+              backgroundColor: 'transparent',
+            }}
+          >
+            {getHighlightedCode(code)}
+          </div>
+          
           {/* Code Textarea */}
           <textarea
             ref={textareaRef}
@@ -283,13 +315,13 @@ export default function CodeEditorWithHighlighting({
             onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}
             onScroll={handleScroll}
-            className="absolute inset-0 bg-transparent text-white font-mono text-sm leading-6 p-4 resize-none outline-none"
+            className="absolute inset-0 bg-transparent text-transparent font-mono text-sm leading-6 p-4 resize-none outline-none caret-cyan-400"
             style={{
               fontFamily: 'JetBrains Mono, Consolas, "Courier New", monospace',
               lineHeight: '1.5',
               tabSize: 4,
               backgroundColor: 'transparent',
-              caretColor: 'var(--cyber-cyan)',
+              caretColor: '#00FFFF',
             }}
             placeholder="# Write your Python code here..."
             spellCheck={false}

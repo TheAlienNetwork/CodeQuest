@@ -375,7 +375,7 @@ export function registerRoutes(app: Application) {
     }
   });
 
-  // Get hint for current quest
+  // Get hint for current quest (with XP penalty)
   app.post("/api/hint", async (req, res) => {
     try {
       const { userId, code } = req.body;
@@ -390,18 +390,87 @@ export function registerRoutes(app: Application) {
         return res.status(404).json({ error: "No active quest found" });
       }
 
-      const hint = await aiService.generateHint(quest.title, quest.description, code || "");
+      const hint = await aiService.getHint(quest.id, userId);
       
-      // Small XP reward for asking for hints
-      const updatedUser = await storage.updateUserXP(userId, 10);
+      // Apply XP penalty for using hint (-10 XP)
+      const hintPenalty = -10;
+      const updatedUser = await storage.updateUserXP(userId, hintPenalty);
 
       res.json({
         hint,
-        xpEarned: 10,
+        xpPenalty: hintPenalty,
         user: updatedUser,
+        message: "Hint provided! (-10 XP penalty applied)"
       });
     } catch (error) {
+      console.error('Hint generation error:', error);
       res.status(500).json({ error: "Failed to generate hint" });
+    }
+  });
+
+  // Get solution for current quest (with XP penalty)
+  app.post("/api/solution", async (req, res) => {
+    try {
+      const { userId } = req.body;
+      
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const quest = await storage.getQuestForUser(userId);
+      if (!quest) {
+        return res.status(404).json({ error: "No active quest found" });
+      }
+
+      const solution = await aiService.getSolution(quest.id, userId);
+      
+      // Apply XP penalty for using solution (-25 XP)
+      const solutionPenalty = -25;
+      const updatedUser = await storage.updateUserXP(userId, solutionPenalty);
+
+      res.json({
+        solution,
+        xpPenalty: solutionPenalty,
+        user: updatedUser,
+        message: "Solution provided! (-25 XP penalty applied)"
+      });
+    } catch (error) {
+      console.error('Solution generation error:', error);
+      res.status(500).json({ error: "Failed to generate solution" });
+    }
+  });
+
+  // Get explanation for current quest (with XP penalty)
+  app.post("/api/explanation", async (req, res) => {
+    try {
+      const { userId } = req.body;
+      
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const quest = await storage.getQuestForUser(userId);
+      if (!quest) {
+        return res.status(404).json({ error: "No active quest found" });
+      }
+
+      const explanation = await aiService.getExplanation(quest.id, userId);
+      
+      // Apply XP penalty for using explanation (-15 XP)
+      const explanationPenalty = -15;
+      const updatedUser = await storage.updateUserXP(userId, explanationPenalty);
+
+      res.json({
+        explanation,
+        explanationPenalty,
+        user: updatedUser,
+        message: "Explanation provided! (-15 XP penalty applied)"
+      });
+    } catch (error) {
+      console.error('Explanation generation error:', error);
+      res.status(500).json({ error: "Failed to generate explanation" });
     }
   });
 

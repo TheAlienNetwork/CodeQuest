@@ -148,6 +148,9 @@ User requested: Remove OpenAI dependency, create custom AI logic, add learning p
 - **Environment Setup**: Configured proper environment variables and database connectivity
 - **Data Integrity**: Ensured all existing user data and quest progression is preserved
 - **Security**: Implemented proper client-server separation and authentication validation
+- **Enhanced AI Tutor**: Added comprehensive hint system, solution provider, and explanation feature with XP penalties (-10 XP hints, -25 XP solutions, -15 XP explanations)
+- **UI Improvements**: Fixed IDE text display with proper syntax highlighting overlay, enhanced scrollbar visibility with cyberpunk styling
+- **Learning Content**: Expanded learning guide with detailed tips, concepts, and comprehensive educational content for all difficulty levels
 
 ## Previous Changes (January 2025)
 

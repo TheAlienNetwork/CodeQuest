@@ -215,8 +215,8 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
 
       const result = await response.json();
 
-      if (result.xpEarned > 0) {
-        showXPGainAnimation(result.xpEarned);
+      if (result.xpPenalty < 0) {
+        showXPGainAnimation(result.xpPenalty);
       }
 
       toast({
@@ -231,6 +231,64 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
       toast({
         title: "Hint unavailable",
         description: "Unable to generate hint at this time.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleGetSolution = async () => {
+    try {
+      const response = await apiRequest('POST', '/api/solution', {
+        userId: user.id,
+      });
+
+      const result = await response.json();
+
+      if (result.xpPenalty < 0) {
+        showXPGainAnimation(result.xpPenalty);
+      }
+
+      toast({
+        title: "Solution 👁️",
+        description: result.solution,
+      });
+
+      if (result.user) {
+        onUserUpdate(result.user);
+      }
+    } catch (error) {
+      toast({
+        title: "Solution unavailable",
+        description: "Unable to generate solution at this time.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleGetExplanation = async () => {
+    try {
+      const response = await apiRequest('POST', '/api/explanation', {
+        userId: user.id,
+      });
+
+      const result = await response.json();
+
+      if (result.explanationPenalty < 0) {
+        showXPGainAnimation(result.explanationPenalty);
+      }
+
+      toast({
+        title: "Explanation 🤔",
+        description: result.explanation,
+      });
+
+      if (result.user) {
+        onUserUpdate(result.user);
+      }
+    } catch (error) {
+      toast({
+        title: "Explanation unavailable",
+        description: "Unable to generate explanation at this time.",
         variant: "destructive",
       });
     }
@@ -378,6 +436,8 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
               onRunCode={handleRunCode}
               onAnalyzeCode={handleAnalyzeCode}
               onGetHint={handleGetHint}
+              onGetSolution={handleGetSolution}
+              onGetExplanation={handleGetExplanation}
               isRunning={isRunning}
               isAnalyzing={isAnalyzing}
             />

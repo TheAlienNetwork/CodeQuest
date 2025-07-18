@@ -230,7 +230,15 @@ export default function LearningPanel({ quest, userLevel, onNextQuest, showNextB
                   </div>
                   <div className="flex items-start space-x-2">
                     <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-gray-300">Don't hesitate to ask the AI tutor for help</p>
+                    <p className="text-sm text-gray-300">Use the AI tutor wisely - hints (-10 XP), explanations (-15 XP), solutions (-25 XP)</p>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-gray-300">Start simple and gradually add complexity to your code</p>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-gray-300">Check the expected output to ensure your solution matches exactly</p>
                   </div>
                 </>
               )}
@@ -238,15 +246,23 @@ export default function LearningPanel({ quest, userLevel, onNextQuest, showNextB
                 <>
                   <div className="flex items-start space-x-2">
                     <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-gray-300">Break complex problems into smaller steps</p>
+                    <p className="text-sm text-gray-300">Break complex problems into smaller, manageable steps</p>
                   </div>
                   <div className="flex items-start space-x-2">
                     <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-gray-300">Use meaningful variable names for clarity</p>
+                    <p className="text-sm text-gray-300">Use meaningful variable names that describe their purpose</p>
                   </div>
                   <div className="flex items-start space-x-2">
                     <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-gray-300">Consider edge cases and error handling</p>
+                    <p className="text-sm text-gray-300">Test different inputs and consider edge cases</p>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-gray-300">Plan your logic before writing code - pseudocode helps!</p>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-gray-300">Remember XP penalties for AI assistance - try solving independently first</p>
                   </div>
                 </>
               )}
@@ -254,15 +270,23 @@ export default function LearningPanel({ quest, userLevel, onNextQuest, showNextB
                 <>
                   <div className="flex items-start space-x-2">
                     <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-gray-300">Focus on code structure and organization</p>
+                    <p className="text-sm text-gray-300">Focus on clean code structure and proper organization</p>
                   </div>
                   <div className="flex items-start space-x-2">
                     <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-gray-300">Think about efficiency and best practices</p>
+                    <p className="text-sm text-gray-300">Optimize for efficiency and follow Python best practices</p>
                   </div>
                   <div className="flex items-start space-x-2">
                     <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-gray-300">Consider reusability and maintainability</p>
+                    <p className="text-sm text-gray-300">Write reusable, maintainable code with proper documentation</p>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-gray-300">Research the concepts thoroughly before using AI assistance</p>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <CheckCircle className="w-4 h-4 text-[var(--cyber-green)] mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-gray-300">Challenge yourself to solve problems using multiple approaches</p>
                   </div>
                 </>
               )}

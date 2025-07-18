@@ -425,6 +425,90 @@ for fruit in fruits:
     return "I'd be happy to explain! Could you be more specific about what concept you'd like me to explain?";
   }
 
+  async getHint(questId: number, userId: number): Promise<string> {
+    // Comprehensive quest-specific hints that guide without giving answers
+    const questHints: { [key: number]: string[] } = {
+      1: [
+        'Use the print() function to display text. Put your message inside quotes.',
+        'Remember that strings in Python need to be enclosed in quotes - either single \' or double ".',
+        'The exact message should match what the quest is asking for.',
+        'Try: print("your message here") - replace "your message here" with the actual text.'
+      ],
+      2: [
+        'Variables are created by assigning values: variable_name = value',
+        'For strings, use quotes around the value: name = "Hero"',
+        'For numbers, no quotes needed: age = 25',
+        'After creating each variable, use print(variable_name) to display it.'
+      ],
+      3: [
+        'Integer numbers don\'t need decimal points: strength = 10',
+        'Float numbers have decimal points: magic_power = 7.5',
+        'Use the + operator to add numbers together',
+        'Store your calculation in a new variable, then print it.'
+      ],
+      4: [
+        'If statements check conditions using comparison operators like ==',
+        'The structure is: if condition: followed by indented code',
+        'Use 4 spaces or one tab for indentation after the if statement',
+        'Don\'t forget the colon : at the end of the if line!'
+      ],
+      5: [
+        'For loops iterate through ranges of numbers',
+        'Use range(start, end) to create a sequence of numbers',
+        'The loop variable takes each value in the range one by one',
+        'Indent the code inside the loop with 4 spaces or a tab.'
+      ]
+    };
+
+    const defaultHints = [
+      'Break the problem into smaller, manageable steps.',
+      'Look at the expected output - what exactly needs to be displayed?',
+      'Check if you need variables, loops, conditions, or functions.',
+      'Make sure your indentation is correct - Python is picky about spaces!',
+      'Test your code step by step, adding one piece at a time.',
+      'Remember Python syntax rules: colons after if/for/def, proper indentation.',
+      'Read the quest description carefully - it contains important clues!'
+    ];
+
+    const hints = questHints[questId] || defaultHints;
+    return hints[Math.floor(Math.random() * hints.length)];
+  }
+
+  async getSolution(questId: number, userId: number): Promise<string> {
+    // Load quest data to get solution
+    const fs = require('fs');
+    const path = require('path');
+    
+    try {
+      const questsPath = path.join(__dirname, '../data/comprehensive-quests.json');
+      const questsData = JSON.parse(fs.readFileSync(questsPath, 'utf8'));
+      const quest = questsData.find((q: any) => q.id === questId);
+      
+      if (quest && quest.solutionCode) {
+        return `Here's the complete solution:\n\n${quest.solutionCode}\n\nThis solution demonstrates the key concepts needed for this quest.`;
+      }
+    } catch (error) {
+      console.error('Error loading quest solution:', error);
+    }
+    
+    return 'Sorry, I couldn\'t retrieve the solution for this quest. Try working through it step by step!';
+  }
+
+  async getExplanation(questId: number, userId: number): Promise<string> {
+    // Quest-specific explanations that break down the task without giving full answer
+    const questExplanations: { [key: number]: string } = {
+      1: 'This quest teaches you about the print() function, which is used to display output to the user. You need to write code that outputs exactly "Hello, World!" to the console. The print() function takes whatever you put inside the parentheses and displays it.',
+      2: 'This quest introduces variables - containers that store values. You\'ll create three variables: one for text (name), one for a number (age), and another for text (weapon). After creating each variable, you need to display its value using print().',
+      3: 'This quest covers different number types in Python. Integers are whole numbers like 10, while floats have decimal points like 7.5. You\'ll create both types of variables and then add them together to calculate a total.',
+      4: 'This quest teaches conditional logic using if statements. You\'ll check if a condition is true (level equals 1) and execute different code based on that condition. Remember that if statements need a colon and proper indentation.',
+      5: 'This quest introduces loops - specifically for loops that repeat code multiple times. You\'ll use the range() function to create a sequence of numbers and loop through them, executing code for each number.'
+    };
+
+    const defaultExplanation = 'This quest teaches important programming concepts. Break down the problem: read the description carefully, identify what output is expected, and think about which Python concepts (variables, loops, conditions, etc.) you need to use.';
+    
+    return questExplanations[questId] || defaultExplanation;
+  }
+
   private generateDebuggingResponse(userLevel: number): string {
     const tips = [
       "When debugging, start by reading the error message carefully - it often tells you exactly what's wrong!",
