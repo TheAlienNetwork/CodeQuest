@@ -318,9 +318,12 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 chat-messages" style={{
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'var(--cyber-cyan) var(--cyber-gray)'
+      }}>
         {messages.length === 0 ? (
-          <div className="text-center text-gray-400">
+          <div className="text-center text-gray-400 py-8">
             <Bot className="w-12 h-12 mx-auto mb-4 text-[var(--cyber-primary)]" />
             <p>Hello {user.adventurersName}! I'm your AI tutor.</p>
             <p className="text-sm mt-2">Ask me anything about your coding quest!</p>
@@ -329,22 +332,28 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
           messages.map((message) => (
             <div
               key={message.id}
-              className={`flex gap-3 ${message.isAI ? 'flex-row' : 'flex-row-reverse'}`}
+              className={`flex gap-3 items-end ${message.isAI ? 'flex-row' : 'flex-row-reverse'}`}
             >
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                message.isAI ? 'bg-[var(--cyber-primary)]' : 'bg-[var(--cyber-accent)]'
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                message.isAI ? 'bg-gradient-to-br from-[var(--cyber-cyan)] to-[var(--cyber-purple)]' : 'bg-gradient-to-br from-[var(--cyber-accent)] to-[var(--cyber-pink)]'
               }`}>
-                {message.isAI ? <Bot className="w-5 h-5 text-black" /> : <User className="w-5 h-5 text-white" />}
+                {message.isAI ? <Bot className="w-4 h-4 text-white" /> : <User className="w-4 h-4 text-white" />}
               </div>
-              <div className={`flex-1 ${message.isAI ? 'text-left' : 'text-right'}`}>
-                <div className={`inline-block p-3 rounded-lg max-w-[80%] ${
+              <div className={`flex flex-col max-w-[75%] ${message.isAI ? 'items-start' : 'items-end'}`}>
+                <div className={`relative p-4 rounded-2xl shadow-lg backdrop-blur-sm ${
                   message.isAI
-                    ? 'bg-[var(--cyber-surface)] text-white'
-                    : 'bg-[var(--cyber-primary)] text-black'
+                    ? 'bg-gradient-to-br from-[var(--cyber-surface)] to-[var(--cyber-gray)] text-white border border-[var(--cyber-cyan)]/30 rounded-bl-sm'
+                    : 'bg-gradient-to-br from-[var(--cyber-primary)] to-[var(--cyber-cyan)] text-black border border-[var(--cyber-primary)]/50 rounded-br-sm'
                 }`}>
-                  <p className="whitespace-pre-wrap">{message.message}</p>
+                  {/* Message bubble tail */}
+                  <div className={`absolute bottom-0 w-3 h-3 ${
+                    message.isAI 
+                      ? 'left-0 -ml-1.5 bg-[var(--cyber-surface)] border-l border-b border-[var(--cyber-cyan)]/30 transform rotate-45' 
+                      : 'right-0 -mr-1.5 bg-[var(--cyber-primary)] border-r border-b border-[var(--cyber-primary)]/50 transform rotate-45'
+                  }`}></div>
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.message}</p>
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
+                <div className={`text-xs text-gray-500 mt-1 px-2 ${message.isAI ? 'text-left' : 'text-right'}`}>
                   {new Date(message.timestamp).toLocaleTimeString()}
                 </div>
               </div>

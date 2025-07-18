@@ -192,7 +192,7 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
       </div>
       
       {/* Quest List - Scrollable Area */}
-      <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-4" style={{
+      <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-4 lessons-scroll" style={{
         scrollbarWidth: 'thin',
         scrollbarColor: 'var(--cyber-cyan) var(--cyber-gray)'
       }}>
@@ -265,27 +265,31 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
         })}
       </div>
 
+        </div>
+
         {/* Achievement Section */}
-        <div className="mt-8 p-4 bg-[var(--cyber-gray)] rounded-lg">
-          <h3 className="text-lg font-semibold text-[var(--cyber-cyan)] mb-2">
-            🏆 Achievements
-          </h3>
-          <div className="grid grid-cols-2 gap-2 text-sm">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              <span>First Steps: {completedCount > 0 ? 'Complete' : 'Incomplete'}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              <span>Python Basics: {completedCount >= 5 ? 'Complete' : `${completedCount}/5`}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              <span>Data Master: {completedCount >= 10 ? 'Complete' : `${completedCount}/10`}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              <span>Code Ninja: {completedCount >= 15 ? 'Complete' : `${completedCount}/15`}</span>
+        <div className="flex-shrink-0 p-6 border-t border-[var(--cyber-cyan)]/30">
+          <div className="p-4 bg-[var(--cyber-gray)] rounded-lg">
+            <h3 className="text-lg font-semibold text-[var(--cyber-cyan)] mb-2">
+              🏆 Achievements
+            </h3>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span>First Steps: {completedCount > 0 ? 'Complete' : 'Incomplete'}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span>Python Basics: {completedCount >= 5 ? 'Complete' : `${completedCount}/5`}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span>Data Master: {completedCount >= 10 ? 'Complete' : `${completedCount}/10`}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span>Code Ninja: {completedCount >= 15 ? 'Complete' : `${completedCount}/15`}</span>
+              </div>
             </div>
           </div>
         </div>
