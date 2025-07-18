@@ -32,7 +32,7 @@ export class CodeExecutionService {
       fs.writeFileSync(filePath, code);
 
       // Execute Python code with timeout and resource limits
-      const { stdout, stderr } = await execAsync(`python3 "${filePath}"`, {
+      const { stdout, stderr } = await execAsync(`python "${filePath}"`, {
         timeout: 10000, // 10 second timeout
         maxBuffer: 1024 * 1024, // 1MB buffer
         cwd: this.tempDir,

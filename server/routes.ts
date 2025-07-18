@@ -5,8 +5,12 @@ import { aiService } from "./services/ai-service";
 import { codeExecutionService } from "./services/code-execution";
 import { insertChatMessageSchema, insertCodeSubmissionSchema } from "@shared/schema";
 import { z } from "zod";
+import { initializeDatabase } from "./init-db";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize database
+  await initializeDatabase();
+  
   // Get current user info
   app.get("/api/user/:id", async (req, res) => {
     try {
@@ -36,6 +40,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(quest);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch quest" });
+    }
+  });
+
+  // Get all quests for lessons panel
+  app.get("/api/quests", async (req, res) => {
+    try {
+      const quests = await storage.getAllQuests();
+      res.json(quests);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch quests" });
     }
   });
 
@@ -119,6 +133,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (aiCorrect) {
         xpEarned = quest.xpReward;
         updatedUser = await storage.updateUserXP(userId, xpEarned) || user;
+        
+        // Move to next quest if completed
+        if (user.currentQuest) {
+          const nextQuestId = user.currentQuest + 1;
+          const nextQuest = await storage.getQuest(nextQuestId);
+          if (nextQuest) {
+            const completedQuests = [...(user.completedQuests || []), user.currentQuest];
+            updatedUser = await storage.updateUser(userId, { 
+              currentQuest: nextQuestId,
+              completedQuests
+            }) || updatedUser;
+          }
+        }
       } else if (analysis.xpEarned > 0) {
         xpEarned = analysis.xpEarned;
         updatedUser = await storage.updateUserXP(userId, xpEarned) || user;

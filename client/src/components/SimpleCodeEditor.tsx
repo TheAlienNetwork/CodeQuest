@@ -109,6 +109,8 @@ export default function SimpleCodeEditor({
             fontFamily: 'JetBrains Mono, Consolas, "Courier New", monospace',
             lineHeight: '1.5',
             tabSize: 4,
+            color: '#ffffff',
+            backgroundColor: 'transparent',
           }}
           placeholder="# Write your Python code here..."
           spellCheck={false}

@@ -6,6 +6,7 @@ import AIChat from '@/components/AIChat';
 import QuestPanel from '@/components/QuestPanel';
 import XPBar from '@/components/XPBar';
 import LearningPanel from '@/components/LearningPanel';
+import LessonsPanel from '@/components/LessonsPanel';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 
@@ -49,7 +50,8 @@ export default function CodeQuest() {
   const [showXPGain, setShowXPGain] = useState(0);
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [activeTab, setActiveTab] = useState<'quest' | 'learning'>('quest');
+  const [activeTab, setActiveTab] = useState<'quest' | 'learning' | 'lessons'>('quest');
+  const [selectedQuestId, setSelectedQuestId] = useState<number | null>(null);
   const [questCompleted, setQuestCompleted] = useState(false);
   const { toast } = useToast();
 
@@ -334,6 +336,16 @@ export default function CodeQuest() {
               >
                 📚 Learning
               </button>
+              <button
+                onClick={() => setActiveTab('lessons')}
+                className={`px-4 py-2 text-sm font-medium rounded transition-colors ${
+                  activeTab === 'lessons'
+                    ? 'bg-[var(--cyber-cyan)] text-black'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                🎓 Lessons
+              </button>
             </div>
           </div>
 
@@ -348,13 +360,23 @@ export default function CodeQuest() {
                   onXPGain={handleXPGain}
                 />
               </>
-            ) : (
+            ) : activeTab === 'learning' ? (
               <div className="flex-1 p-4">
                 <LearningPanel
                   quest={quest}
                   userLevel={user?.level || 1}
                   onNextQuest={handleNextQuest}
                   showNextButton={questCompleted}
+                />
+              </div>
+            ) : (
+              <div className="flex-1">
+                <LessonsPanel
+                  userId={userId}
+                  onSelectQuest={(questId) => {
+                    setSelectedQuestId(questId);
+                    setActiveTab('quest');
+                  }}
                 />
               </div>
             )}
