@@ -217,11 +217,69 @@
 
 /* Monaco Editor Overrides */
 .monaco-editor {
-  background: var(--cyber-darker) !important;
+  background: #1E1E1E !important;
+  color: #D4D4D4 !important;
 }
 
 .monaco-editor .margin {
-  background: var(--cyber-darker) !important;
+  background: #1E1E1E !important;
+}
+
+.monaco-editor .monaco-editor-background {
+  background: #1E1E1E !important;
+}
+
+.monaco-editor .current-line {
+  background: #2D2D30 !important;
+}
+
+.monaco-editor .line-numbers {
+  color: #858585 !important;
+}
+
+.monaco-editor .line-numbers.active-line-number {
+  color: #C6C6C6 !important;
+}
+
+/* Force Monaco syntax highlighting colors */
+.monaco-editor .mtk1 { color: #D4D4D4 !important; } /* Default text */
+.monaco-editor .mtk2 { color: #569CD6 !important; } /* Keywords */
+.monaco-editor .mtk3 { color: #CE9178 !important; } /* Strings */
+.monaco-editor .mtk4 { color: #6A9955 !important; } /* Comments */
+.monaco-editor .mtk5 { color: #B5CEA8 !important; } /* Numbers */
+.monaco-editor .mtk6 { color: #DCDCAA !important; } /* Functions */
+.monaco-editor .mtk7 { color: #C586C0 !important; } /* Keywords control */
+.monaco-editor .mtk8 { color: #9CDCFE !important; } /* Variables */
+.monaco-editor .mtk9 { color: #4EC9B0 !important; } /* Classes */
+.monaco-editor .mtk10 { color: #FFD700 !important; } /* Brackets */
+
+/* Python specific token colors */
+.monaco-editor .token.keyword { color: #569CD6 !important; }
+.monaco-editor .token.keyword.control { color: #C586C0 !important; }
+.monaco-editor .token.string { color: #CE9178 !important; }
+.monaco-editor .token.comment { color: #6A9955 !important; font-style: italic !important; }
+.monaco-editor .token.number { color: #B5CEA8 !important; }
+.monaco-editor .token.function { color: #DCDCAA !important; }
+.monaco-editor .token.variable { color: #9CDCFE !important; }
+.monaco-editor .token.operator { color: #D4D4D4 !important; }
+.monaco-editor .token.delimiter { color: #FFD700 !important; }
+
+/* Selection and cursor */
+.monaco-editor .selected-text {
+  background-color: #264F78 !important;
+}
+
+.monaco-editor .cursor {
+  color: #AEAFAD !important;
+}
+
+/* Scrollbars */
+.monaco-editor .monaco-scrollable-element > .scrollbar > .slider {
+  background: rgba(121, 121, 121, 0.4) !important;
+}
+
+.monaco-editor .monaco-scrollable-element > .scrollbar > .slider:hover {
+  background: rgba(100, 100, 100, 0.7) !important;
 }
 
 .monaco-editor .monaco-editor-background {

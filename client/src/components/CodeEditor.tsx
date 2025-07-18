@@ -47,7 +47,7 @@ export default function CodeEditor({
 
   useEffect(() => {
     if (monaco && editorRef.current && !editor) {
-      // Enhanced Python language configuration
+      // Enhanced Python language configuration with better syntax support
       monaco.languages.setLanguageConfiguration('python', {
         comments: {
           lineComment: '#',
@@ -86,54 +86,204 @@ export default function CodeEditor({
         ]
       });
 
-      // Define VS Code-like dark theme
+      // Register enhanced Python tokenizer
+      monaco.languages.setMonarchTokensProvider('python', {
+        defaultToken: 'invalid',
+        tokenPostfix: '.python',
+        
+        keywords: [
+          'and', 'as', 'assert', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else',
+          'except', 'exec', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is',
+          'lambda', 'not', 'or', 'pass', 'print', 'raise', 'return', 'try', 'while', 'with',
+          'yield', 'int', 'float', 'long', 'complex', 'hex', 'abs', 'all', 'any', 'apply',
+          'basestring', 'bin', 'bool', 'buffer', 'bytearray', 'callable', 'chr', 'classmethod',
+          'cmp', 'coerce', 'compile', 'complex', 'delattr', 'dict', 'dir', 'divmod', 'enumerate',
+          'eval', 'execfile', 'file', 'filter', 'format', 'frozenset', 'getattr', 'globals',
+          'hasattr', 'hash', 'help', 'id', 'input', 'int', 'intern', 'isinstance', 'issubclass',
+          'iter', 'len', 'list', 'locals', 'long', 'map', 'max', 'memoryview', 'min', 'next',
+          'object', 'oct', 'open', 'ord', 'pow', 'property', 'range', 'raw_input', 'reduce',
+          'reload', 'repr', 'reversed', 'round', 'set', 'setattr', 'slice', 'sorted', 'staticmethod',
+          'str', 'sum', 'super', 'tuple', 'type', 'unichr', 'unicode', 'vars', 'xrange', 'zip'
+        ],
+        
+        builtins: [
+          'True', 'False', 'None', 'NotImplemented', 'Ellipsis', '__debug__', '__name__',
+          '__doc__', 'print', 'input', 'len', 'range', 'str', 'int', 'float', 'bool', 'list',
+          'dict', 'set', 'tuple', 'type', 'isinstance', 'hasattr', 'getattr', 'setattr'
+        ],
+        
+        operators: [
+          '=', '>', '<', '!', '~', '?', ':', '==', '<=', '>=', '!=', '&&', '||', '++', '--',
+          '+', '-', '*', '/', '&', '|', '^', '%', '<<', '>>', '>>>', '+=', '-=', '*=', '/=',
+          '&=', '|=', '^=', '%=', '<<=', '>>=', '>>>='
+        ],
+        
+        symbols: /[=><!~?:&|+\-*\/\^%]+/,
+        
+        tokenizer: {
+          root: [
+            [/[a-zA-Z_]\w*/, {
+              cases: {
+                '@keywords': 'keyword',
+                '@builtins': 'support.function.builtin',
+                '@default': 'identifier'
+              }
+            }],
+            
+            // Whitespace
+            { include: '@whitespace' },
+            
+            // Numbers
+            [/\d*\.\d+([eE][\-+]?\d+)?/, 'number.float'],
+            [/0[xX][0-9a-fA-F]+/, 'number.hex'],
+            [/\d+/, 'number'],
+            
+            // Strings
+            [/"([^"\\]|\\.)*$/, 'string.invalid'],
+            [/'([^'\\]|\\.)*$/, 'string.invalid'],
+            [/"/, 'string', '@string_double'],
+            [/'/, 'string', '@string_single'],
+            [/"""/, 'string', '@string_triple_double'],
+            [/'''/, 'string', '@string_triple_single'],
+            
+            // Delimiters and operators
+            [/[{}()\[\]]/, '@brackets'],
+            [/@symbols/, 'operator'],
+            [/[,;]/, 'delimiter'],
+          ],
+          
+          whitespace: [
+            [/[ \t\r\n]+/, 'white'],
+            [/#.*$/, 'comment'],
+          ],
+          
+          string_double: [
+            [/[^\\"]+/, 'string'],
+            [/\\./, 'string.escape.invalid'],
+            [/"/, 'string', '@pop']
+          ],
+          
+          string_single: [
+            [/[^\\']+/, 'string'],
+            [/\\./, 'string.escape.invalid'],
+            [/'/, 'string', '@pop']
+          ],
+          
+          string_triple_double: [
+            [/[^"]+/, 'string'],
+            [/"""/, 'string', '@pop'],
+            [/"/, 'string']
+          ],
+          
+          string_triple_single: [
+            [/[^']+/, 'string'],
+            [/'''/, 'string', '@pop'],
+            [/'/, 'string']
+          ]
+        }
+      });
+
+      // Define enhanced VS Code Dark+ theme with proper Python syntax highlighting
       monaco.editor.defineTheme('vs-code-dark-plus', {
         base: 'vs-dark',
         inherit: true,
         rules: [
-          // Comments
+          // Comments - Green italic
           { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
+          { token: 'comment.line', foreground: '6A9955', fontStyle: 'italic' },
+          { token: 'comment.block', foreground: '6A9955', fontStyle: 'italic' },
           
-          // Keywords
-          { token: 'keyword', foreground: '569CD6', fontStyle: 'bold' },
+          // Python keywords - Blue/Purple
+          { token: 'keyword', foreground: '569CD6' },
           { token: 'keyword.control', foreground: 'C586C0' },
-          { token: 'keyword.operator', foreground: '569CD6' },
+          { token: 'keyword.operator', foreground: 'D7BA7D' },
+          { token: 'keyword.other', foreground: 'C586C0' },
           
-          // Strings
+          // Python built-in keywords
+          { token: 'keyword.control.import', foreground: 'C586C0' },
+          { token: 'keyword.control.from', foreground: 'C586C0' },
+          { token: 'keyword.control.def', foreground: 'C586C0' },
+          { token: 'keyword.control.class', foreground: 'C586C0' },
+          { token: 'keyword.control.if', foreground: 'C586C0' },
+          { token: 'keyword.control.else', foreground: 'C586C0' },
+          { token: 'keyword.control.elif', foreground: 'C586C0' },
+          { token: 'keyword.control.for', foreground: 'C586C0' },
+          { token: 'keyword.control.while', foreground: 'C586C0' },
+          { token: 'keyword.control.try', foreground: 'C586C0' },
+          { token: 'keyword.control.except', foreground: 'C586C0' },
+          { token: 'keyword.control.finally', foreground: 'C586C0' },
+          { token: 'keyword.control.with', foreground: 'C586C0' },
+          { token: 'keyword.control.return', foreground: 'C586C0' },
+          { token: 'keyword.control.yield', foreground: 'C586C0' },
+          { token: 'keyword.control.pass', foreground: 'C586C0' },
+          { token: 'keyword.control.break', foreground: 'C586C0' },
+          { token: 'keyword.control.continue', foreground: 'C586C0' },
+          
+          // Strings - Orange
           { token: 'string', foreground: 'CE9178' },
           { token: 'string.quoted', foreground: 'CE9178' },
-          { token: 'string.interpolated', foreground: '9CDCFE' },
+          { token: 'string.quoted.single', foreground: 'CE9178' },
+          { token: 'string.quoted.double', foreground: 'CE9178' },
+          { token: 'string.quoted.triple', foreground: 'CE9178' },
+          { token: 'string.interpolated', foreground: 'D7BA7D' },
           
-          // Numbers
+          // Numbers - Light Green
           { token: 'number', foreground: 'B5CEA8' },
+          { token: 'number.integer', foreground: 'B5CEA8' },
+          { token: 'number.float', foreground: 'B5CEA8' },
+          { token: 'number.hex', foreground: 'B5CEA8' },
+          { token: 'number.octal', foreground: 'B5CEA8' },
+          { token: 'number.binary', foreground: 'B5CEA8' },
           
-          // Functions
+          // Functions - Yellow
           { token: 'entity.name.function', foreground: 'DCDCAA' },
           { token: 'support.function', foreground: 'DCDCAA' },
-          { token: 'support.function.builtin', foreground: '4FC1FF' },
+          { token: 'support.function.builtin', foreground: 'DCDCAA' },
+          { token: 'meta.function-call', foreground: 'DCDCAA' },
           
-          // Classes
+          // Classes - Teal
           { token: 'entity.name.class', foreground: '4EC9B0' },
           { token: 'entity.name.type', foreground: '4EC9B0' },
+          { token: 'support.type', foreground: '4EC9B0' },
           
-          // Variables
+          // Variables - Light Blue
           { token: 'variable', foreground: '9CDCFE' },
           { token: 'variable.parameter', foreground: '9CDCFE' },
+          { token: 'variable.other', foreground: '9CDCFE' },
+          { token: 'meta.definition.variable', foreground: '9CDCFE' },
           
-          // Constants
+          // Constants - Blue
           { token: 'constant', foreground: '569CD6' },
           { token: 'constant.language', foreground: '569CD6' },
+          { token: 'constant.numeric', foreground: 'B5CEA8' },
+          { token: 'constant.language.boolean', foreground: '569CD6' },
+          { token: 'constant.language.null', foreground: '569CD6' },
           
-          // Operators
+          // Operators - White
           { token: 'operator', foreground: 'D4D4D4' },
+          { token: 'keyword.operator.arithmetic', foreground: 'D4D4D4' },
+          { token: 'keyword.operator.assignment', foreground: 'D4D4D4' },
+          { token: 'keyword.operator.comparison', foreground: 'D4D4D4' },
+          { token: 'keyword.operator.logical', foreground: 'C586C0' },
+          
+          // Delimiters - Gold
           { token: 'delimiter', foreground: 'D4D4D4' },
           { token: 'delimiter.bracket', foreground: 'FFD700' },
+          { token: 'delimiter.parenthesis', foreground: 'FFD700' },
+          { token: 'delimiter.square', foreground: 'FFD700' },
           
-          // Decorators
+          // Decorators - Purple
           { token: 'entity.name.decorator', foreground: 'C586C0' },
+          { token: 'punctuation.decorator', foreground: 'C586C0' },
           
-          // Invalid
-          { token: 'invalid', foreground: 'F44747', background: '2D1B1B' }
+          // Python specific
+          { token: 'support.function.builtin.python', foreground: 'DCDCAA' },
+          { token: 'variable.language.self', foreground: '569CD6' },
+          { token: 'variable.language.cls', foreground: '569CD6' },
+          
+          // Invalid - Red
+          { token: 'invalid', foreground: 'F44747', background: '2D1B1B' },
+          { token: 'invalid.illegal', foreground: 'F44747', background: '2D1B1B' }
         ],
         colors: {
           'editor.background': '#1E1E1E',
@@ -166,6 +316,9 @@ export default function CodeEditor({
         }
       });
 
+      // Set the theme as default
+      monaco.editor.setTheme('vs-code-dark-plus');
+      
       const newEditor = monaco.editor.create(editorRef.current, {
         value: code,
         language: 'python',
@@ -379,7 +532,7 @@ export default function CodeEditor({
         newEditor.getAction('editor.action.outdentLines')?.run();
       });
 
-      // Add more VS Code-like commands
+      // Add VS Code keyboard shortcuts
       newEditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyD, () => {
         newEditor.getAction('editor.action.addSelectionToNextFindMatch')?.run();
       });
@@ -399,6 +552,21 @@ export default function CodeEditor({
       newEditor.addCommand(monaco.KeyMod.Alt | monaco.KeyCode.DownArrow, () => {
         newEditor.getAction('editor.action.moveLinesDownAction')?.run();
       });
+
+      // Format document
+      newEditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyI, () => {
+        newEditor.getAction('editor.action.formatDocument')?.run();
+      });
+
+      // Force syntax highlighting refresh
+      setTimeout(() => {
+        const model = newEditor.getModel();
+        if (model) {
+          monaco.editor.setModelLanguage(model, 'python');
+          monaco.editor.setTheme('vs-code-dark-plus');
+          newEditor.updateOptions({ theme: 'vs-code-dark-plus' });
+        }
+      }, 100);
 
       // Content change listener
       newEditor.onDidChangeModelContent(() => {
