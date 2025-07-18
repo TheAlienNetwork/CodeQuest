@@ -140,7 +140,7 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
   const progressPercentage = (completedCount / totalQuests) * 100;
 
   return (
-    <div className="h-full bg-[var(--cyber-dark)] text-white overflow-hidden flex flex-col max-h-full">
+    <div className="h-full bg-[var(--cyber-dark)] text-white overflow-hidden flex flex-col">
       <div className="p-3 sm:p-4 lg:p-6 flex-shrink-0">
         <div className="mb-4 sm:mb-6">
         <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-1 sm:mb-2 text-[var(--cyber-cyan)]">
@@ -194,8 +194,7 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
       {/* Quest List - Scrollable Area */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-4 lg:px-6 pb-3 sm:pb-6 space-y-2 sm:space-y-4 lessons-scroll min-h-0" style={{
         scrollbarWidth: 'thin',
-        scrollbarColor: 'var(--cyber-cyan) var(--cyber-gray)',
-        maxHeight: 'calc(100vh - 400px)'
+        scrollbarColor: 'var(--cyber-cyan) var(--cyber-gray)'
       }}>
         {filteredQuests.map((quest) => {
           const status = getQuestStatus(quest.id);

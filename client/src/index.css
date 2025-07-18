@@ -304,6 +304,7 @@
 .tab-container {
   position: relative;
   z-index: 10;
+  min-height: 48px;
 }
 
 /* Ensure proper layout stacking */
@@ -316,6 +317,24 @@ header {
 .main-content {
   position: relative;
   z-index: 1;
+  height: calc(100vh - 88px);
+  max-height: calc(100vh - 88px);
+}
+
+/* Tab responsive styles */
+.tab-container .flex {
+  min-width: max-content;
+}
+
+.tab-container button {
+  min-width: fit-content;
+}
+
+/* Fix for panel heights */
+.lessons-panel {
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .lessons-scroll::-webkit-scrollbar-thumb {

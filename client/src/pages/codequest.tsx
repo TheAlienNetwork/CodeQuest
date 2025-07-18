@@ -397,13 +397,13 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
         </div>
 
         {/* Right Panel - Tabs for Quest/Learning & AI Chat */}
-        <div className="w-2/5 flex flex-col min-h-0">
+        <div className="w-2/5 flex flex-col min-h-0 max-h-full">
           {/* Tab Navigation */}
-          <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-4 py-2 flex-shrink-0 tab-container">
-            <div className="flex space-x-1">
+          <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-2 sm:px-4 py-2 flex-shrink-0 tab-container">
+            <div className="flex space-x-1 overflow-x-auto">
               <button
                 onClick={() => setActiveTab('quest')}
-                className={`px-4 py-2 text-sm font-medium rounded transition-colors ${
+                className={`px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded transition-colors whitespace-nowrap flex-shrink-0 ${
                   activeTab === 'quest'
                     ? 'bg-[var(--cyber-cyan)] text-black'
                     : 'text-gray-400 hover:text-white'
@@ -413,7 +413,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
               </button>
               <button
                 onClick={() => setActiveTab('learning')}
-                className={`px-4 py-2 text-sm font-medium rounded transition-colors ${
+                className={`px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded transition-colors whitespace-nowrap flex-shrink-0 ${
                   activeTab === 'learning'
                     ? 'bg-[var(--cyber-cyan)] text-black'
                     : 'text-gray-400 hover:text-white'
@@ -423,7 +423,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
               </button>
               <button
                 onClick={() => setActiveTab('lessons')}
-                className={`px-4 py-2 text-sm font-medium rounded transition-colors ${
+                className={`px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded transition-colors whitespace-nowrap flex-shrink-0 ${
                   activeTab === 'lessons'
                     ? 'bg-[var(--cyber-cyan)] text-black'
                     : 'text-gray-400 hover:text-white'
@@ -435,7 +435,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           </div>
 
           {/* Tab Content */}
-          <div className="flex-1 bg-[var(--cyber-gray)] overflow-y-auto min-h-0">
+          <div className="flex-1 bg-[var(--cyber-gray)] overflow-hidden min-h-0 max-h-full">
             {activeTab === 'quest' ? (
               <QuestPanel quest={quest} />
             ) : activeTab === 'learning' ? (
@@ -461,7 +461,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           </div>
           
           {/* AI Chat - Fixed Height */}
-          <div className="h-96 flex-shrink-0 border-t border-[var(--cyber-cyan)]/30">
+          <div className="h-80 sm:h-96 flex-shrink-0 border-t border-[var(--cyber-cyan)]/30">
             <AIChat 
               user={currentUser || user}
               quest={selectedQuestId ? { id: selectedQuestId, title: '', description: '' } : quest}
