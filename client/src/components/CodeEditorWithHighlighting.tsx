@@ -126,52 +126,104 @@ export default function CodeEditorWithHighlighting({
     }
   };
 
-  const highlightCode = (code: string): string => {
-    if (!code) return '';
+  // Enhanced syntax highlighting with CSS classes
+  const getHighlightedCode = (code: string): React.ReactNode => {
+    if (!code) return code;
     
-    let highlighted = code
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
+    const lines = code.split('\n');
+    return lines.map((line, lineIndex) => (
+      <div key={lineIndex} className="code-line">
+        {highlightLine(line)}
+      </div>
+    ));
+  };
+
+  const highlightLine = (line: string): React.ReactNode => {
+    if (!line) return '\n';
     
-    // VS Code Python syntax highlighting colors
-    // Comments (#608B4E - VS Code comment green)
-    highlighted = highlighted.replace(/(#.*$)/gm, '<span style="color: #608B4E; font-style: italic;">$1</span>');
+    const elements: React.ReactNode[] = [];
+    let remaining = line;
+    let index = 0;
     
-    // Multiline strings and docstrings (#CE9178 - VS Code string color)
-    highlighted = highlighted.replace(/("""[\s\S]*?"""|'''[\s\S]*?''')/g, '<span style="color: #CE9178; font-style: italic;">$1</span>');
+    while (remaining.length > 0) {
+      // Check for comments
+      const commentMatch = remaining.match(/^(#.*)/);
+      if (commentMatch) {
+        elements.push(
+          <span key={index++} style={{ color: '#608B4E', fontStyle: 'italic' }}>
+            {commentMatch[1]}
+          </span>
+        );
+        remaining = remaining.slice(commentMatch[1].length);
+        continue;
+      }
+      
+      // Check for strings
+      const stringMatch = remaining.match(/^(["'])((?:\\.|(?!\1)[^\\])*?)\1/);
+      if (stringMatch) {
+        elements.push(
+          <span key={index++} style={{ color: '#CE9178' }}>
+            {stringMatch[0]}
+          </span>
+        );
+        remaining = remaining.slice(stringMatch[0].length);
+        continue;
+      }
+      
+      // Check for keywords
+      const keywordMatch = remaining.match(/^(def|class|if|elif|else|for|while|try|except|finally|with|as|import|from|return|yield|pass|break|continue|and|or|not|in|is|lambda|global|nonlocal|assert|del|async|await|raise|match|case)\b/);
+      if (keywordMatch) {
+        elements.push(
+          <span key={index++} style={{ color: '#569CD6', fontWeight: '500' }}>
+            {keywordMatch[1]}
+          </span>
+        );
+        remaining = remaining.slice(keywordMatch[1].length);
+        continue;
+      }
+      
+      // Check for literals
+      const literalMatch = remaining.match(/^(True|False|None)\b/);
+      if (literalMatch) {
+        elements.push(
+          <span key={index++} style={{ color: '#569CD6', fontWeight: '500' }}>
+            {literalMatch[1]}
+          </span>
+        );
+        remaining = remaining.slice(literalMatch[1].length);
+        continue;
+      }
+      
+      // Check for built-in functions
+      const builtinMatch = remaining.match(/^(print|input|len|range|str|int|float|bool|list|dict|set|tuple|type|isinstance|hasattr|getattr|setattr|zip|enumerate|map|filter|sum|min|max|sorted|reversed|all|any|open|iter|next|round|abs|pow|divmod|hex|oct|bin|chr|ord|hash|id|eval|exec|compile|repr|format)\b/);
+      if (builtinMatch) {
+        elements.push(
+          <span key={index++} style={{ color: '#DCDCAA' }}>
+            {builtinMatch[1]}
+          </span>
+        );
+        remaining = remaining.slice(builtinMatch[1].length);
+        continue;
+      }
+      
+      // Check for numbers
+      const numberMatch = remaining.match(/^(0[xX][0-9a-fA-F]+|0[bB][01]+|0[oO][0-7]+|\d+\.?\d*([eE][+-]?\d+)?)/);
+      if (numberMatch) {
+        elements.push(
+          <span key={index++} style={{ color: '#B5CEA8' }}>
+            {numberMatch[1]}
+          </span>
+        );
+        remaining = remaining.slice(numberMatch[1].length);
+        continue;
+      }
+      
+      // Default: add single character
+      elements.push(remaining[0]);
+      remaining = remaining.slice(1);
+    }
     
-    // Single line strings (#CE9178 - VS Code string color)
-    highlighted = highlighted.replace(/(["'])((?:\\.|(?!\1)[^\\])*?)\1/g, '<span style="color: #CE9178;">$1$2$1</span>');
-    
-    // F-strings (#CE9178 with special f prefix in #4FC1FF)
-    highlighted = highlighted.replace(/\b(f)(["'])((?:\\.|(?!\2)[^\\])*?)\2/g, '<span style="color: #4FC1FF;">$1</span><span style="color: #CE9178;">$2$3$2</span>');
-    
-    // Keywords (#569CD6 - VS Code keyword blue)
-    highlighted = highlighted.replace(/\b(def|class|if|elif|else|for|while|try|except|finally|with|as|import|from|return|yield|pass|break|continue|and|or|not|in|is|lambda|global|nonlocal|assert|del|async|await|raise|match|case)\b/g, '<span style="color: #569CD6; font-weight: 500;">$1</span>');
-    
-    // Boolean and None literals (#569CD6 - VS Code constant blue)
-    highlighted = highlighted.replace(/\b(True|False|None)\b/g, '<span style="color: #569CD6; font-weight: 500;">$1</span>');
-    
-    // Built-in functions (#DCDCAA - VS Code function yellow)
-    highlighted = highlighted.replace(/\b(print|input|len|range|str|int|float|bool|list|dict|set|tuple|type|isinstance|hasattr|getattr|setattr|zip|enumerate|map|filter|sum|min|max|sorted|reversed|all|any|open|iter|next|round|abs|pow|divmod|hex|oct|bin|chr|ord|hash|id|eval|exec|compile|repr|format)\b(?=\s*\()?/g, '<span style="color: #DCDCAA;">$1</span>');
-    
-    // Class names (PascalCase) (#4EC9B0 - VS Code class teal)
-    highlighted = highlighted.replace(/\b([A-Z][a-zA-Z0-9_]*)\b/g, '<span style="color: #4EC9B0;">$1</span>');
-    
-    // Numbers (#B5CEA8 - VS Code number green)
-    highlighted = highlighted.replace(/\b(0[xX][0-9a-fA-F]+|0[bB][01]+|0[oO][0-7]+|\d+\.?\d*([eE][+-]?\d+)?)\b/g, '<span style="color: #B5CEA8;">$1</span>');
-    
-    // Decorators (#4FC1FF - VS Code decorator cyan)
-    highlighted = highlighted.replace(/(@\w+)/g, '<span style="color: #4FC1FF; font-weight: 500;">$1</span>');
-    
-    // Operators (#D4D4D4 - VS Code default white/gray)
-    highlighted = highlighted.replace(/(\+|\-|\*{1,2}|\/{1,2}|%|==|!=|<=|>=|<|>|=|\+=|\-=|\*=|\/=|%=|\||\&|\^|~|<<|>>)/g, '<span style="color: #D4D4D4;">$1</span>');
-    
-    // Parentheses, brackets, braces (#FFD700 - VS Code bracket gold)
-    highlighted = highlighted.replace(/([(){}\[\]])/g, '<span style="color: #FFD700;">$1</span>');
-    
-    return highlighted;
+    return elements;
   };
 
   return (
@@ -224,21 +276,6 @@ export default function CodeEditorWithHighlighting({
 
         {/* Editor Area */}
         <div className="flex-1 relative">
-          {/* Syntax Highlighting Layer */}
-          <div
-            ref={highlightRef}
-            className="absolute inset-0 p-4 font-mono text-sm leading-6 pointer-events-none overflow-hidden whitespace-pre-wrap break-words"
-            style={{
-              fontFamily: 'JetBrains Mono, Consolas, "Courier New", monospace',
-              lineHeight: '1.5',
-              color: 'transparent',
-              backgroundColor: 'transparent',
-            }}
-            dangerouslySetInnerHTML={{
-              __html: highlightCode(code)
-            }}
-          />
-          
           {/* Code Textarea */}
           <textarea
             ref={textareaRef}
@@ -246,13 +283,13 @@ export default function CodeEditorWithHighlighting({
             onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}
             onScroll={handleScroll}
-            className="absolute inset-0 bg-transparent text-transparent font-mono text-sm leading-6 p-4 resize-none outline-none"
+            className="absolute inset-0 bg-transparent text-white font-mono text-sm leading-6 p-4 resize-none outline-none"
             style={{
               fontFamily: 'JetBrains Mono, Consolas, "Courier New", monospace',
               lineHeight: '1.5',
               tabSize: 4,
               backgroundColor: 'transparent',
-              caretColor: '#569CD6',
+              caretColor: 'var(--cyber-cyan)',
             }}
             placeholder="# Write your Python code here..."
             spellCheck={false}
