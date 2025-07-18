@@ -56,6 +56,8 @@ function App() {
             }
           })
           .then(userData => {
+            // Update localStorage with fresh user data from database
+            localStorage.setItem('codequest-user', JSON.stringify(userData));
             setUser(userData);
             setCurrentView('game');
           })
