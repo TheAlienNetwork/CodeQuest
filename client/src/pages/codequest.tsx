@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { CodeEditor } from '@/components/CodeEditor';
 import CodeEditorWithHighlighting from '@/components/CodeEditorWithHighlighting';
 import TerminalOutput from '@/components/TerminalOutput';
 import AIChat from '@/components/AIChat';

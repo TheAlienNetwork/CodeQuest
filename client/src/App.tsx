@@ -40,9 +40,11 @@ function App() {
   useEffect(() => {
     // Check if user is already logged in (localStorage)
     const savedUser = localStorage.getItem('codequest-user');
+    console.log('Checking saved user:', savedUser);
     if (savedUser) {
       try {
         const parsedUser = JSON.parse(savedUser);
+        console.log('Parsed user:', parsedUser);
         setUser(parsedUser);
         setCurrentView('game');
       } catch (error) {
@@ -50,6 +52,7 @@ function App() {
         localStorage.removeItem('codequest-user');
       }
     }
+    console.log('Setting loading to false');
     setIsLoading(false);
   }, []);
 
