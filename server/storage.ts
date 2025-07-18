@@ -19,7 +19,7 @@ import { eq } from "drizzle-orm";
 export interface IStorage {
   // User methods
   getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: number, updates: Partial<User>): Promise<User | undefined>;
   updateUserXP(id: number, xpGain: number): Promise<User | undefined>;
@@ -69,8 +69,10 @@ export class MemStorage implements IStorage {
     // Create a default user for testing
     const defaultUser: User = {
       id: 1,
-      username: "Hero",
+      email: "hero@codequest.com",
+      adventurersName: "Hero",
       password: "password",
+      profileImageUrl: null,
       xp: 0,
       level: 1,
       rank: "Code Newbie",
@@ -102,9 +104,9 @@ export class MemStorage implements IStorage {
     return this.users.get(id);
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
+  async getUserByEmail(email: string): Promise<User | undefined> {
     return Array.from(this.users.values()).find(
-      (user) => user.username === username,
+      (user) => user.email === email,
     );
   }
 
@@ -113,6 +115,7 @@ export class MemStorage implements IStorage {
     const user: User = {
       ...insertUser,
       id,
+      profileImageUrl: null,
       xp: 0,
       level: 1,
       rank: "Code Newbie",

@@ -1,27 +1,122 @@
-import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/not-found";
-import CodeQuest from "@/pages/codequest";
+import { useState, useEffect } from 'react';
+import { Route, Switch } from 'wouter';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster } from '@/components/ui/toaster';
+import CodeQuest from '@/pages/codequest';
+import NotFound from '@/pages/not-found';
+import Login from '@/pages/login';
+import Register from '@/pages/register';
+import Profile from '@/pages/profile';
 
-function Router() {
-  return (
-    <Switch>
-      <Route path="/" component={CodeQuest} />
-      <Route path="/codequest" component={CodeQuest} />
-      <Route component={NotFound} />
-    </Switch>
-  );
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      staleTime: 5 * 60 * 1000,
+    },
+  },
+});
+
+interface User {
+  id: number;
+  email: string;
+  adventurersName: string;
+  profileImageUrl?: string;
+  xp: number;
+  level: number;
+  rank: string;
+  achievements: number;
+  streak: number;
+  currentQuest: number;
+  completedQuests: number[];
 }
 
 function App() {
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentView, setCurrentView] = useState<'login' | 'register' | 'game' | 'profile'>('login');
+
+  useEffect(() => {
+    // Check if user is already logged in (localStorage)
+    const savedUser = localStorage.getItem('codequest-user');
+    if (savedUser) {
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
+        setCurrentView('game');
+      } catch (error) {
+        console.error('Error parsing saved user:', error);
+        localStorage.removeItem('codequest-user');
+      }
+    }
+    setIsLoading(false);
+  }, []);
+
+  const handleLogin = (loggedInUser: User) => {
+    setUser(loggedInUser);
+    localStorage.setItem('codequest-user', JSON.stringify(loggedInUser));
+    setCurrentView('game');
+  };
+
+  const handleRegister = (newUser: User) => {
+    setUser(newUser);
+    localStorage.setItem('codequest-user', JSON.stringify(newUser));
+    setCurrentView('game');
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('codequest-user');
+    setCurrentView('login');
+  };
+
+  const handleUserUpdate = (updatedUser: User) => {
+    setUser(updatedUser);
+    localStorage.setItem('codequest-user', JSON.stringify(updatedUser));
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[var(--cyber-dark)] flex items-center justify-center">
+        <div className="text-[var(--cyber-cyan)] text-xl">Loading CodeQuest...</div>
+      </div>
+    );
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <div className="min-h-screen bg-[var(--cyber-dark)]">
+          {currentView === 'login' && (
+            <Login 
+              onLogin={handleLogin} 
+              onShowRegister={() => setCurrentView('register')} 
+            />
+          )}
+          {currentView === 'register' && (
+            <Register 
+              onRegister={handleRegister} 
+              onShowLogin={() => setCurrentView('login')} 
+            />
+          )}
+          {currentView === 'game' && user && (
+            <CodeQuest 
+              user={user} 
+              onUserUpdate={handleUserUpdate}
+              onLogout={handleLogout}
+              onShowProfile={() => setCurrentView('profile')}
+            />
+          )}
+          {currentView === 'profile' && user && (
+            <Profile 
+              user={user} 
+              onBack={() => setCurrentView('game')}
+              onUserUpdate={handleUserUpdate}
+            />
+          )}
+        </div>
         <Toaster />
-        <Router />
       </TooltipProvider>
     </QueryClientProvider>
   );

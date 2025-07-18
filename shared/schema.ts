@@ -4,8 +4,10 @@ import { z } from "zod";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
+  email: text("email").notNull().unique(),
+  adventurersName: text("adventurers_name").notNull(),
   password: text("password").notNull(),
+  profileImageUrl: text("profile_image_url"),
   xp: integer("xp").notNull().default(0),
   level: integer("level").notNull().default(1),
   rank: text("rank").notNull().default("Code Newbie"),
@@ -52,7 +54,13 @@ export const codeSubmissions = pgTable("code_submissions", {
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
+  email: true,
+  adventurersName: true,
+  password: true,
+});
+
+export const loginUserSchema = createInsertSchema(users).pick({
+  email: true,
   password: true,
 });
 

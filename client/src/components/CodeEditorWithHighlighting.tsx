@@ -132,31 +132,18 @@ export default function CodeEditorWithHighlighting({
 
         {/* Editor Area */}
         <div className="flex-1 relative">
-          {/* Syntax Highlighted Background */}
-          <div
-            ref={highlightRef}
-            className="absolute inset-0 p-4 pointer-events-none overflow-auto font-mono text-sm leading-6 whitespace-pre-wrap"
-            style={{
-              fontFamily: 'JetBrains Mono, Consolas, "Courier New", monospace',
-              lineHeight: '1.5',
-              tabSize: 4,
-            }}
-            dangerouslySetInnerHTML={{ __html: highlightCode(code) }}
-          />
-
-          {/* Invisible Textarea */}
+          {/* Code Textarea */}
           <textarea
             ref={textareaRef}
             value={code}
             onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}
             onScroll={handleScroll}
-            className="absolute inset-0 bg-transparent text-transparent font-mono text-sm leading-6 p-4 resize-none outline-none caret-white"
+            className="absolute inset-0 bg-transparent text-white font-mono text-sm leading-6 p-4 resize-none outline-none"
             style={{
               fontFamily: 'JetBrains Mono, Consolas, "Courier New", monospace',
               lineHeight: '1.5',
               tabSize: 4,
-              color: 'transparent',
               backgroundColor: 'transparent',
               caretColor: 'var(--cyber-cyan)',
             }}

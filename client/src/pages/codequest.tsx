@@ -7,12 +7,15 @@ import QuestPanel from '@/components/QuestPanel';
 import XPBar from '@/components/XPBar';
 import LearningPanel from '@/components/LearningPanel';
 import LessonsPanel from '@/components/LessonsPanel';
+import ProfileIcon from '@/components/ProfileIcon';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 
 interface User {
   id: number;
-  username: string;
+  email: string;
+  adventurersName: string;
+  profileImageUrl?: string;
   xp: number;
   level: number;
   rank: string;
