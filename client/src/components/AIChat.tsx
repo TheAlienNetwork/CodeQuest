@@ -254,7 +254,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
   }
 
   return (
-    <div className="h-full bg-gradient-to-br from-[var(--cyber-dark)] to-[var(--cyber-darker)] text-white flex flex-col shadow-2xl">
+    <div className="h-[600px] max-h-[600px] bg-gradient-to-br from-[var(--cyber-dark)] to-[var(--cyber-darker)] text-white flex flex-col shadow-2xl overflow-hidden">
       {/* Modern Header */}
       <div className="p-6 border-b border-[var(--cyber-accent)]/30 bg-gradient-to-r from-[var(--cyber-dark)] to-[var(--cyber-gray)]">
         <div className="flex items-center justify-between">
@@ -318,7 +318,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 chat-messages" style={{
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 chat-messages max-h-[300px]" style={{
         scrollbarWidth: 'thin',
         scrollbarColor: 'var(--cyber-cyan) var(--cyber-gray)'
       }}>

@@ -270,6 +270,15 @@
   background: rgba(34, 197, 255, 0.8);
 }
 
+/* Mobile chat scrolling */
+@media (max-width: 767px) {
+  .chat-messages {
+    max-height: 200px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 /* Custom scrollbar for lessons panel */
 .lessons-scroll::-webkit-scrollbar {
   width: 4px;
@@ -298,6 +307,17 @@
 @media (max-width: 1023px) {
   .mobile-hidden {
     display: none !important;
+  }
+  
+  /* Mobile scrolling fixes */
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  
+  .mobile-scroll {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
