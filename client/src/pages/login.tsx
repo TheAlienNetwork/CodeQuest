@@ -1,10 +1,16 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import { apiRequest } from '@/lib/queryClient';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 interface LoginProps {
   onLogin: (user: any) => void;
@@ -12,8 +18,8 @@ interface LoginProps {
 }
 
 export default function Login({ onLogin, onShowRegister }: LoginProps) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -22,11 +28,11 @@ export default function Login({ onLogin, onShowRegister }: LoginProps) {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-        credentials: 'include',
+        credentials: "include",
       });
 
       const result = await response.json();
@@ -61,7 +67,7 @@ export default function Login({ onLogin, onShowRegister }: LoginProps) {
         <Card className="bg-[var(--cyber-gray)] border-[var(--cyber-cyan)]/30">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-[var(--cyber-cyan)]">
-              🚀 Welcome to CodeQuest
+              🚀 Welcome to Code_Quest By New Well Technologies
             </CardTitle>
             <CardDescription className="text-gray-400">
               Enter your credentials to continue your coding adventure
@@ -100,12 +106,12 @@ export default function Login({ onLogin, onShowRegister }: LoginProps) {
                 disabled={isLoading}
                 className="w-full btn-cyber"
               >
-                {isLoading ? 'Logging in...' : 'Login'}
+                {isLoading ? "Logging in..." : "Login"}
               </Button>
             </form>
             <div className="mt-4 text-center">
               <p className="text-gray-400">
-                Don't have an account?{' '}
+                Don't have an account?{" "}
                 <button
                   onClick={onShowRegister}
                   className="text-[var(--cyber-cyan)] hover:text-[var(--cyber-pink)] font-medium"
