@@ -43,10 +43,7 @@ export default function Register({ onRegister, onShowLogin }: RegisterProps) {
     setIsLoading(true);
 
     try {
-      const response = await apiRequest('/api/register', {
-        method: 'POST',
-        body: { email, adventurersName, password },
-      });
+      const response = await apiRequest('POST', '/api/register', { email, adventurersName, password });
 
       if (response.success) {
         onRegister(response.user);
