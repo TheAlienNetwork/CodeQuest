@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Play, Bot, Lightbulb } from 'lucide-react';
-import PythonSyntaxHighlighter from './PythonSyntaxHighlighter';
 
-interface SimpleCodeEditorProps {
+interface CodeEditorProps {
   code: string;
   onChange: (code: string) => void;
   onRunCode: () => void;
@@ -13,7 +12,7 @@ interface SimpleCodeEditorProps {
   isAnalyzing: boolean;
 }
 
-export default function SimpleCodeEditor({
+export default function CodeEditorWithHighlighting({
   code,
   onChange,
   onRunCode,
@@ -21,8 +20,9 @@ export default function SimpleCodeEditor({
   onGetHint,
   isRunning,
   isAnalyzing
-}: SimpleCodeEditorProps) {
+}: CodeEditorProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const highlightRef = useRef<HTMLDivElement>(null);
   const [lineNumbers, setLineNumbers] = useState<number[]>([]);
 
   useEffect(() => {
@@ -38,7 +38,6 @@ export default function SimpleCodeEditor({
       const newValue = code.substring(0, start) + '    ' + code.substring(end);
       onChange(newValue);
       
-      // Set cursor position after the tab
       setTimeout(() => {
         if (textareaRef.current) {
           textareaRef.current.selectionStart = start + 4;
@@ -49,6 +48,38 @@ export default function SimpleCodeEditor({
       e.preventDefault();
       onRunCode();
     }
+  };
+
+  const handleScroll = () => {
+    if (textareaRef.current && highlightRef.current) {
+      highlightRef.current.scrollTop = textareaRef.current.scrollTop;
+      highlightRef.current.scrollLeft = textareaRef.current.scrollLeft;
+    }
+  };
+
+  const highlightCode = (code: string): string => {
+    let highlighted = code;
+    
+    // Replace in order: Comments first, then strings, then keywords, etc.
+    // Comments
+    highlighted = highlighted.replace(/(#.*$)/gm, '<span style="color: #6b7280; font-style: italic;">$1</span>');
+    
+    // Strings (avoiding already highlighted content)
+    highlighted = highlighted.replace(/(["'])((?:\\.|(?!\1)[^\\<])*?)\1/g, '<span style="color: #22c55e;">$1$2$1</span>');
+    
+    // Keywords (avoiding already highlighted content)
+    highlighted = highlighted.replace(/\b(def|class|if|elif|else|for|while|try|except|finally|with|as|import|from|return|yield|pass|break|continue|and|or|not|in|is|lambda|global|nonlocal|assert|del|True|False|None)\b/g, '<span style="color: #a855f7; font-weight: bold;">$1</span>');
+    
+    // Built-in functions
+    highlighted = highlighted.replace(/\b(print|input|len|range|str|int|float|bool|list|dict|set|tuple|type|isinstance|hasattr|getattr|setattr|zip|enumerate|map|filter|sum|min|max|sorted|reversed|all|any)\b(?=\s*\()/g, '<span style="color: #ec4899;">$1</span>');
+    
+    // Numbers
+    highlighted = highlighted.replace(/\b(\d+\.?\d*)\b/g, '<span style="color: #06b6d4;">$1</span>');
+    
+    // Operators
+    highlighted = highlighted.replace(/(\+|\-|\*|\/|%|==|!=|<=|>=|<|>|=|\+=|\-=|\*=|\/=)/g, '<span style="color: #06b6d4;">$1</span>');
+    
+    return highlighted;
   };
 
   return (
@@ -88,30 +119,46 @@ export default function SimpleCodeEditor({
         </div>
       </div>
 
-      {/* Editor */}
-      <div className="flex-1 flex bg-[var(--cyber-dark)] text-white font-mono relative">
+      {/* Editor Container */}
+      <div className="flex-1 flex bg-[var(--cyber-dark)] text-white font-mono relative overflow-hidden">
         {/* Line Numbers */}
-        <div className="bg-[var(--cyber-gray)] border-r border-[var(--cyber-cyan)]/30 px-3 py-4 select-none">
+        <div className="bg-[var(--cyber-gray)] border-r border-[var(--cyber-cyan)]/30 px-3 py-4 select-none min-w-[60px] text-right">
           {lineNumbers.map((num) => (
-            <div key={num} className="text-sm text-gray-400 leading-6">
+            <div key={num} className="text-sm text-gray-400 leading-6 h-6">
               {num}
             </div>
           ))}
         </div>
 
-        {/* Code Area */}
+        {/* Editor Area */}
         <div className="flex-1 relative">
+          {/* Syntax Highlighted Background */}
+          <div
+            ref={highlightRef}
+            className="absolute inset-0 p-4 pointer-events-none overflow-auto font-mono text-sm leading-6 whitespace-pre-wrap"
+            style={{
+              fontFamily: 'JetBrains Mono, Consolas, "Courier New", monospace',
+              lineHeight: '1.5',
+              tabSize: 4,
+            }}
+            dangerouslySetInnerHTML={{ __html: highlightCode(code) }}
+          />
+
+          {/* Invisible Textarea */}
           <textarea
             ref={textareaRef}
             value={code}
             onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full h-full bg-transparent text-white font-mono text-sm leading-6 p-4 resize-none outline-none python-code-editor"
+            onScroll={handleScroll}
+            className="absolute inset-0 bg-transparent text-transparent font-mono text-sm leading-6 p-4 resize-none outline-none caret-white"
             style={{
               fontFamily: 'JetBrains Mono, Consolas, "Courier New", monospace',
               lineHeight: '1.5',
               tabSize: 4,
+              color: 'transparent',
               backgroundColor: 'transparent',
+              caretColor: 'var(--cyber-cyan)',
             }}
             placeholder="# Write your Python code here..."
             spellCheck={false}
