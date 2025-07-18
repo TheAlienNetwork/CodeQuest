@@ -33,8 +33,28 @@ interface LessonsPanelProps {
 export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProps) {
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
 
-  const { data: user, isLoading: userLoading, error: userError } = useQuery<User>({ queryKey: [`/api/user/${userId}`] });
-  const { data: allQuests, isLoading: questsLoading, error: questsError } = useQuery<Quest[]>({ queryKey: ['/api/quests'] });
+  const { data: user, isLoading: userLoading, error: userError } = useQuery<User>({ 
+    queryKey: [`/api/user/${userId}`],
+    queryFn: async () => {
+      const response = await fetch(`/api/user/${userId}`);
+      if (!response.ok) throw new Error('Failed to fetch user');
+      return response.json();
+    },
+    retry: 3,
+    staleTime: 5000,
+  });
+  const { data: allQuests, isLoading: questsLoading, error: questsError } = useQuery<Quest[]>({ 
+    queryKey: ['/api/quests'],
+    queryFn: async () => {
+      const response = await fetch('/api/quests');
+      if (!response.ok) throw new Error('Failed to fetch quests');
+      return response.json();
+    },
+    retry: 3,
+    staleTime: 5000,
+  });
+
+  // Debug logging has been removed - data is loading successfully
 
   // Show error state if there are errors
   if (userError || questsError) {
@@ -42,7 +62,11 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
       <div className="h-full bg-[var(--cyber-dark)] text-white p-6 flex items-center justify-center">
         <div className="text-center">
           <div className="text-xl mb-2">⚠️ Error loading curriculum</div>
-          <div className="text-gray-400">Please refresh the page</div>
+          <div className="text-gray-400">
+            {userError && <div>User error: {userError.message}</div>}
+            {questsError && <div>Quests error: {questsError.message}</div>}
+            <div>Please refresh the page</div>
+          </div>
         </div>
       </div>
     );
@@ -60,8 +84,8 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
     );
   }
 
-  // Show no data message if no data exists
-  if (!allQuests || allQuests.length === 0) {
+  // Show no data message only if quests are definitely empty (not loading)
+  if (!questsLoading && (!allQuests || allQuests.length === 0)) {
     return (
       <div className="h-full bg-[var(--cyber-dark)] text-white p-6 flex items-center justify-center">
         <div className="text-center">
