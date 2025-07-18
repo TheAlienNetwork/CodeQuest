@@ -35,12 +35,9 @@ export default function Profile({ user, onBack, onUserUpdate }: ProfileProps) {
   const handleSave = async () => {
     setIsLoading(true);
     try {
-      const response = await apiRequest(`/api/user/${user.id}`, {
-        method: 'PUT',
-        body: {
-          adventurersName,
-          profileImageUrl: profileImageUrl || null,
-        },
+      const response = await apiRequest('PUT', `/api/user/${user.id}`, {
+        adventurersName,
+        profileImageUrl: profileImageUrl || null,
       });
 
       onUserUpdate(response);
