@@ -215,9 +215,8 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
 
       const result = await response.json();
 
-      if (result.xpPenalty < 0) {
-        showXPGainAnimation(result.xpPenalty);
-      }
+      // Don't show level up popup for AI assistance penalties
+      // Just quietly update user data
 
       toast({
         title: "Hint 💡",
@@ -244,9 +243,8 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
 
       const result = await response.json();
 
-      if (result.xpPenalty < 0) {
-        showXPGainAnimation(result.xpPenalty);
-      }
+      // Don't show level up popup for AI assistance penalties
+      // Just quietly update user data
 
       toast({
         title: "Solution 👁️",
@@ -273,9 +271,8 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
 
       const result = await response.json();
 
-      if (result.explanationPenalty < 0) {
-        showXPGainAnimation(result.explanationPenalty);
-      }
+      // Don't show level up popup for AI assistance penalties
+      // Just quietly update user data
 
       toast({
         title: "Explanation 🤔",
@@ -459,9 +456,6 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
               onChange={setCode}
               onRunCode={handleRunCode}
               onAnalyzeCode={handleAnalyzeCode}
-              onGetHint={handleGetHint}
-              onGetSolution={handleGetSolution}
-              onGetExplanation={handleGetExplanation}
               isRunning={isRunning}
               isAnalyzing={isAnalyzing}
             />

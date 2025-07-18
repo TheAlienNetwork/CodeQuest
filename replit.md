@@ -96,6 +96,21 @@ User requested: Remove OpenAI dependency, create custom AI logic, add learning p
 
 ## Recent Changes (July 2025)
 
+### Latest Fixes (July 18, 2025)
+- **Layout Stability Fix**: Fixed issue where tabs and buttons would go under header when switching quests
+  - Changed from fixed height calculations to proper flexbox layout
+  - Added proper z-index layering (header: 30, tabs: 20, content: 10)
+  - Implemented quest transition handling to prevent layout disruption
+- **AI Tutor Button Consolidation**: Removed duplicate hint/solution/explanation buttons from code editor toolbar
+  - All AI assistance buttons are now only in the AI tutor container
+  - Cleaner, less cluttered interface
+- **Removed Level Up Popups for AI Assistance**: No more level up notifications when using hints, solutions, or explanations
+  - XP penalties still apply but don't trigger visual notifications
+  - Smoother user experience without interruptions
+- **Fixed Solution Button Error**: Resolved "require is not defined" error in solution generation
+  - Updated to use ES6 imports instead of CommonJS require
+  - Added fallback solutions for first 5 quests
+
 ### User Interface Enhancements (July 18, 2025)
 - **Enhanced Scrollbar**: Added vibrant gradient cyberpunk scrollbar with forced visibility in lessons panel
 - **VS Code Python Syntax Highlighting**: Implemented authentic VS Code color scheme with proper syntax highlighting

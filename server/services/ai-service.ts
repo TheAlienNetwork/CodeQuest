@@ -475,17 +475,35 @@ for fruit in fruits:
   }
 
   async getSolution(questId: number, userId: number): Promise<string> {
-    // Load quest data to get solution
-    const fs = require('fs');
-    const path = require('path');
-    
+    // Load quest data to get solution using ES6 imports
     try {
-      const questsPath = path.join(__dirname, '../data/comprehensive-quests.json');
-      const questsData = JSON.parse(fs.readFileSync(questsPath, 'utf8'));
+      const { readFileSync } = await import('fs');
+      const { join } = await import('path');
+      const { fileURLToPath } = await import('url');
+      const { dirname } = await import('path');
+      
+      const __filename = fileURLToPath(import.meta.url || 'file://' + __filename);
+      const __dirname = dirname(__filename);
+      
+      const questsPath = join(__dirname, '../data/comprehensive-quests.json');
+      const questsData = JSON.parse(readFileSync(questsPath, 'utf8'));
       const quest = questsData.find((q: any) => q.id === questId);
       
       if (quest && quest.solutionCode) {
         return `Here's the complete solution:\n\n${quest.solutionCode}\n\nThis solution demonstrates the key concepts needed for this quest.`;
+      }
+      
+      // Fallback solutions for first few quests
+      const fallbackSolutions: { [key: number]: string } = {
+        1: 'print("Hello, World!")',
+        2: 'adventurer_name = "Hero"\nage = 25\nweapon = "Magic Sword"\nprint(adventurer_name)\nprint(age)\nprint(weapon)',
+        3: 'strength = 10\nmagic_power = 7.5\ntotal_power = strength + magic_power\nprint(total_power)',
+        4: 'level = 1\nif level == 1:\n    print("Welcome, brave adventurer!")',
+        5: 'for i in range(1, 6):\n    print(f"Casting spell {i}")'
+      };
+      
+      if (fallbackSolutions[questId]) {
+        return `Here's the complete solution:\n\n${fallbackSolutions[questId]}\n\nThis solution demonstrates the key concepts needed for this quest.`;
       }
     } catch (error) {
       console.error('Error loading quest solution:', error);

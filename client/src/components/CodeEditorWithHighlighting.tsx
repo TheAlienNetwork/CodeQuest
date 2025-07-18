@@ -7,9 +7,6 @@ interface CodeEditorProps {
   onChange: (code: string) => void;
   onRunCode: () => void;
   onAnalyzeCode: () => void;
-  onGetHint: () => void;
-  onGetSolution: () => void;
-  onGetExplanation: () => void;
   isRunning: boolean;
   isAnalyzing: boolean;
 }
@@ -19,9 +16,6 @@ export default function CodeEditorWithHighlighting({
   onChange,
   onRunCode,
   onAnalyzeCode,
-  onGetHint,
-  onGetSolution,
-  onGetExplanation,
   isRunning,
   isAnalyzing
 }: CodeEditorProps) {
@@ -292,27 +286,6 @@ export default function CodeEditorWithHighlighting({
           >
             <Bot className="w-4 h-4 mr-1" />
             {isAnalyzing ? 'Analyzing...' : 'Analyze'}
-          </Button>
-          <Button
-            onClick={onGetHint}
-            className="btn-cyber-sm"
-          >
-            <Lightbulb className="w-4 h-4 mr-1" />
-            Hint (-10 XP)
-          </Button>
-          <Button
-            onClick={onGetSolution}
-            className="btn-cyber-sm"
-          >
-            <Eye className="w-4 h-4 mr-1" />
-            Solution (-25 XP)
-          </Button>
-          <Button
-            onClick={onGetExplanation}
-            className="btn-cyber-sm"
-          >
-            <HelpCircle className="w-4 h-4 mr-1" />
-            Explain (-15 XP)
           </Button>
         </div>
       </div>
