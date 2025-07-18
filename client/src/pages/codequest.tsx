@@ -368,7 +368,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
       </header>
 
       {/* Main Content Area */}
-      <div className="flex h-[calc(100vh-80px)] overflow-hidden">
+      <div className="flex h-[calc(100vh-88px)] overflow-hidden main-content">
         {/* Left Panel - Code Editor */}
         <div className="w-3/5 flex flex-col border-r border-[var(--cyber-cyan)]/30">
           <div className="flex-1 min-h-0">
@@ -399,7 +399,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
         {/* Right Panel - Tabs for Quest/Learning & AI Chat */}
         <div className="w-2/5 flex flex-col min-h-0">
           {/* Tab Navigation */}
-          <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-4 py-2 flex-shrink-0">
+          <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-4 py-2 flex-shrink-0 tab-container">
             <div className="flex space-x-1">
               <button
                 onClick={() => setActiveTab('quest')}

@@ -300,6 +300,24 @@
   background: var(--cyber-gray);
 }
 
+/* Fix for tab positioning */
+.tab-container {
+  position: relative;
+  z-index: 10;
+}
+
+/* Ensure proper layout stacking */
+header {
+  position: relative;
+  z-index: 20;
+}
+
+/* Fix for main content positioning */
+.main-content {
+  position: relative;
+  z-index: 1;
+}
+
 .lessons-scroll::-webkit-scrollbar-thumb {
   background: var(--cyber-cyan);
   border-radius: 3px;
