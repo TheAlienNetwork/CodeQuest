@@ -71,6 +71,10 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   // Fetch current quest
   const { data: quest, isLoading: questLoading, error: questError, refetch } = useQuery<Quest>({
     queryKey: ['/api/quest', user?.id],
+    queryFn: async () => {
+      const response = await apiRequest('GET', `/api/quest/${user?.id}`);
+      return response.json();
+    },
     enabled: !!user?.id,
     retry: 5,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
@@ -270,7 +274,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
         setCode(result.nextQuest.startingCode || '');
         setQuestCompleted(false);
         setActiveTab('quest');
-        refetchQuest();
+        refetch();
         if (result.user) {
           onUserUpdate(result.user);
         }
