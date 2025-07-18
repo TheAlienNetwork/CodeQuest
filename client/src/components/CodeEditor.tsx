@@ -30,8 +30,11 @@ export default function CodeEditor({
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/monaco-editor@0.44.0/min/vs/loader.js';
     script.onload = () => {
-      (window as any).require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.44.0/min/vs' } });
+      (window as any).require.config({ 
+        paths: { 'vs': 'https://unpkg.com/monaco-editor@0.44.0/min/vs' }
+      });
       (window as any).require(['vs/editor/editor.main'], (monacoModule: any) => {
+        console.log('Monaco loaded successfully');
         setMonaco(monacoModule);
       });
     };
@@ -46,18 +49,14 @@ export default function CodeEditor({
 
   useEffect(() => {
     if (monaco && editorRef.current && !editor) {
-      // Define the exact VS Code Dark+ theme
-      monaco.editor.defineTheme('vscode-dark-plus', {
-        base: 'vs-dark',
-        inherit: false,
-        rules: [
-          // Base colors
-          { token: '', foreground: 'D4D4D4' },
-          { token: 'invalid', foreground: 'f44747' },
-          { token: 'emphasis', fontStyle: 'italic' },
-          { token: 'strong', fontStyle: 'bold' },
+      console.log('Setting up Monaco editor with VS Code Dark+ theme');
 
-          // Comments - Green italic
+      // Define VS Code Dark+ theme with proper token colors
+      monaco.editor.defineTheme('vs-code-dark-plus', {
+        base: 'vs-dark',
+        inherit: true,
+        rules: [
+          // Comments - Green and italic
           { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
           { token: 'comment.line', foreground: '6A9955', fontStyle: 'italic' },
           { token: 'comment.block', foreground: '6A9955', fontStyle: 'italic' },
@@ -68,60 +67,46 @@ export default function CodeEditor({
           { token: 'string.quoted.single', foreground: 'CE9178' },
           { token: 'string.quoted.double', foreground: 'CE9178' },
           { token: 'string.quoted.triple', foreground: 'CE9178' },
-          { token: 'string.escape', foreground: 'D7BA7D' },
 
           // Numbers - Light green
           { token: 'number', foreground: 'B5CEA8' },
           { token: 'number.integer', foreground: 'B5CEA8' },
           { token: 'number.float', foreground: 'B5CEA8' },
           { token: 'number.hex', foreground: 'B5CEA8' },
-          { token: 'number.octal', foreground: 'B5CEA8' },
-          { token: 'number.binary', foreground: 'B5CEA8' },
 
-          // Keywords - Blue/Purple
-          { token: 'keyword', foreground: '569CD6' },
+          // Keywords - Purple/Blue
+          { token: 'keyword', foreground: 'C586C0' },
           { token: 'keyword.control', foreground: 'C586C0' },
-          { token: 'keyword.control.flow', foreground: 'C586C0' },
-          { token: 'keyword.control.import', foreground: 'C586C0' },
-          { token: 'keyword.operator', foreground: '569CD6' },
-          { token: 'storage.type', foreground: '569CD6' },
-          { token: 'storage.modifier', foreground: '569CD6' },
+          { token: 'keyword.operator', foreground: 'C586C0' },
+          { token: 'storage.type', foreground: 'C586C0' },
 
           // Functions - Yellow
           { token: 'entity.name.function', foreground: 'DCDCAA' },
           { token: 'support.function', foreground: 'DCDCAA' },
-          { token: 'support.function.builtin', foreground: 'DCDCAA' },
 
           // Variables - Light blue
           { token: 'variable', foreground: '9CDCFE' },
           { token: 'variable.parameter', foreground: '9CDCFE' },
-          { token: 'variable.other', foreground: '9CDCFE' },
 
           // Operators - White
           { token: 'keyword.operator.arithmetic', foreground: 'D4D4D4' },
           { token: 'keyword.operator.assignment', foreground: 'D4D4D4' },
           { token: 'keyword.operator.comparison', foreground: 'D4D4D4' },
-          { token: 'keyword.operator.logical', foreground: 'D4D4D4' },
 
-          // Brackets - Gold
+          // Brackets - Gold  
           { token: 'punctuation.parenthesis', foreground: 'FFD700' },
           { token: 'punctuation.bracket', foreground: 'FFD700' },
           { token: 'punctuation.square', foreground: 'FFD700' },
-
-          // Classes - Teal
-          { token: 'entity.name.class', foreground: '4EC9B0' },
-          { token: 'entity.name.type', foreground: '4EC9B0' },
-          { token: 'support.type', foreground: '4EC9B0' },
+          { token: 'delimiter.bracket', foreground: 'FFD700' },
 
           // Constants
-          { token: 'constant', foreground: '569CD6' },
           { token: 'constant.language', foreground: '569CD6' },
           { token: 'constant.language.boolean', foreground: '569CD6' },
           { token: 'constant.language.null', foreground: '569CD6' },
 
-          // Delimiters
-          { token: 'punctuation.delimiter', foreground: 'D4D4D4' },
-          { token: 'punctuation.separator', foreground: 'D4D4D4' },
+          // Classes
+          { token: 'entity.name.class', foreground: '4EC9B0' },
+          { token: 'entity.name.type', foreground: '4EC9B0' },
         ],
         colors: {
           'editor.background': '#1E1E1E',
@@ -130,12 +115,7 @@ export default function CodeEditor({
           'editorLineNumber.activeForeground': '#C6C6C6',
           'editor.lineHighlightBackground': '#2D2D30',
           'editor.selectionBackground': '#264F78',
-          'editor.inactiveSelectionBackground': '#3A3D41',
           'editorCursor.foreground': '#AEAFAD',
-          'editorWhitespace.foreground': '#404040',
-          'scrollbarSlider.background': '#79797966',
-          'scrollbarSlider.hoverBackground': '#646464b3',
-          'scrollbarSlider.activeBackground': '#bfbfbf66',
         }
       });
 
@@ -170,32 +150,26 @@ export default function CodeEditor({
         }
       });
 
-      // Register comprehensive Python tokenizer
+      // Python syntax highlighting with Monarch
       monaco.languages.setMonarchTokensProvider('python', {
         defaultToken: '',
         tokenPostfix: '.python',
 
         keywords: [
-          'and', 'as', 'assert', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else',
-          'except', 'exec', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is',
-          'lambda', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield',
-          'nonlocal', 'async', 'await'
+          'False', 'None', 'True', 'and', 'as', 'assert', 'break', 'class', 'continue', 'def',
+          'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import',
+          'in', 'is', 'lambda', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with',
+          'yield', 'async', 'await', 'nonlocal'
         ],
 
         builtins: [
-          'True', 'False', 'None', '__debug__',
-          'NotImplemented', 'Ellipsis', '__name__', '__doc__'
-        ],
-
-        functions: [
-          'abs', 'all', 'any', 'ascii', 'bin', 'bool', 'bytearray', 'bytes', 'callable',
-          'chr', 'classmethod', 'compile', 'complex', 'delattr', 'dict', 'dir', 'divmod',
-          'enumerate', 'eval', 'exec', 'filter', 'float', 'format', 'frozenset', 'getattr',
-          'globals', 'hasattr', 'hash', 'help', 'hex', 'id', 'input', 'int', 'isinstance',
-          'issubclass', 'iter', 'len', 'list', 'locals', 'map', 'max', 'memoryview',
-          'min', 'next', 'object', 'oct', 'open', 'ord', 'pow', 'print', 'property',
-          'range', 'repr', 'reversed', 'round', 'set', 'setattr', 'slice', 'sorted',
-          'staticmethod', 'str', 'sum', 'super', 'tuple', 'type', 'vars', 'zip'
+          'abs', 'all', 'any', 'ascii', 'bin', 'bool', 'bytearray', 'bytes', 'callable', 'chr',
+          'classmethod', 'compile', 'complex', 'delattr', 'dict', 'dir', 'divmod', 'enumerate',
+          'eval', 'exec', 'filter', 'float', 'format', 'frozenset', 'getattr', 'globals', 'hasattr',
+          'hash', 'help', 'hex', 'id', 'input', 'int', 'isinstance', 'issubclass', 'iter', 'len',
+          'list', 'locals', 'map', 'max', 'memoryview', 'min', 'next', 'object', 'oct', 'open',
+          'ord', 'pow', 'print', 'property', 'range', 'repr', 'reversed', 'round', 'set', 'setattr',
+          'slice', 'sorted', 'staticmethod', 'str', 'sum', 'super', 'tuple', 'type', 'vars', 'zip'
         ],
 
         operators: [
@@ -211,17 +185,16 @@ export default function CodeEditor({
             // Function calls
             [/\b([a-zA-Z_]\w*)\s*(?=\()/, {
               cases: {
-                '@functions': 'entity.name.function',
+                '@builtins': 'entity.name.function',
                 '@default': 'entity.name.function'
               }
             }],
 
-            // Identifiers and keywords
+            // Keywords
             [/[a-zA-Z_]\w*/, {
               cases: {
                 '@keywords': 'keyword',
-                '@builtins': 'constant.language',
-                '@functions': 'support.function.builtin',
+                '@builtins': 'support.function',
                 '@default': 'variable'
               }
             }],
@@ -245,7 +218,7 @@ export default function CodeEditor({
             [/'''/, 'string', '@string_triple_single'],
 
             // Delimiters and operators
-            [/[{}()\[\]]/, 'punctuation.bracket'],
+            [/[{}()\[\]]/, 'delimiter.bracket'],
             [/@symbols/, {
               cases: {
                 '@operators': 'keyword.operator.arithmetic',
@@ -253,10 +226,6 @@ export default function CodeEditor({
               }
             }],
             [/[,;]/, 'punctuation.delimiter'],
-          ],
-
-          comment: [
-            [/[^\r\n]*/, 'comment']
           ],
 
           whitespace: [
@@ -290,10 +259,11 @@ export default function CodeEditor({
         }
       });
 
+      // Create the editor
       const newEditor = monaco.editor.create(editorRef.current, {
         value: code,
         language: 'python',
-        theme: 'vscode-dark-plus',
+        theme: 'vs-code-dark-plus',
         automaticLayout: true,
         fontSize: 14,
         fontFamily: "'Cascadia Code', 'JetBrains Mono', 'Fira Code', 'SF Mono', Monaco, Menlo, 'Ubuntu Mono', monospace",
@@ -310,45 +280,7 @@ export default function CodeEditor({
         wordWrap: 'on',
         wrappingIndent: 'indent',
 
-        // Enhanced IntelliSense
-        suggest: {
-          showKeywords: true,
-          showSnippets: true,
-          showFunctions: true,
-          showConstructors: true,
-          showFields: true,
-          showVariables: true,
-          showClasses: true,
-          showStructs: true,
-          showInterfaces: true,
-          showModules: true,
-          showProperties: true,
-          showEvents: true,
-          showOperators: true,
-          showUnits: true,
-          showValues: true,
-          showConstants: true,
-          showEnums: true,
-          showEnumMembers: true,
-          showColors: true,
-          showFiles: true,
-          showReferences: true,
-          showFolders: true,
-          showTypeParameters: true,
-          insertMode: 'insert',
-          filterGraceful: true
-        },
-        quickSuggestions: {
-          other: true,
-          comments: false,
-          strings: false
-        },
-        parameterHints: {
-          enabled: true,
-          cycle: true
-        },
-
-        // Auto-formatting
+        // Auto-formatting and indentation
         autoIndent: 'full',
         formatOnType: true,
         formatOnPaste: true,
@@ -380,7 +312,6 @@ export default function CodeEditor({
         foldingStrategy: 'indentation',
         showFoldingControls: 'mouseover',
         foldingHighlight: true,
-        unfoldOnClickAfterEndOfLine: false,
 
         // Selection and matching
         matchBrackets: 'always',
@@ -389,14 +320,6 @@ export default function CodeEditor({
 
         // Rulers for line length
         rulers: [79, 88],
-
-        // Hover and links
-        hover: {
-          enabled: true,
-          delay: 300,
-          sticky: true
-        },
-        links: true,
 
         // Multi-cursor
         multiCursorModifier: 'ctrlCmd',
@@ -414,23 +337,8 @@ export default function CodeEditor({
           arrowSize: 11
         },
 
-        // Find widget
-        find: {
-          autoFindInSelection: 'never',
-          seedSearchStringFromSelection: 'always',
-          addExtraSpaceOnTop: true
-        },
-
-        // Accessibility
-        accessibilitySupport: 'auto',
-
         // Performance
         wordBasedSuggestions: 'currentDocument',
-
-        // Snippets
-        acceptSuggestionOnEnter: 'on',
-        acceptSuggestionOnCommitCharacter: true,
-        snippetSuggestions: 'top',
 
         // Editor behavior
         dragAndDrop: true,
@@ -439,7 +347,7 @@ export default function CodeEditor({
         useTabStops: true
       });
 
-      // VS Code keyboard shortcuts
+      // Add Python-specific keyboard shortcuts
       newEditor.addCommand(monaco.KeyCode.Enter, () => {
         const model = newEditor.getModel();
         const position = newEditor.getPosition();
@@ -447,7 +355,7 @@ export default function CodeEditor({
         if (model && position) {
           const lineContent = model.getLineContent(position.lineNumber);
           const currentIndent = lineContent.length - lineContent.trimStart().length;
-          const shouldIndent = /^\s*(def\s|class\s|if\s|elif\s|else:|for\s|while\s|with\s|try:|except.*:|finally:|lambda.*:)\s*$/.test(lineContent);
+          const shouldIndent = /:\s*$/.test(lineContent.trim());
 
           if (shouldIndent) {
             const newIndent = currentIndent + 4;
@@ -494,16 +402,8 @@ export default function CodeEditor({
       });
 
       // VS Code shortcuts
-      newEditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyD, () => {
-        newEditor.getAction('editor.action.addSelectionToNextFindMatch')?.run();
-      });
-
       newEditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Slash, () => {
         newEditor.getAction('editor.action.commentLine')?.run();
-      });
-
-      newEditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyK, () => {
-        newEditor.getAction('editor.action.deleteLines')?.run();
       });
 
       newEditor.addCommand(monaco.KeyMod.Alt | monaco.KeyCode.UpArrow, () => {
@@ -514,26 +414,26 @@ export default function CodeEditor({
         newEditor.getAction('editor.action.moveLinesDownAction')?.run();
       });
 
-      newEditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyI, () => {
-        newEditor.getAction('editor.action.formatDocument')?.run();
-      });
-
-      // Force proper theme application
+      // Force theme application after a delay
       setTimeout(() => {
-        monaco.editor.setTheme('vscode-dark-plus');
-        newEditor.updateOptions({ theme: 'vscode-dark-plus' });
+        console.log('Applying theme and forcing re-tokenization');
+        monaco.editor.setTheme('vs-code-dark-plus');
+        newEditor.updateOptions({ theme: 'vs-code-dark-plus' });
 
-        // Force tokenization refresh
+        // Force re-tokenization by updating the model
         const model = newEditor.getModel();
         if (model) {
           monaco.editor.setModelLanguage(model, 'python');
-          const currentValue = model.getValue();
-          model.setValue('');
-          model.setValue(currentValue);
-        }
 
-        newEditor.layout();
-      }, 500);
+          // Trigger re-tokenization by modifying and restoring content
+          const currentValue = model.getValue();
+          model.setValue(' ');
+          setTimeout(() => {
+            model.setValue(currentValue);
+            console.log('Theme and syntax highlighting applied');
+          }, 50);
+        }
+      }, 1000);
 
       // Content change listener
       newEditor.onDidChangeModelContent(() => {

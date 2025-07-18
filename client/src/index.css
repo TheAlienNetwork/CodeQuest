@@ -92,24 +92,9 @@ body::before {
   border-radius: 3px;
 }
 
-/* Monaco Editor container - minimal interference */
+/* Monaco Editor - let it handle its own styling */
 .monaco-editor {
   background: #1E1E1E !important;
-}
-
-.monaco-editor .view-overlays {
-  background: transparent !important;
-}
-
-/* Ensure Monaco syntax highlighting works */
-.monaco-editor .view-line,
-.monaco-editor .view-line span {
-  color: inherit !important;
-}
-
-/* Let Monaco handle all token colors itself */
-.monaco-editor [class*="mtk"] {
-  color: inherit !important;
 }
 
 /* Loading and transition states */
