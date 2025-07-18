@@ -22,21 +22,25 @@ export default function Login({ onLogin, onShowRegister }: LoginProps) {
     setIsLoading(true);
 
     try {
-      const response = await apiRequest('/api/login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
-        body: { email, password },
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include',
       });
 
-      if (response.success) {
-        onLogin(response.user);
+      const result = await response.json();
+
+      if (result.success) {
+        onLogin(result.user);
         toast({
           title: "Welcome back!",
-          description: `Good to see you again, ${response.user.adventurersName}!`,
+          description: `Good to see you again, ${result.user.adventurersName}!`,
         });
       } else {
         toast({
           title: "Login Failed",
-          description: response.error || "Invalid email or password",
+          description: result.error || "Invalid email or password",
           variant: "destructive",
         });
       }

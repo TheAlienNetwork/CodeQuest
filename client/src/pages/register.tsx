@@ -21,7 +21,7 @@ export default function Register({ onRegister, onShowLogin }: RegisterProps) {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
       toast({
         title: "Password Mismatch",
@@ -44,17 +44,18 @@ export default function Register({ onRegister, onShowLogin }: RegisterProps) {
 
     try {
       const response = await apiRequest('POST', '/api/register', { email, adventurersName, password });
+      const result = await response.json();
 
-      if (response.success) {
-        onRegister(response.user);
+      if (result.success) {
+        onRegister(result.user);
         toast({
           title: "Welcome to CodeQuest!",
-          description: `Account created successfully for ${adventurersName}!`,
+          description: `Account created for ${result.user.adventurersName}!`,
         });
       } else {
         toast({
           title: "Registration Failed",
-          description: response.error || "An error occurred during registration",
+          description: result.error || "Failed to create account",
           variant: "destructive",
         });
       }
