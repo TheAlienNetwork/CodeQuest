@@ -31,19 +31,88 @@ export default function CodeEditorWithHighlighting({
   }, [code]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const textarea = e.currentTarget;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
     if (e.key === 'Tab') {
       e.preventDefault();
-      const start = e.currentTarget.selectionStart;
-      const end = e.currentTarget.selectionEnd;
-      const newValue = code.substring(0, start) + '    ' + code.substring(end);
+      
+      if (e.shiftKey) {
+        // Unindent - remove up to 4 spaces at the beginning of line(s)
+        const lines = code.split('\n');
+        const startLine = code.substring(0, start).split('\n').length - 1;
+        const endLine = code.substring(0, end).split('\n').length - 1;
+        
+        let newCode = '';
+        let cursorOffset = 0;
+        
+        lines.forEach((line, index) => {
+          if (index >= startLine && index <= endLine) {
+            if (line.startsWith('    ')) {
+              line = line.substring(4);
+              if (index === startLine) cursorOffset = -4;
+            } else if (line.startsWith('   ')) {
+              line = line.substring(3);
+              if (index === startLine) cursorOffset = -3;
+            } else if (line.startsWith('  ')) {
+              line = line.substring(2);
+              if (index === startLine) cursorOffset = -2;
+            } else if (line.startsWith(' ')) {
+              line = line.substring(1);
+              if (index === startLine) cursorOffset = -1;
+            }
+          }
+          newCode += line + (index < lines.length - 1 ? '\n' : '');
+        });
+        
+        onChange(newCode);
+        setTimeout(() => {
+          textarea.selectionStart = textarea.selectionEnd = Math.max(0, start + cursorOffset);
+        }, 0);
+      } else {
+        // Indent - add 4 spaces
+        const newValue = code.substring(0, start) + '    ' + code.substring(end);
+        onChange(newValue);
+        setTimeout(() => {
+          textarea.selectionStart = textarea.selectionEnd = start + 4;
+        }, 0);
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      
+      // Auto-indentation logic
+      const lines = code.substring(0, start).split('\n');
+      const currentLine = lines[lines.length - 1];
+      const indentMatch = currentLine.match(/^(\s*)/);
+      let currentIndent = indentMatch ? indentMatch[1] : '';
+      
+      // Increase indent after colons (Python control structures)
+      if (currentLine.trim().endsWith(':')) {
+        currentIndent += '    ';
+      }
+      
+      const newValue = code.substring(0, start) + '\n' + currentIndent + code.substring(end);
       onChange(newValue);
       
       setTimeout(() => {
-        if (textareaRef.current) {
-          textareaRef.current.selectionStart = start + 4;
-          textareaRef.current.selectionEnd = start + 4;
-        }
+        textarea.selectionStart = textarea.selectionEnd = start + 1 + currentIndent.length;
       }, 0);
+    } else if (e.key === 'Backspace' && start === end) {
+      // Smart backspace - remove full indentation if at beginning of indent
+      const beforeCursor = code.substring(0, start);
+      const lines = beforeCursor.split('\n');
+      const currentLine = lines[lines.length - 1];
+      
+      if (currentLine.length > 0 && currentLine.match(/^\s+$/) && currentLine.length % 4 === 0) {
+        // Remove 4 spaces at once
+        e.preventDefault();
+        const newValue = code.substring(0, start - 4) + code.substring(end);
+        onChange(newValue);
+        setTimeout(() => {
+          textarea.selectionStart = textarea.selectionEnd = start - 4;
+        }, 0);
+      }
     } else if (e.key === 'F5' || (e.ctrlKey && e.key === 'Enter')) {
       e.preventDefault();
       onRunCode();

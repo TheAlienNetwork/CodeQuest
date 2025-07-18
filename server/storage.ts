@@ -93,6 +93,7 @@ export class DatabaseStorage implements IStorage {
     const user = await this.getUser(id);
     if (!user) return undefined;
 
+    const oldLevel = user.level;
     const newXP = user.xp + xpGain;
     const newLevel = Math.floor(newXP / 500) + 1;
 
@@ -108,8 +109,31 @@ export class DatabaseStorage implements IStorage {
 
     const newRank = ranks[Math.min(newLevel - 1, ranks.length - 1)];
 
+    // Level up rewards and bonuses
+    let bonusXP = 0;
+    if (newLevel > oldLevel) {
+      bonusXP = (newLevel - oldLevel) * 100; // 100 XP bonus per level up
+      console.log(`🎉 Level Up! ${user.adventurersName} reached level ${newLevel}!`);
+      
+      // Special milestone rewards
+      if (newLevel % 5 === 0) {
+        bonusXP += 250; // Extra bonus every 5 levels
+        console.log(`🏆 Milestone Bonus! Level ${newLevel} achievement unlocked!`);
+      }
+      
+      if (newLevel === 10) {
+        bonusXP += 500; // Major milestone
+        console.log(`🌟 Master Coder Achievement! Reached level 10!`);
+      }
+    }
+
+    // Apply streak multiplier
+    const streakMultiplier = Math.min(1 + (user.streak || 0) * 0.1, 3); // Max 3x multiplier
+    const totalXP = newXP + bonusXP;
+    const finalXP = Math.floor(totalXP * streakMultiplier);
+
     return await this.updateUser(id, {
-      xp: newXP,
+      xp: finalXP,
       level: newLevel,
       rank: newRank,
       completedQuests

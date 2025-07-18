@@ -78,6 +78,30 @@ export class GamificationService {
       rarity: 'epic'
     },
     {
+      id: 'syntax_master',
+      name: 'Syntax Master',
+      description: 'Write 50 lines of code without syntax errors',
+      icon: '📝',
+      xpReward: 250,
+      rarity: 'rare'
+    },
+    {
+      id: 'night_coder',
+      name: 'Night Owl',
+      description: 'Complete 5 quests between 10 PM and 6 AM',
+      icon: '🦉',
+      xpReward: 300,
+      rarity: 'rare'
+    },
+    {
+      id: 'efficiency_expert',
+      name: 'Efficiency Expert',
+      description: 'Complete 3 quests with optimal solutions',
+      icon: '⚡',
+      xpReward: 400,
+      rarity: 'epic'
+    },
+    {
       id: 'mentor',
       name: 'Code Mentor',
       description: 'Help 10 other learners through the chat',
@@ -86,8 +110,8 @@ export class GamificationService {
       rarity: 'rare'
     },
     {
-      id: 'efficiency_expert',
-      name: 'Efficiency Expert',
+      id: 'algorithm_wizard',
+      name: 'Algorithm Wizard',
       description: 'Write solutions with optimal time complexity',
       icon: '⚙️',
       xpReward: 250,

@@ -358,5 +358,95 @@
     ],
     "concepts": ["classes", "methods", "data structures", "system design"],
     "requiredLevel": 10
+  },
+  {
+    "id": 21,
+    "title": "🎮 Mini Game Creator",
+    "description": "Build a simple number guessing game with user interaction and score tracking.",
+    "difficulty": "intermediate",
+    "xpReward": 400,
+    "estimatedTime": "25 min",
+    "startingCode": "# Create a number guessing game\n# Generate a random number between 1-10\n# Ask user to guess, give hints (too high/low)\n# Count attempts and celebrate when they win\n\nimport random\n\n",
+    "solutionCode": "import random\n\nnumber = random.randint(1, 10)\nattempts = 0\nprint('Welcome to the Number Guessing Game!')\nprint('I have picked a number between 1 and 10')\n\nwhile True:\n    guess = int(input('Enter your guess: '))\n    attempts += 1\n    \n    if guess == number:\n        print(f'Congratulations! You won in {attempts} attempts!')\n        break\n    elif guess < number:\n        print('Too low! Try higher.')\n    else:\n        print('Too high! Try lower.')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Welcome to the Number Guessing Game!\nI have picked a number between 1 and 10"
+      }
+    ],
+    "concepts": ["random", "loops", "user input", "conditionals", "game logic"],
+    "requiredLevel": 4
+  },
+  {
+    "id": 22,
+    "title": "📊 Data Wizard",
+    "description": "Analyze a list of student grades and generate statistics like average, highest, and lowest scores.",
+    "difficulty": "intermediate",
+    "xpReward": 350,
+    "estimatedTime": "20 min",
+    "startingCode": "# Analyze student grades\ngrades = [85, 92, 78, 96, 87, 73, 91, 89]\n\n# Calculate and print:\n# - Average grade\n# - Highest grade\n# - Lowest grade\n# - Number of students who passed (grade >= 80)\n\n",
+    "solutionCode": "grades = [85, 92, 78, 96, 87, 73, 91, 89]\n\naverage = sum(grades) / len(grades)\nhighest = max(grades)\nlowest = min(grades)\npassed = len([grade for grade in grades if grade >= 80])\n\nprint(f'Average grade: {average:.1f}')\nprint(f'Highest grade: {highest}')\nprint(f'Lowest grade: {lowest}')\nprint(f'Students passed: {passed}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Average grade: 86.4\nHighest grade: 96\nLowest grade: 73\nStudents passed: 6"
+      }
+    ],
+    "concepts": ["lists", "functions", "statistics", "list comprehensions"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 23,
+    "title": "🔐 Password Guardian",
+    "description": "Create a password strength checker that validates security requirements.",
+    "difficulty": "intermediate",
+    "xpReward": 375,
+    "estimatedTime": "30 min",
+    "startingCode": "# Create a password strength checker\n# Requirements: at least 8 chars, 1 uppercase, 1 lowercase, 1 digit\n# Return 'Strong', 'Medium', or 'Weak'\n\ndef check_password_strength(password):\n    # Your code here\n    pass\n\n# Test with these passwords\npasswords = ['hello', 'Hello123', 'HELLO123', 'HelloWorld123']\nfor pwd in passwords:\n    print(f'{pwd}: {check_password_strength(pwd)}')",
+    "solutionCode": "def check_password_strength(password):\n    if len(password) < 8:\n        return 'Weak'\n    \n    has_upper = any(c.isupper() for c in password)\n    has_lower = any(c.islower() for c in password)\n    has_digit = any(c.isdigit() for c in password)\n    \n    if has_upper and has_lower and has_digit:\n        return 'Strong'\n    elif (has_upper and has_lower) or (has_upper and has_digit) or (has_lower and has_digit):\n        return 'Medium'\n    else:\n        return 'Weak'\n\npasswords = ['hello', 'Hello123', 'HELLO123', 'HelloWorld123']\nfor pwd in passwords:\n    print(f'{pwd}: {check_password_strength(pwd)}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "hello: Weak\nHello123: Strong\nHELLO123: Medium\nHelloWorld123: Strong"
+      }
+    ],
+    "concepts": ["functions", "string methods", "boolean logic", "security"],
+    "requiredLevel": 4
+  },
+  {
+    "id": 24,
+    "title": "🌟 Star Pattern Artist",
+    "description": "Create beautiful ASCII art patterns using nested loops. Master the art of pattern programming!",
+    "difficulty": "beginner",
+    "xpReward": 200,
+    "estimatedTime": "15 min",
+    "startingCode": "# Create a star pyramid pattern\n# Print 5 rows where row i has i stars\n# Example output:\n# *\n# **\n# ***\n# ****\n# *****\n\n",
+    "solutionCode": "for i in range(1, 6):\n    print('*' * i)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "*\n**\n***\n****\n*****"
+      }
+    ],
+    "concepts": ["loops", "string multiplication", "patterns"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 25,
+    "title": "🔄 Palindrome Detective",
+    "description": "Detect if words are palindromes (read the same forwards and backwards).",
+    "difficulty": "beginner",
+    "xpReward": 175,
+    "estimatedTime": "12 min",
+    "startingCode": "# Check if these words are palindromes\nwords = ['racecar', 'hello', 'level', 'python', 'madam']\n\n# For each word, print 'word: Yes' or 'word: No'\n\n",
+    "solutionCode": "words = ['racecar', 'hello', 'level', 'python', 'madam']\n\nfor word in words:\n    if word == word[::-1]:\n        print(f'{word}: Yes')\n    else:\n        print(f'{word}: No')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "racecar: Yes\nhello: No\nlevel: Yes\npython: No\nmadam: Yes"
+      }
+    ],
+    "concepts": ["strings", "slicing", "conditionals"],
+    "requiredLevel": 2
   }
 ]
