@@ -291,6 +291,7 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
           </div>
         </div>
       </div>
+      </div>
     </div>
   );
 }
