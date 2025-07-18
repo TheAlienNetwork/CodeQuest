@@ -461,7 +461,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           </div>
           
           {/* AI Chat - Fixed Height */}
-          <div className="h-80 flex-shrink-0 border-t border-[var(--cyber-cyan)]/30">
+          <div className="h-96 flex-shrink-0 border-t border-[var(--cyber-cyan)]/30">
             <AIChat 
               user={currentUser || user}
               quest={selectedQuestId ? { id: selectedQuestId, title: '', description: '' } : quest}
