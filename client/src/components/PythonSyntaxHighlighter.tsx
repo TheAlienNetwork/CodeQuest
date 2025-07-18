@@ -110,7 +110,7 @@ export default function PythonSyntaxHighlighter({ code, className = "" }: Python
     // Highlight parentheses, brackets, and braces
     highlighted = highlighted.replace(
       /([(){}\[\]])/g,
-      '<span class="text-white font-bold">$1</span>'
+      '<span class="text-cyan-400 font-bold">$1</span>'
     );
 
     // Highlight function definitions

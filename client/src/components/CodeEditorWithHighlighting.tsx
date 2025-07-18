@@ -222,6 +222,42 @@ export default function CodeEditorWithHighlighting({
         continue;
       }
       
+      // Check for parentheses, brackets, braces (bright cyan)
+      const bracketMatch = remaining.match(/^([(){}[\]])/);
+      if (bracketMatch) {
+        elements.push(
+          <span key={index++} style={{ color: '#00D4AA', fontWeight: 'bold' }}>
+            {bracketMatch[1]}
+          </span>
+        );
+        remaining = remaining.slice(bracketMatch[1].length);
+        continue;
+      }
+      
+      // Check for operators (bright magenta)
+      const operatorMatch = remaining.match(/^([+\-*/=<>!&|^%,.])/);
+      if (operatorMatch) {
+        elements.push(
+          <span key={index++} style={{ color: '#FF6B9D' }}>
+            {operatorMatch[1]}
+          </span>
+        );
+        remaining = remaining.slice(operatorMatch[1].length);
+        continue;
+      }
+      
+      // Check for colons and semicolons (bright orange)
+      const punctuationMatch = remaining.match(/^([;:])/);
+      if (punctuationMatch) {
+        elements.push(
+          <span key={index++} style={{ color: '#FF9500', fontWeight: 'bold' }}>
+            {punctuationMatch[1]}
+          </span>
+        );
+        remaining = remaining.slice(punctuationMatch[1].length);
+        continue;
+      }
+      
       // Default: add single character
       elements.push(remaining[0]);
       remaining = remaining.slice(1);
