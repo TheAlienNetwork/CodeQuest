@@ -192,10 +192,15 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
       </div>
       
       {/* Quest List - Scrollable Area */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-4 lg:px-6 pb-3 sm:pb-6 space-y-2 sm:space-y-4 lessons-scroll min-h-0" style={{
-        scrollbarWidth: 'thin',
-        scrollbarColor: 'var(--cyber-cyan) var(--cyber-gray)'
-      }}>
+      <div 
+        className="flex-1 overflow-y-scroll overflow-x-hidden px-3 sm:px-4 lg:px-6 pb-3 sm:pb-6 space-y-2 sm:space-y-4 lessons-scroll min-h-0 max-h-full" 
+        style={{
+          scrollbarWidth: 'auto',
+          scrollbarColor: 'var(--cyber-cyan) var(--cyber-gray)',
+          minHeight: '300px',
+          maxHeight: 'calc(100vh - 200px)'
+        }}
+      >
         {filteredQuests.map((quest) => {
           const status = getQuestStatus(quest.id);
           const isAccessible = status === 'completed' || status === 'current' || status === 'available';
