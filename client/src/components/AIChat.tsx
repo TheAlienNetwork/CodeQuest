@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Send, Bot, User, Lightbulb, BookOpen, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -35,9 +36,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isGettingSolution, setIsGettingSolution] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [newMessage, setNewMessage] = useState('');
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -50,8 +49,9 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
   useEffect(() => {
     // Load chat history
     const loadChatHistory = async () => {
+      if (!user?.id) return;
       try {
-        const response = await fetch(`/api/chat/${user?.id}${quest?.id ? `/${quest?.id}` : ''}`);
+        const response = await fetch(`/api/chat/${user.id}${quest?.id ? `/${quest.id}` : ''}`);
         if (response.ok) {
           const chatHistory = await response.json();
           setMessages(chatHistory);
@@ -65,7 +65,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
   }, [user?.id, quest?.id]);
 
   const sendMessage = async () => {
-    if (!inputMessage.trim() || isLoading) return;
+    if (!inputMessage.trim() || isLoading || !user) return;
 
     const userMessage: ChatMessage = {
       id: Date.now(),
@@ -80,7 +80,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
 
     try {
       const response = await apiRequest('POST', '/api/chat', {
-        userId: user?.id,
+        userId: user.id,
         questId: quest?.id,
         message: inputMessage.trim(),
         isAI: false,
@@ -92,7 +92,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
         setMessages(prev => [...prev, result.aiMessage]);
       }
 
-      if (result.xpEarned > 0 && onUserUpdate && user) {
+      if (result.xpEarned > 0 && onUserUpdate) {
         const updatedUser = { ...user, xp: user.xp + result.xpEarned };
         onUserUpdate(updatedUser);
       }
@@ -130,6 +130,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
         credentials: 'include',
         body: JSON.stringify({
           userId: user.id,
+          questId: quest.id,
           code: '',
         }),
       });
@@ -191,47 +192,6 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
     }
   };
 
-  const handleSendMessage = async () => {
-    if (!newMessage.trim() || isLoading) return;
-
-    setIsLoading(true);
-    const userMessage: ChatMessage = {
-      id: Date.now(),
-      message: newMessage.trim(),
-      isAI: false,
-      timestamp: new Date(),
-    };
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
-    setNewMessage('');
-
-    try {
-      const response = await apiRequest('POST', '/api/chat', {
-        userId: user?.id,
-        questId: quest?.id,
-        message: newMessage.trim(),
-        isAI: false,
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.aiMessage) {
-          setMessages((prevMessages) => [...prevMessages, data.aiMessage]);
-        }
-
-        if (data.xpEarned > 0 && user && onUserUpdate) {
-          const updatedUser = { ...user, xp: user.xp + data.xpEarned };
-          onUserUpdate(updatedUser);
-        }
-      } else {
-        console.error('Failed to send message:', response.status);
-      }
-    } catch (error) {
-      console.error('Failed to send message:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className="h-full flex flex-col bg-[var(--cyber-gray)]">
       <div className="p-4 border-b border-[var(--cyber-cyan)]/30">
@@ -252,7 +212,8 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
               size="sm"
               className="w-full bg-[var(--cyber-purple)] text-white hover:bg-[var(--cyber-purple)]/80"
             >
-              💡 Get Hint (Free)
+              <Lightbulb className="w-4 h-4 mr-2" />
+              Get Hint (Free)
             </Button>
             <Button
               onClick={handleGetSolution}
@@ -260,7 +221,8 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
               size="sm"
               className="w-full bg-[var(--cyber-yellow)] text-black hover:bg-[var(--cyber-yellow)]/80"
             >
-              🎯 Show Solution (50 XP)
+              <Zap className="w-4 h-4 mr-2" />
+              Show Solution (50 XP)
             </Button>
             {user.xp < 50 && (
               <p className="text-xs text-gray-400">Need 50 XP for solution</p>
@@ -299,23 +261,29 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
               >
                 {message.message}
               </div>
+              {!message.isAI && (
+                <div className="w-8 h-8 bg-[var(--cyber-purple)] rounded-full flex items-center justify-center flex-shrink-0">
+                  <User className="w-4 h-4 text-white" />
+                </div>
+              )}
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
       </div>
 
       <div className="p-4 border-t border-[var(--cyber-cyan)]/30">
         <div className="flex gap-2">
           <Input
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            onKeyPress={handleKeyPress}
             placeholder="Ask for help or hints..."
             className="flex-1 bg-[var(--cyber-dark)] border-[var(--cyber-cyan)]/30 text-white"
           />
           <Button
-            onClick={handleSendMessage}
-            disabled={!newMessage.trim() || isLoading}
+            onClick={sendMessage}
+            disabled={!inputMessage.trim() || isLoading}
             className="bg-[var(--cyber-cyan)] text-black hover:bg-[var(--cyber-cyan)]/80"
           >
             <Send className="w-4 h-4" />

@@ -72,14 +72,16 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   const { data: quest, isLoading: questLoading, error: questError, refetch } = useQuery<Quest>({
     queryKey: ['/api/quest', user?.id],
     queryFn: async () => {
-      const response = await apiRequest('GET', `/api/quest/${user?.id}`);
+      if (!user?.id) throw new Error('No user ID');
+      const response = await apiRequest('GET', `/api/quest/${user.id}`);
+      if (!response.ok) throw new Error('Failed to fetch quest');
       return response.json();
     },
     enabled: !!user?.id,
-    retry: 5,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
-    staleTime: 0, // Always refetch
-    cacheTime: 0, // Don't cache
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 5000),
+    staleTime: 5000,
+    cacheTime: 10000,
   });
 
   // Initialize code editor with quest starting code

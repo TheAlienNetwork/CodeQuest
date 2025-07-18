@@ -197,6 +197,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Move to next quest if completed
         if (user.currentQuest) {
           const nextQuestId = user.currentQuest + 1;
+
+
+// Get hint for current quest
+app.post('/api/hint', async (req, res) => {
+  try {
+    const { userId, questId } = req.body;
+    
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    const user = await storage.getUserById(userId);
+    const currentQuestId = questId || user?.currentQuest;
+    const quest = await storage.getQuestById(currentQuestId);
+    
+    if (!quest) {
+      return res.status(404).json({ error: 'Quest not found' });
+    }
+
+    // Generate hint based on quest
+    const hints = {
+      1: "Remember to use the print() function and put your text in quotes!",
+      2: "Create variables using the = operator. For example: name = 'Hero'",
+      3: "Use variables to store numbers, then add them together with the + operator",
+      4: "Use if and else statements to make decisions in your code",
+      5: "Use range(1, 6) to count from 1 to 5 in your for loop",
+      default: "Break down the problem into smaller steps. What does the quest ask you to do?"
+    };
+
+    const hint = hints[currentQuestId] || hints.default;
+
+    res.json({
+      hint,
+      user
+    });
+  } catch (error) {
+    console.error('Hint error:', error);
+    res.status(500).json({ error: 'Failed to get hint' });
+  }
+});
+
           const nextQuest = await storage.getQuest(nextQuestId);
           if (nextQuest) {
             const completedQuests = [...(user.completedQuests || []), user.currentQuest];

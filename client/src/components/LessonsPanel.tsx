@@ -36,8 +36,15 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
   const { data: user } = useQuery<User>({ queryKey: ['/api/user', userId] });
   const { data: allQuests } = useQuery<Quest[]>({ queryKey: ['/api/quests'] });
 
-  if (!user || !allQuests) {
-    return <div>Loading curriculum...</div>;
+  if (!user || !allQuests || allQuests.length === 0) {
+    return (
+      <div className="h-full bg-[var(--cyber-dark)] text-white p-6 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-xl mb-2">📚 Loading curriculum...</div>
+          <div className="text-gray-400">Preparing your coding adventure</div>
+        </div>
+      </div>
+    );
   }
 
   const filteredQuests = allQuests.filter(quest => 

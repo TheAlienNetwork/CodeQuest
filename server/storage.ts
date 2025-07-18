@@ -193,7 +193,7 @@ export class MemStorage implements IStorage {
   async getQuestForUser(userId: number): Promise<Quest | undefined> {
     console.log(`getQuestForUser called for userId: ${userId}`);
     console.log(`Total quests in memory: ${this.quests.size}`);
-    
+
     const user = await this.getUser(userId);
     if (!user) {
       console.log(`User ${userId} not found`);
@@ -217,11 +217,11 @@ export class MemStorage implements IStorage {
 
     const quest = this.quests.get(user.currentQuest);
     console.log(`Retrieved quest ${user.currentQuest} for user ${userId}:`, quest ? `found: ${quest.title}` : 'not found');
-    
+
     if (!quest) {
       console.log(`Quest ${user.currentQuest} not found, available quest IDs:`, Array.from(this.quests.keys()));
     }
-    
+
     return quest;
   }
 
@@ -276,6 +276,20 @@ export class MemStorage implements IStorage {
     this.quests.set(questId, quest);
     console.log(`Created quest ${questId}: ${quest.title}`);
     return quest;
+  }
+
+  async initializeQuests() {
+    console.log('Loading quests into MemStorage...');
+    // Clear existing quests to ensure fresh data
+    this.quests = new Map();
+
+    for (const questData of questsData) {
+      await this.createQuest(questData);
+    }
+    console.log(`Loaded ${questsData.length} quests into MemStorage`);
+
+    const existingQuests = await this.getAllQuests();
+    console.log(`Existing quests count: ${existingQuests.length}`);
   }
 }
 
