@@ -88,28 +88,23 @@ export default function CodeEditor({
 
       // Register enhanced Python tokenizer
       monaco.languages.setMonarchTokensProvider('python', {
-        defaultToken: 'invalid',
+        defaultToken: 'identifier',
         tokenPostfix: '.python',
         
         keywords: [
           'and', 'as', 'assert', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else',
           'except', 'exec', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is',
-          'lambda', 'not', 'or', 'pass', 'print', 'raise', 'return', 'try', 'while', 'with',
-          'yield', 'int', 'float', 'long', 'complex', 'hex', 'abs', 'all', 'any', 'apply',
-          'basestring', 'bin', 'bool', 'buffer', 'bytearray', 'callable', 'chr', 'classmethod',
-          'cmp', 'coerce', 'compile', 'complex', 'delattr', 'dict', 'dir', 'divmod', 'enumerate',
-          'eval', 'execfile', 'file', 'filter', 'format', 'frozenset', 'getattr', 'globals',
-          'hasattr', 'hash', 'help', 'id', 'input', 'int', 'intern', 'isinstance', 'issubclass',
-          'iter', 'len', 'list', 'locals', 'long', 'map', 'max', 'memoryview', 'min', 'next',
-          'object', 'oct', 'open', 'ord', 'pow', 'property', 'range', 'raw_input', 'reduce',
-          'reload', 'repr', 'reversed', 'round', 'set', 'setattr', 'slice', 'sorted', 'staticmethod',
-          'str', 'sum', 'super', 'tuple', 'type', 'unichr', 'unicode', 'vars', 'xrange', 'zip'
+          'lambda', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield'
         ],
         
         builtins: [
-          'True', 'False', 'None', 'NotImplemented', 'Ellipsis', '__debug__', '__name__',
-          '__doc__', 'print', 'input', 'len', 'range', 'str', 'int', 'float', 'bool', 'list',
-          'dict', 'set', 'tuple', 'type', 'isinstance', 'hasattr', 'getattr', 'setattr'
+          'True', 'False', 'None', 'print', 'input', 'len', 'range', 'str', 'int', 'float', 
+          'bool', 'list', 'dict', 'set', 'tuple', 'type', 'isinstance', 'hasattr', 'getattr', 
+          'setattr', 'abs', 'all', 'any', 'bin', 'callable', 'chr', 'classmethod', 'compile',
+          'delattr', 'dir', 'divmod', 'enumerate', 'eval', 'filter', 'format', 'frozenset',
+          'globals', 'hash', 'help', 'id', 'iter', 'locals', 'map', 'max', 'min', 'next',
+          'object', 'oct', 'open', 'ord', 'pow', 'property', 'repr', 'reversed', 'round',
+          'sorted', 'staticmethod', 'sum', 'super', 'vars', 'zip'
         ],
         
         operators: [
@@ -122,11 +117,15 @@ export default function CodeEditor({
         
         tokenizer: {
           root: [
+            // Function definitions and calls
+            [/\b([a-zA-Z_]\w*)\s*(?=\()/, 'function'],
+            
+            // Identifiers (must come after function check)
             [/[a-zA-Z_]\w*/, {
               cases: {
                 '@keywords': 'keyword',
-                '@builtins': 'support.function.builtin',
-                '@default': 'identifier'
+                '@builtins': 'function',
+                '@default': 'variable'
               }
             }],
             
@@ -134,8 +133,8 @@ export default function CodeEditor({
             { include: '@whitespace' },
             
             // Numbers
-            [/\d*\.\d+([eE][\-+]?\d+)?/, 'number.float'],
-            [/0[xX][0-9a-fA-F]+/, 'number.hex'],
+            [/\d*\.\d+([eE][\-+]?\d+)?/, 'number'],
+            [/0[xX][0-9a-fA-F]+/, 'number'],
             [/\d+/, 'number'],
             
             // Strings
@@ -147,7 +146,7 @@ export default function CodeEditor({
             [/'''/, 'string', '@string_triple_single'],
             
             // Delimiters and operators
-            [/[{}()\[\]]/, '@brackets'],
+            [/[{}()\[\]]/, 'delimiter.bracket'],
             [/@symbols/, 'operator'],
             [/[,;]/, 'delimiter'],
           ],
@@ -159,13 +158,13 @@ export default function CodeEditor({
           
           string_double: [
             [/[^\\"]+/, 'string'],
-            [/\\./, 'string.escape.invalid'],
+            [/\\./, 'string.escape'],
             [/"/, 'string', '@pop']
           ],
           
           string_single: [
             [/[^\\']+/, 'string'],
-            [/\\./, 'string.escape.invalid'],
+            [/\\./, 'string.escape'],
             [/'/, 'string', '@pop']
           ],
           
@@ -193,39 +192,13 @@ export default function CodeEditor({
           { token: 'comment.line', foreground: '6A9955', fontStyle: 'italic' },
           { token: 'comment.block', foreground: '6A9955', fontStyle: 'italic' },
           
-          // Python keywords - Blue/Purple
-          { token: 'keyword', foreground: '569CD6' },
-          { token: 'keyword.control', foreground: 'C586C0' },
-          { token: 'keyword.operator', foreground: 'D7BA7D' },
-          { token: 'keyword.other', foreground: 'C586C0' },
-          
-          // Python built-in keywords
-          { token: 'keyword.control.import', foreground: 'C586C0' },
-          { token: 'keyword.control.from', foreground: 'C586C0' },
-          { token: 'keyword.control.def', foreground: 'C586C0' },
-          { token: 'keyword.control.class', foreground: 'C586C0' },
-          { token: 'keyword.control.if', foreground: 'C586C0' },
-          { token: 'keyword.control.else', foreground: 'C586C0' },
-          { token: 'keyword.control.elif', foreground: 'C586C0' },
-          { token: 'keyword.control.for', foreground: 'C586C0' },
-          { token: 'keyword.control.while', foreground: 'C586C0' },
-          { token: 'keyword.control.try', foreground: 'C586C0' },
-          { token: 'keyword.control.except', foreground: 'C586C0' },
-          { token: 'keyword.control.finally', foreground: 'C586C0' },
-          { token: 'keyword.control.with', foreground: 'C586C0' },
-          { token: 'keyword.control.return', foreground: 'C586C0' },
-          { token: 'keyword.control.yield', foreground: 'C586C0' },
-          { token: 'keyword.control.pass', foreground: 'C586C0' },
-          { token: 'keyword.control.break', foreground: 'C586C0' },
-          { token: 'keyword.control.continue', foreground: 'C586C0' },
-          
           // Strings - Orange
           { token: 'string', foreground: 'CE9178' },
           { token: 'string.quoted', foreground: 'CE9178' },
           { token: 'string.quoted.single', foreground: 'CE9178' },
           { token: 'string.quoted.double', foreground: 'CE9178' },
           { token: 'string.quoted.triple', foreground: 'CE9178' },
-          { token: 'string.interpolated', foreground: 'D7BA7D' },
+          { token: 'string.escape', foreground: 'D7BA7D' },
           
           // Numbers - Light Green
           { token: 'number', foreground: 'B5CEA8' },
@@ -236,21 +209,42 @@ export default function CodeEditor({
           { token: 'number.binary', foreground: 'B5CEA8' },
           
           // Functions - Yellow
+          { token: 'function', foreground: 'DCDCAA' },
           { token: 'entity.name.function', foreground: 'DCDCAA' },
           { token: 'support.function', foreground: 'DCDCAA' },
           { token: 'support.function.builtin', foreground: 'DCDCAA' },
           { token: 'meta.function-call', foreground: 'DCDCAA' },
           
-          // Classes - Teal
-          { token: 'entity.name.class', foreground: '4EC9B0' },
-          { token: 'entity.name.type', foreground: '4EC9B0' },
-          { token: 'support.type', foreground: '4EC9B0' },
-          
           // Variables - Light Blue
           { token: 'variable', foreground: '9CDCFE' },
           { token: 'variable.parameter', foreground: '9CDCFE' },
           { token: 'variable.other', foreground: '9CDCFE' },
+          { token: 'identifier', foreground: '9CDCFE' },
           { token: 'meta.definition.variable', foreground: '9CDCFE' },
+          
+          // Operators - White
+          { token: 'operator', foreground: 'D4D4D4' },
+          { token: 'keyword.operator.arithmetic', foreground: 'D4D4D4' },
+          { token: 'keyword.operator.assignment', foreground: 'D4D4D4' },
+          { token: 'keyword.operator.comparison', foreground: 'D4D4D4' },
+          { token: 'keyword.operator.logical', foreground: 'D4D4D4' },
+          
+          // Brackets - Gold
+          { token: 'delimiter.bracket', foreground: 'FFD700' },
+          { token: 'delimiter.parenthesis', foreground: 'FFD700' },
+          { token: 'delimiter.square', foreground: 'FFD700' },
+          { token: 'delimiter.curly', foreground: 'FFD700' },
+          
+          // Python keywords - Blue/Purple
+          { token: 'keyword', foreground: '569CD6' },
+          { token: 'keyword.control', foreground: 'C586C0' },
+          { token: 'keyword.operator', foreground: 'D4D4D4' },
+          { token: 'keyword.other', foreground: 'C586C0' },
+          
+          // Classes - Teal
+          { token: 'entity.name.class', foreground: '4EC9B0' },
+          { token: 'entity.name.type', foreground: '4EC9B0' },
+          { token: 'support.type', foreground: '4EC9B0' },
           
           // Constants - Blue
           { token: 'constant', foreground: '569CD6' },
@@ -259,18 +253,8 @@ export default function CodeEditor({
           { token: 'constant.language.boolean', foreground: '569CD6' },
           { token: 'constant.language.null', foreground: '569CD6' },
           
-          // Operators - White
-          { token: 'operator', foreground: 'D4D4D4' },
-          { token: 'keyword.operator.arithmetic', foreground: 'D4D4D4' },
-          { token: 'keyword.operator.assignment', foreground: 'D4D4D4' },
-          { token: 'keyword.operator.comparison', foreground: 'D4D4D4' },
-          { token: 'keyword.operator.logical', foreground: 'C586C0' },
-          
-          // Delimiters - Gold
+          // Delimiters - Default
           { token: 'delimiter', foreground: 'D4D4D4' },
-          { token: 'delimiter.bracket', foreground: 'FFD700' },
-          { token: 'delimiter.parenthesis', foreground: 'FFD700' },
-          { token: 'delimiter.square', foreground: 'FFD700' },
           
           // Decorators - Purple
           { token: 'entity.name.decorator', foreground: 'C586C0' },
