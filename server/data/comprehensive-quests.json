@@ -1,0 +1,362 @@
+[
+  {
+    "id": 1,
+    "title": "🚀 Welcome to Python",
+    "description": "Your first quest begins! Print 'Hello, World!' to the console to start your coding adventure.",
+    "difficulty": "beginner",
+    "xpReward": 50,
+    "estimatedTime": "2 min",
+    "startingCode": "# Welcome to CodeQuest, brave adventurer!\n# Your first quest: Print 'Hello, World!' to the console\n\n",
+    "solutionCode": "print('Hello, World!')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Hello, World!"
+      }
+    ],
+    "concepts": ["print", "strings"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 2,
+    "title": "🎒 The Magic Backpack",
+    "description": "Every adventurer needs a backpack! Create variables to store your name, age, and favorite weapon.",
+    "difficulty": "beginner",
+    "xpReward": 75,
+    "estimatedTime": "5 min",
+    "startingCode": "# Create your adventurer's profile\n# Store your name in a variable called 'name'\n# Store your age in a variable called 'age'\n# Store your favorite weapon in a variable called 'weapon'\n# Print all three variables\n\n",
+    "solutionCode": "name = 'Hero'\nage = 25\nweapon = 'Sword'\nprint(name)\nprint(age)\nprint(weapon)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Hero\n25\nSword"
+      }
+    ],
+    "concepts": ["variables", "strings", "integers"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 3,
+    "title": "🧮 The Number Oracle",
+    "description": "The oracle speaks in numbers! Create variables for different number types and calculate your total power.",
+    "difficulty": "beginner",
+    "xpReward": 100,
+    "estimatedTime": "6 min",
+    "startingCode": "# The oracle reveals your stats\n# Create an integer variable 'strength' with value 10\n# Create a float variable 'magic_power' with value 7.5\n# Calculate your total power by adding them together\n# Print the result\n\n",
+    "solutionCode": "strength = 10\nmagic_power = 7.5\ntotal_power = strength + magic_power\nprint(total_power)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "17.5"
+      }
+    ],
+    "concepts": ["variables", "integers", "floats", "arithmetic"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 4,
+    "title": "🎭 The Storyteller's Choice",
+    "description": "You meet a storyteller who asks about your quest. Use an if statement to respond based on your level.",
+    "difficulty": "beginner",
+    "xpReward": 125,
+    "estimatedTime": "8 min",
+    "startingCode": "# The storyteller wants to know about your quest\nlevel = 1\n\n# If level is 1, print 'I am just starting my journey'\n# Otherwise, print 'I am an experienced adventurer'\n\n",
+    "solutionCode": "level = 1\n\nif level == 1:\n    print('I am just starting my journey')\nelse:\n    print('I am an experienced adventurer')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "I am just starting my journey"
+      }
+    ],
+    "concepts": ["conditionals", "if statements", "comparison operators"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 5,
+    "title": "🏃 The Training Grounds",
+    "description": "Train your skills by counting! Use a for loop to count from 1 to 5.",
+    "difficulty": "beginner",
+    "xpReward": 150,
+    "estimatedTime": "10 min",
+    "startingCode": "# Time to train! Count from 1 to 5\n# Use a for loop with range(1, 6)\n# Print each number\n\n",
+    "solutionCode": "for i in range(1, 6):\n    print(i)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "1\n2\n3\n4\n5"
+      }
+    ],
+    "concepts": ["loops", "for loops", "range"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 6,
+    "title": "🗡️ The Weapon Master",
+    "description": "Create a list of weapons and display your arsenal to intimidate enemies!",
+    "difficulty": "beginner",
+    "xpReward": 175,
+    "estimatedTime": "12 min",
+    "startingCode": "# Create your weapon collection\n# Make a list called 'weapons' with: 'Sword', 'Bow', 'Staff'\n# Print each weapon using a for loop\n\n",
+    "solutionCode": "weapons = ['Sword', 'Bow', 'Staff']\nfor weapon in weapons:\n    print(weapon)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Sword\nBow\nStaff"
+      }
+    ],
+    "concepts": ["lists", "for loops", "iteration"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 7,
+    "title": "🛡️ The Shield Spell",
+    "description": "Create a function that casts a protection spell. Functions are reusable magic!",
+    "difficulty": "intermediate",
+    "xpReward": 200,
+    "estimatedTime": "15 min",
+    "startingCode": "# Create a function called 'cast_shield'\n# It should print 'Protection spell activated!'\n# Then call the function\n\n",
+    "solutionCode": "def cast_shield():\n    print('Protection spell activated!')\n\ncast_shield()",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Protection spell activated!"
+      }
+    ],
+    "concepts": ["functions", "function definition", "function calls"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 8,
+    "title": "⚔️ The Battle Calculator",
+    "description": "Create a function that calculates battle damage. Pass in attack power and return the damage dealt.",
+    "difficulty": "intermediate",
+    "xpReward": 225,
+    "estimatedTime": "18 min",
+    "startingCode": "# Create a function called 'calculate_damage'\n# It should take 'attack_power' as a parameter\n# Return attack_power * 2 (critical hit!)\n# Test it with attack_power = 10\n\n",
+    "solutionCode": "def calculate_damage(attack_power):\n    return attack_power * 2\n\nresult = calculate_damage(10)\nprint(result)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "20"
+      }
+    ],
+    "concepts": ["functions", "parameters", "return values"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 9,
+    "title": "🎲 The Dice of Fate",
+    "description": "Create a while loop that rolls a dice until you get a 6. Use a counter to track attempts.",
+    "difficulty": "intermediate",
+    "xpReward": 250,
+    "estimatedTime": "20 min",
+    "startingCode": "# Simulate rolling a dice until you get 6\n# Use a counter and while loop\n# For this quest, use a simple counter that increments\n# Stop when counter reaches 3 and print the counter\n\n",
+    "solutionCode": "counter = 0\nwhile counter < 3:\n    counter += 1\nprint(counter)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "3"
+      }
+    ],
+    "concepts": ["while loops", "counters", "incrementation"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 10,
+    "title": "🏰 The Castle Builder",
+    "description": "Build a castle using nested loops! Create a 3x3 pattern using asterisks.",
+    "difficulty": "intermediate",
+    "xpReward": 275,
+    "estimatedTime": "25 min",
+    "startingCode": "# Build a 3x3 castle using nested loops\n# Use two for loops to print a 3x3 grid of asterisks\n# Each row should be on a new line\n\n",
+    "solutionCode": "for i in range(3):\n    for j in range(3):\n        print('*', end='')\n    print()",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "***\n***\n***"
+      }
+    ],
+    "concepts": ["nested loops", "for loops", "print formatting"],
+    "requiredLevel": 4
+  },
+  {
+    "id": 11,
+    "title": "🏺 The Treasure Dictionary",
+    "description": "Create a dictionary to store your treasures and their values. Dictionaries are like magical chests!",
+    "difficulty": "intermediate",
+    "xpReward": 300,
+    "estimatedTime": "20 min",
+    "startingCode": "# Create a dictionary called 'treasures'\n# Add: 'gold': 100, 'gems': 50, 'artifacts': 25\n# Print the value of 'gold'\n\n",
+    "solutionCode": "treasures = {'gold': 100, 'gems': 50, 'artifacts': 25}\nprint(treasures['gold'])",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "100"
+      }
+    ],
+    "concepts": ["dictionaries", "key-value pairs", "dictionary access"],
+    "requiredLevel": 4
+  },
+  {
+    "id": 12,
+    "title": "🧙 The Spell Library",
+    "description": "Create a list of spell dictionaries. Each spell has a name and power level.",
+    "difficulty": "intermediate",
+    "xpReward": 325,
+    "estimatedTime": "30 min",
+    "startingCode": "# Create a list called 'spells'\n# Each spell is a dictionary with 'name' and 'power'\n# Add: {'name': 'Fireball', 'power': 50}\n# Print the name of the first spell\n\n",
+    "solutionCode": "spells = [{'name': 'Fireball', 'power': 50}]\nprint(spells[0]['name'])",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Fireball"
+      }
+    ],
+    "concepts": ["lists", "dictionaries", "nested data structures"],
+    "requiredLevel": 4
+  },
+  {
+    "id": 13,
+    "title": "⚡ The Lightning Warrior",
+    "description": "Create a Warrior class with name, health, and attack methods. Object-oriented programming begins!",
+    "difficulty": "advanced",
+    "xpReward": 400,
+    "estimatedTime": "35 min",
+    "startingCode": "# Create a Warrior class\n# Add __init__ method with name and health parameters\n# Add an attack method that prints an attack message\n# Create a warrior named 'Thor' with 100 health\n# Call the attack method\n\n",
+    "solutionCode": "class Warrior:\n    def __init__(self, name, health):\n        self.name = name\n        self.health = health\n    \n    def attack(self):\n        print(f'{self.name} attacks with lightning!')\n\nthor = Warrior('Thor', 100)\nthor.attack()",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Thor attacks with lightning!"
+      }
+    ],
+    "concepts": ["classes", "objects", "methods", "__init__"],
+    "requiredLevel": 5
+  },
+  {
+    "id": 14,
+    "title": "🔥 The Dragon's Recursion",
+    "description": "A dragon challenges you to solve the factorial mystery using recursion. Very advanced magic!",
+    "difficulty": "advanced",
+    "xpReward": 450,
+    "estimatedTime": "40 min",
+    "startingCode": "# Create a recursive function to calculate factorial\n# factorial(n) = n * factorial(n-1)\n# Base case: factorial(0) = 1\n# Calculate factorial(4)\n\n",
+    "solutionCode": "def factorial(n):\n    if n == 0:\n        return 1\n    else:\n        return n * factorial(n - 1)\n\nresult = factorial(4)\nprint(result)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "24"
+      }
+    ],
+    "concepts": ["recursion", "functions", "base cases"],
+    "requiredLevel": 6
+  },
+  {
+    "id": 15,
+    "title": "🎮 The Mini Game Engine",
+    "description": "Create a simple number guessing game. The ultimate test of your programming skills!",
+    "difficulty": "advanced",
+    "xpReward": 500,
+    "estimatedTime": "45 min",
+    "startingCode": "# Create a simple guessing game\n# Set a secret number (let's use 7)\n# Create a function that takes a guess and returns a message\n# If guess is correct, return 'You won!'\n# If guess is too high, return 'Too high!'\n# If guess is too low, return 'Too low!'\n# Test with guess = 7\n\n",
+    "solutionCode": "def check_guess(guess, secret=7):\n    if guess == secret:\n        return 'You won!'\n    elif guess > secret:\n        return 'Too high!'\n    else:\n        return 'Too low!'\n\nresult = check_guess(7)\nprint(result)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "You won!"
+      }
+    ],
+    "concepts": ["functions", "conditionals", "game logic"],
+    "requiredLevel": 6
+  },
+  {
+    "id": 16,
+    "title": "🏆 The Ultimate RPG Character",
+    "description": "Create a complete RPG character system with inheritance. Master-level programming!",
+    "difficulty": "advanced",
+    "xpReward": 600,
+    "estimatedTime": "50 min",
+    "startingCode": "# Create a Character base class with name, health, level\n# Create a Mage class that inherits from Character\n# Add a cast_spell method to Mage\n# Create a mage named 'Gandalf' with 80 health and level 10\n# Call cast_spell method\n\n",
+    "solutionCode": "class Character:\n    def __init__(self, name, health, level):\n        self.name = name\n        self.health = health\n        self.level = level\n\nclass Mage(Character):\n    def cast_spell(self):\n        print(f'{self.name} casts a powerful spell!')\n\ngandalf = Mage('Gandalf', 80, 10)\ngandalf.cast_spell()",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Gandalf casts a powerful spell!"
+      }
+    ],
+    "concepts": ["classes", "inheritance", "object-oriented programming"],
+    "requiredLevel": 7
+  },
+  {
+    "id": 17,
+    "title": "🎯 The Error Hunter",
+    "description": "Learn to handle errors like a pro! Use try-except to catch and handle exceptions.",
+    "difficulty": "advanced",
+    "xpReward": 550,
+    "estimatedTime": "35 min",
+    "startingCode": "# Create a function that safely divides two numbers\n# Use try-except to handle division by zero\n# If division by zero occurs, return 'Cannot divide by zero!'\n# Test with divide_safely(10, 0)\n\n",
+    "solutionCode": "def divide_safely(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 'Cannot divide by zero!'\n\nresult = divide_safely(10, 0)\nprint(result)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Cannot divide by zero!"
+      }
+    ],
+    "concepts": ["error handling", "try-except", "exceptions"],
+    "requiredLevel": 7
+  },
+  {
+    "id": 18,
+    "title": "🗂️ The Data Processor",
+    "description": "Process a list of adventurer data using list comprehensions. Advanced Python magic!",
+    "difficulty": "advanced",
+    "xpReward": 575,
+    "estimatedTime": "40 min",
+    "startingCode": "# Given a list of adventurer levels: [1, 2, 3, 4, 5]\n# Use list comprehension to create a new list with levels multiplied by 10\n# Print the new list\n\nlevels = [1, 2, 3, 4, 5]\n# Your code here\n",
+    "solutionCode": "levels = [1, 2, 3, 4, 5]\npower_levels = [level * 10 for level in levels]\nprint(power_levels)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "[10, 20, 30, 40, 50]"
+      }
+    ],
+    "concepts": ["list comprehensions", "lists", "iteration"],
+    "requiredLevel": 8
+  },
+  {
+    "id": 19,
+    "title": "🎪 The Decorator Master",
+    "description": "Create a decorator to add magical effects to functions. This is expert-level wizardry!",
+    "difficulty": "expert",
+    "xpReward": 700,
+    "estimatedTime": "60 min",
+    "startingCode": "# Create a decorator called 'magical_effect'\n# It should print 'Magical effect activated!' before calling the function\n# Apply it to a function called 'cast_fireball'\n# cast_fireball should print 'Fireball launched!'\n\n",
+    "solutionCode": "def magical_effect(func):\n    def wrapper():\n        print('Magical effect activated!')\n        return func()\n    return wrapper\n\n@magical_effect\ndef cast_fireball():\n    print('Fireball launched!')\n\ncast_fireball()",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Magical effect activated!\nFireball launched!"
+      }
+    ],
+    "concepts": ["decorators", "functions", "advanced Python"],
+    "requiredLevel": 9
+  },
+  {
+    "id": 20,
+    "title": "🌟 The Grand Quest Master",
+    "description": "Create a complete quest management system. This is the ultimate challenge!",
+    "difficulty": "expert",
+    "xpReward": 1000,
+    "estimatedTime": "90 min",
+    "startingCode": "# Create a QuestManager class\n# It should have methods: add_quest, complete_quest, get_active_quests\n# Create at least one quest and complete it\n# Print 'Quest system ready!'\n\n",
+    "solutionCode": "class QuestManager:\n    def __init__(self):\n        self.quests = []\n        self.completed = []\n    \n    def add_quest(self, quest):\n        self.quests.append(quest)\n    \n    def complete_quest(self, quest):\n        if quest in self.quests:\n            self.quests.remove(quest)\n            self.completed.append(quest)\n    \n    def get_active_quests(self):\n        return self.quests\n\nqm = QuestManager()\nqm.add_quest('Defeat Dragon')\nqm.complete_quest('Defeat Dragon')\nprint('Quest system ready!')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Quest system ready!"
+      }
+    ],
+    "concepts": ["classes", "methods", "data structures", "system design"],
+    "requiredLevel": 10
+  }
+]

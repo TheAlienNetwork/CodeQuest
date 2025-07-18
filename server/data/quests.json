@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "title": "Hello World",
+    "description": "Create your first Python program that prints 'Hello, World!' to the console.",
+    "difficulty": "beginner",
+    "xpReward": 50,
+    "estimatedTime": "5 min",
+    "startingCode": "# Welcome to your first quest!\n# Print 'Hello, World!' to the console\n\n",
+    "solutionCode": "print('Hello, World!')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Hello, World!"
+      }
+    ],
+    "concepts": ["print", "strings"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 2,
+    "title": "Variables and Types",
+    "description": "Create variables of different types and print their values.",
+    "difficulty": "beginner",
+    "xpReward": 75,
+    "estimatedTime": "8 min",
+    "startingCode": "# Create variables of different types\n# Create a string variable called 'name'\n# Create an integer variable called 'age'\n# Create a float variable called 'height'\n# Print all three variables\n\n",
+    "solutionCode": "name = 'Alice'\nage = 25\nheight = 5.6\nprint(name)\nprint(age)\nprint(height)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Alice\n25\n5.6"
+      }
+    ],
+    "concepts": ["variables", "strings", "integers", "floats"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 3,
+    "title": "Factorial Function Challenge",
+    "description": "Create a recursive function that calculates the factorial of a given number. Remember: factorial(n) = n × factorial(n-1)",
+    "difficulty": "intermediate",
+    "xpReward": 150,
+    "estimatedTime": "10 min",
+    "startingCode": "# Quest: Create a function that calculates factorial\ndef factorial(n):\n    # Your code here\n    pass\n\n# Test the function\nprint(factorial(5))",
+    "solutionCode": "def factorial(n):\n    if n == 0:\n        return 1\n    else:\n        return n * factorial(n-1)\n\nprint(factorial(5))",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "120"
+      }
+    ],
+    "concepts": ["functions", "recursion", "conditionals"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 4,
+    "title": "List Operations",
+    "description": "Create a list of numbers and perform various operations on it.",
+    "difficulty": "intermediate",
+    "xpReward": 125,
+    "estimatedTime": "12 min",
+    "startingCode": "# Create a list of numbers from 1 to 10\n# Find the sum, maximum, and minimum\n# Print the results\n\n",
+    "solutionCode": "numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\ntotal = sum(numbers)\nmax_num = max(numbers)\nmin_num = min(numbers)\nprint(f'Sum: {total}')\nprint(f'Max: {max_num}')\nprint(f'Min: {min_num}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Sum: 55\nMax: 10\nMin: 1"
+      }
+    ],
+    "concepts": ["lists", "built-in functions", "f-strings"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 5,
+    "title": "Class Knight Challenge",
+    "description": "Create a class that represents a knight with attributes and methods.",
+    "difficulty": "advanced",
+    "xpReward": 200,
+    "estimatedTime": "15 min",
+    "startingCode": "# Create a Knight class with name, health, and attack attributes\n# Add methods for attack and defend\n\nclass Knight:\n    def __init__(self, name):\n        # Initialize attributes\n        pass\n    \n    def attack(self):\n        # Attack method\n        pass\n    \n    def defend(self):\n        # Defend method\n        pass\n\n# Create a knight and test the methods\nknight = Knight('Sir Lancelot')\nprint(knight.name)\nknight.attack()\nknight.defend()",
+    "solutionCode": "class Knight:\n    def __init__(self, name):\n        self.name = name\n        self.health = 100\n        self.attack_power = 25\n    \n    def attack(self):\n        print(f'{self.name} attacks with {self.attack_power} damage!')\n    \n    def defend(self):\n        print(f'{self.name} raises their shield!')\n\nknight = Knight('Sir Lancelot')\nprint(knight.name)\nknight.attack()\nknight.defend()",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Sir Lancelot\nSir Lancelot attacks with 25 damage!\nSir Lancelot raises their shield!"
+      }
+    ],
+    "concepts": ["classes", "objects", "methods", "attributes"],
+    "requiredLevel": 5
+  }
+]
