@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { CodeEditor } from '@/components/CodeEditor';
-import { SimpleCodeEditor } from '@/components/SimpleCodeEditor';
 import CodeEditorWithHighlighting from '@/components/CodeEditorWithHighlighting';
 import TerminalOutput from '@/components/TerminalOutput';
 import AIChat from '@/components/AIChat';
@@ -9,9 +7,14 @@ import QuestPanel from '@/components/QuestPanel';
 import XPBar from '@/components/XPBar';
 import LearningPanel from '@/components/LearningPanel';
 import LessonsPanel from '@/components/LessonsPanel';
+import BadgeDisplay from '@/components/BadgeDisplay';
 import ProfileIcon from '@/components/ProfileIcon';
-import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
+import { apiRequest } from '@/lib/queryClient';
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Trophy, Flame } from 'lucide-react';
 
 interface User {
   id: number;
@@ -44,8 +47,13 @@ interface Quest {
   requiredLevel: number;
 }
 
-export default function CodeQuest() {
-  const [userId] = useState(1); // Mock user ID for now
+interface CodeQuestProps {
+  user: User;
+  onUserUpdate: (user: User) => void;
+  onLogout: () => void;
+}
+
+export default function CodeQuest({ user, onUserUpdate, onLogout }: CodeQuestProps) {
   const [code, setCode] = useState('');
   const [terminalOutput, setTerminalOutput] = useState('');
   const [terminalError, setTerminalError] = useState('');
@@ -60,16 +68,10 @@ export default function CodeQuest() {
   const [questCompleted, setQuestCompleted] = useState(false);
   const { toast } = useToast();
 
-  // Fetch user data
-  const { data: user, refetch: refetchUser } = useQuery<User>({
-    queryKey: ['/api/user', userId],
-    enabled: !!userId,
-  });
-
   // Fetch current quest
   const { data: quest, refetch: refetchQuest } = useQuery<Quest>({
-    queryKey: ['/api/quest', userId],
-    enabled: !!userId,
+    queryKey: ['/api/quest', user?.id],
+    enabled: !!user?.id,
   });
 
   // Initialize code editor with quest starting code
@@ -111,7 +113,7 @@ export default function CodeQuest() {
     try {
       const response = await apiRequest('POST', '/api/run', {
         code,
-        userId,
+        userId: user.id,
       });
 
       const result = await response.json();
@@ -152,8 +154,8 @@ export default function CodeQuest() {
 
     try {
       const response = await apiRequest('POST', '/api/analyze', {
+        userId: user.id,
         code,
-        userId,
         questId: quest?.id,
       });
 
@@ -179,8 +181,10 @@ export default function CodeQuest() {
         setShowTerminal(true);
       }
 
-      // Refetch user data to update XP
-      refetchUser();
+      // Update user data
+      if (result.user) {
+        onUserUpdate(result.user);
+      }
     } catch (error) {
       toast({
         title: "Analysis failed",
@@ -195,7 +199,7 @@ export default function CodeQuest() {
   const handleGetHint = async () => {
     try {
       const response = await apiRequest('POST', '/api/hint', {
-        userId,
+        userId: user.id,
         code,
       });
 
@@ -210,7 +214,9 @@ export default function CodeQuest() {
         description: result.hint,
       });
 
-      refetchUser();
+      if (result.user) {
+        onUserUpdate(result.user);
+      }
     } catch (error) {
       toast({
         title: "Hint unavailable",
@@ -229,7 +235,18 @@ export default function CodeQuest() {
 
   const handleXPGain = (xp: number) => {
     showXPGainAnimation(xp);
-    refetchUser();
+    if (xp > 0) {
+      apiRequest('POST', '/api/gain-xp', { userId: user.id, xp })
+        .then(response => response.json())
+        .then(data => {
+          if (data.user) {
+            onUserUpdate(data.user);
+          }
+        })
+        .catch(error => {
+          console.error("Failed to gain XP:", error);
+        });
+    }
   };
 
   const closeLevelUpModal = () => {
@@ -239,7 +256,7 @@ export default function CodeQuest() {
   const handleNextQuest = async () => {
     try {
       const response = await apiRequest('POST', '/api/complete-quest', {
-        userId,
+        userId: user.id,
         questId: quest?.id,
       });
 
@@ -250,7 +267,9 @@ export default function CodeQuest() {
         setQuestCompleted(false);
         setActiveTab('quest');
         refetchQuest();
-        refetchUser();
+        if (result.user) {
+          onUserUpdate(result.user);
+        }
 
         toast({
           title: "New Quest Unlocked! 🚀",
@@ -286,11 +305,14 @@ export default function CodeQuest() {
     <div className="bg-[var(--cyber-dark)] text-white overflow-hidden min-h-screen">
       {/* Top Header with XP Bar */}
       <header className="bg-[var(--cyber-darker)] border-b border-[var(--cyber-cyan)]/30 px-6 py-4">
-        <XPBar
-          user={user}
-          showXPGain={showXPGain}
-          onXPGainComplete={() => setShowXPGain(0)}
-        />
+        <div className="flex items-center justify-between">
+          <XPBar
+            user={user}
+            showXPGain={showXPGain}
+            onXPGainComplete={() => setShowXPGain(0)}
+          />
+          <ProfileIcon user={user} onLogout={onLogout} />
+        </div>
       </header>
 
       {/* Main Content Area */}
@@ -360,7 +382,7 @@ export default function CodeQuest() {
               <>
                 <QuestPanel quest={quest} />
                 <AIChat
-                  userId={userId}
+                  userId={user.id}
                   questId={quest?.id}
                   onXPGain={handleXPGain}
                 />
@@ -377,7 +399,7 @@ export default function CodeQuest() {
             ) : (
               <div className="flex-1">
                 <LessonsPanel
-                  userId={userId}
+                  userId={user.id}
                   onSelectQuest={(questId) => {
                     setSelectedQuestId(questId);
                     setActiveTab('quest');

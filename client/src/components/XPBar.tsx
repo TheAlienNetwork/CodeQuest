@@ -38,7 +38,7 @@ export default function XPBar({ user, showXPGain, onXPGainComplete }: XPBarProps
   }, [showXPGain, user.xp, onXPGainComplete]);
 
   return (
-    <div className="flex items-center justify-between w-full">
+    <div className="flex items-center space-x-4 w-full">
       <div className="flex items-center space-x-4">
         <h1 className="text-2xl font-bold cyber-text-gradient">
           <i className="fas fa-code mr-2"></i>
