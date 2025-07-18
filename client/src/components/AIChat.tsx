@@ -254,27 +254,42 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
   }
 
   return (
-    <div className="h-full bg-[var(--cyber-dark)] text-white flex flex-col">
-      {/* Header */}
-      <div className="p-4 border-b border-[var(--cyber-accent)]">
-        <div className="flex items-center gap-2">
-          <Bot className="w-6 h-6 text-[var(--cyber-primary)]" />
-          <h2 className="text-lg font-semibold">AI Tutor</h2>
-          <div className="ml-auto text-sm text-gray-400">
-            {quest ? `Quest: ${quest.title}` : 'General Help'}
+    <div className="h-full bg-gradient-to-br from-[var(--cyber-dark)] to-[var(--cyber-darker)] text-white flex flex-col shadow-2xl">
+      {/* Modern Header */}
+      <div className="p-6 border-b border-[var(--cyber-accent)]/30 bg-gradient-to-r from-[var(--cyber-dark)] to-[var(--cyber-gray)]">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--cyber-cyan)] via-[var(--cyber-purple)] to-[var(--cyber-pink)] rounded-xl flex items-center justify-center shadow-lg">
+                <Bot className="w-7 h-7 text-white" />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-[var(--cyber-dark)] animate-pulse"></div>
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--cyber-cyan)] to-[var(--cyber-purple)]">
+                AI Tutor
+              </h2>
+              <p className="text-sm text-gray-300 font-medium">
+                {quest ? `Quest: ${quest.title}` : 'Your intelligent coding companion'}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1 bg-green-500/20 rounded-full border border-green-500/30">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span className="text-xs text-green-300 font-medium">Online</span>
           </div>
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="p-4 border-b border-[var(--cyber-accent)]">
-        <div className="flex gap-2 flex-wrap">
+      {/* Modern Quick Actions */}
+      <div className="p-6 border-b border-[var(--cyber-accent)]/30 bg-gradient-to-r from-[var(--cyber-dark)]/50 to-[var(--cyber-gray)]/50">
+        <div className="flex gap-3 flex-wrap">
           <Button
             variant="outline"
             size="sm"
             onClick={handleGetHint}
             disabled={isLoading || !quest}
-            className="flex items-center gap-1 border-[var(--cyber-primary)] text-[var(--cyber-primary)] bg-[var(--cyber-surface)] hover:bg-[var(--cyber-primary)]/20"
+            className="flex items-center gap-2 border-[var(--cyber-cyan)]/50 text-[var(--cyber-cyan)] bg-[var(--cyber-gray)]/50 hover:bg-[var(--cyber-cyan)]/20 rounded-lg px-4 py-2 transition-all duration-200 backdrop-blur-sm shadow-lg hover:shadow-[var(--cyber-cyan)]/30"
           >
             <Lightbulb className="w-4 h-4" />
             Get Hint (-10 XP)
@@ -284,7 +299,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
             size="sm"
             onClick={handleGetSolution}
             disabled={isLoading || !quest}
-            className="flex items-center gap-1 border-[var(--cyber-primary)] text-[var(--cyber-primary)] bg-[var(--cyber-surface)] hover:bg-[var(--cyber-primary)]/20"
+            className="flex items-center gap-2 border-[var(--cyber-purple)]/50 text-[var(--cyber-purple)] bg-[var(--cyber-gray)]/50 hover:bg-[var(--cyber-purple)]/20 rounded-lg px-4 py-2 transition-all duration-200 backdrop-blur-sm shadow-lg hover:shadow-[var(--cyber-purple)]/30"
           >
             <Zap className="w-4 h-4" />
             Get Solution (-50 XP)
@@ -294,7 +309,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
             size="sm"
             onClick={handleGetExplanation}
             disabled={isLoading || !quest}
-            className="flex items-center gap-1 border-[var(--cyber-primary)] text-[var(--cyber-primary)] bg-[var(--cyber-surface)] hover:bg-[var(--cyber-primary)]/20"
+            className="flex items-center gap-2 border-[var(--cyber-blue)]/50 text-[var(--cyber-blue)] bg-[var(--cyber-gray)]/50 hover:bg-[var(--cyber-blue)]/20 rounded-lg px-4 py-2 transition-all duration-200 backdrop-blur-sm shadow-lg hover:shadow-[var(--cyber-blue)]/30"
           >
             <BookOpen className="w-4 h-4" />
             Get Explanation (-20 XP)
