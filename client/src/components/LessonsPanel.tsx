@@ -140,7 +140,10 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
   const progressPercentage = (completedCount / totalQuests) * 100;
 
   return (
-    <div className="h-full bg-[var(--cyber-dark)] text-white p-6 overflow-auto lessons-scrollbar">
+    <div className="h-full bg-[var(--cyber-dark)] text-white p-6 overflow-auto" style={{
+      scrollbarWidth: 'thin',
+      scrollbarColor: 'var(--cyber-cyan) var(--cyber-gray)'
+    }}>
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-2 text-[var(--cyber-cyan)]">
           🎓 Learning Curriculum
@@ -180,8 +183,8 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
               onClick={() => setSelectedDifficulty(diff)}
               className={`capitalize ${
                 selectedDifficulty === diff 
-                  ? 'bg-[var(--cyber-cyan)] text-black' 
-                  : 'border-[var(--cyber-cyan)] text-[var(--cyber-cyan)]'
+                  ? 'bg-[var(--cyber-cyan)] text-black hover:bg-[var(--cyber-cyan)]/80' 
+                  : 'border-[var(--cyber-cyan)] text-[var(--cyber-cyan)] bg-[var(--cyber-gray)] hover:bg-[var(--cyber-cyan)]/20'
               }`}
             >
               {diff}

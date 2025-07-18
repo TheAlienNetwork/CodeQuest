@@ -274,7 +274,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
             size="sm"
             onClick={handleGetHint}
             disabled={isLoading || !quest}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 border-[var(--cyber-primary)] text-[var(--cyber-primary)] bg-[var(--cyber-surface)] hover:bg-[var(--cyber-primary)]/20"
           >
             <Lightbulb className="w-4 h-4" />
             Get Hint (-10 XP)
@@ -284,7 +284,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
             size="sm"
             onClick={handleGetSolution}
             disabled={isLoading || !quest}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 border-[var(--cyber-primary)] text-[var(--cyber-primary)] bg-[var(--cyber-surface)] hover:bg-[var(--cyber-primary)]/20"
           >
             <Zap className="w-4 h-4" />
             Get Solution (-50 XP)
@@ -294,7 +294,7 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
             size="sm"
             onClick={handleGetExplanation}
             disabled={isLoading || !quest}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 border-[var(--cyber-primary)] text-[var(--cyber-primary)] bg-[var(--cyber-surface)] hover:bg-[var(--cyber-primary)]/20"
           >
             <BookOpen className="w-4 h-4" />
             Get Explanation (-20 XP)

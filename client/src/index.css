@@ -102,6 +102,24 @@
     transition: all 0.2s ease;
     box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
   }
+  
+  /* Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--cyber-gray);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--cyber-cyan);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--cyber-primary);
+  }
 
   .btn-cyber-sm:hover {
     transform: translateY(-1px);
