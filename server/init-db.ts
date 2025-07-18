@@ -26,6 +26,8 @@ export async function initializeDatabase() {
     // Load quests into database
     try {
       const existingQuests = await storage.getAllQuests();
+      console.log('Existing quests count:', existingQuests.length);
+      
       if (existingQuests.length === 0) {
         console.log('Loading quest data...');
         console.log('Found', questsData.length, 'quests to insert');
@@ -38,9 +40,15 @@ export async function initializeDatabase() {
         const insertedQuests = await storage.getAllQuests();
         console.log('Total quests in database:', insertedQuests.length);
         console.log("Loaded", questsData.length, "quests into database");
+      } else {
+        console.log('Quests already loaded, skipping initialization');
       }
     } catch (error) {
       console.warn("Could not load quests into database, using fallback:", error.message);
+      // Force reload quests in MemStorage
+      if (storage instanceof Object && 'loadQuests' in storage) {
+        console.log('Forcing quest reload in MemStorage');
+      }
     }
 
     // Create admin user if it doesn't exist

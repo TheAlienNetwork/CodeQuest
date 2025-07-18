@@ -60,9 +60,11 @@ export class MemStorage implements IStorage {
   }
 
   private loadQuests() {
+    console.log('Loading quests into MemStorage...');
     questsData.forEach(quest => {
       this.quests.set(quest.id, quest as Quest);
     });
+    console.log(`Loaded ${questsData.length} quests into MemStorage`);
   }
 
   private createDefaultUser() {
@@ -190,8 +192,27 @@ export class MemStorage implements IStorage {
 
   async getQuestForUser(userId: number): Promise<Quest | undefined> {
     const user = await this.getUser(userId);
-    if (!user || !user.currentQuest) return undefined;
-    return this.getQuest(user.currentQuest);
+    if (!user) {
+      console.log(`User ${userId} not found`);
+      return undefined;
+    }
+
+    // If user doesn't have a current quest, assign the first quest
+    if (!user.currentQuest) {
+      console.log(`User ${userId} has no current quest, assigning first quest`);
+      const firstQuest = Array.from(this.quests.values())[0];
+      if (firstQuest) {
+        await this.updateUser(userId, { currentQuest: firstQuest.id });
+        console.log(`Assigned quest ${firstQuest.id} to user ${userId}`);
+        return firstQuest;
+      }
+      console.log('No quests available');
+      return undefined;
+    }
+
+    const quest = this.quests.get(user.currentQuest);
+    console.log(`Retrieved quest ${user.currentQuest} for user ${userId}:`, quest ? 'found' : 'not found');
+    return quest;
   }
 
   // Chat methods
@@ -236,11 +257,14 @@ export class MemStorage implements IStorage {
   }
 
   async createQuest(questData: any): Promise<Quest> {
+    // Use the quest's existing ID if it has one, otherwise assign a new one
+    const questId = questData.id || this.currentId++;
     const quest = {
-      id: this.currentId++,
       ...questData,
+      id: questId,
     };
-    this.quests.set(quest.id, quest);
+    this.quests.set(questId, quest);
+    console.log(`Created quest ${questId}: ${quest.title}`);
     return quest;
   }
 }

@@ -55,13 +55,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`Fetching quest for user ${userId}`);
       
       if (isNaN(userId)) {
+        console.log('Invalid user ID provided');
         return res.status(400).json({ error: "Invalid user ID" });
       }
+
+      // Check if user exists
+      const user = await storage.getUser(userId);
+      if (!user) {
+        console.log(`User ${userId} not found`);
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      console.log(`User ${userId} found: ${user.adventurersName}, currentQuest: ${user.currentQuest}`);
+      
+      // Check available quests
+      const allQuests = await storage.getAllQuests();
+      console.log(`Total quests available: ${allQuests.length}`);
       
       const quest = await storage.getQuestForUser(userId);
-      console.log(`Found quest for user ${userId}:`, quest ? quest.id : 'none');
+      console.log(`Found quest for user ${userId}:`, quest ? `${quest.id} - ${quest.title}` : 'none');
       
       if (!quest) {
+        console.log('No quest found, returning 404');
         return res.status(404).json({ error: "No quest found for user" });
       }
 

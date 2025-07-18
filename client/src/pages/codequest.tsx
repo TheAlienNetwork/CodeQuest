@@ -72,8 +72,10 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   const { data: quest, isLoading: questLoading, error: questError, refetch } = useQuery<Quest>({
     queryKey: ['/api/quest', user?.id],
     enabled: !!user?.id,
-    retry: 3,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    retry: 5,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+    staleTime: 0, // Always refetch
+    cacheTime: 0, // Don't cache
   });
 
   // Initialize code editor with quest starting code
@@ -312,14 +314,23 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   }
 
   if (questError) {
+    console.error('Quest error:', questError);
     return (
       <div className="min-h-screen bg-[var(--cyber-dark)] flex items-center justify-center">
-        <div className="text-center space-y-4">
+        <div className="text-center space-y-4 max-w-md">
           <div className="text-red-400 text-xl">⚠️ Failed to load quest</div>
-          <p className="text-gray-400">Don't worry! You can still explore the interface.</p>
+          <p className="text-gray-400">There was an issue loading your quest data.</p>
+          <div className="bg-[var(--cyber-gray)] p-4 rounded-lg text-left">
+            <p className="text-xs text-gray-500 mb-2">Debug info:</p>
+            <p className="text-xs text-white">User ID: {user?.id}</p>
+            <p className="text-xs text-white">Error: {questError?.message || 'Unknown error'}</p>
+          </div>
           <div className="space-x-4">
             <button 
-              onClick={() => refetch()}
+              onClick={() => {
+                console.log('Retrying quest fetch...');
+                refetch();
+              }}
               className="btn-cyber"
             >
               Retry Loading Quest
