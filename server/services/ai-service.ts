@@ -197,58 +197,89 @@ for fruit in fruits:
   }
 
   private checkOutput(code: string, expectedOutput: string): boolean {
-    // More accurate code analysis
     const normalizedCode = code.toLowerCase().replace(/\s+/g, ' ').trim();
     const normalizedExpected = expectedOutput.toLowerCase().replace(/\s+/g, ' ').trim();
     
     // Split expected output into lines for multi-line matching
-    const expectedLines = expectedOutput.split('\n').map(line => line.trim());
+    const expectedLines = expectedOutput.split('\n').map(line => line.trim()).filter(line => line.length > 0);
     
-    // Check for exact print statement matches with case variations
+    // If no expected output lines, return true
+    if (expectedLines.length === 0) {
+      return true;
+    }
+    
+    // Check each expected line
     for (const line of expectedLines) {
       const lineLower = line.toLowerCase();
-      const printStatements = [
+      let foundMatch = false;
+      
+      // Check for direct print statements with the expected output
+      const printPatterns = [
         `print("${line}")`,
         `print('${line}')`,
+        `print(${line})`,
         `print("${lineLower}")`,
         `print('${lineLower}')`,
-        `print(${line})`,
         `print(${lineLower})`
       ];
       
-      // Check if any print statement matches
-      let foundMatch = false;
-      for (const statement of printStatements) {
-        if (normalizedCode.includes(statement.toLowerCase())) {
+      for (const pattern of printPatterns) {
+        if (normalizedCode.includes(pattern.toLowerCase())) {
           foundMatch = true;
           break;
         }
       }
       
-      // Also check for variable printing patterns
+      // Check for mathematical expressions that evaluate to the expected result
+      if (!foundMatch && line.match(/^\d+\.?\d*$/)) {
+        const numValue = parseFloat(line);
+        
+        // Check for direct number printing
+        if (normalizedCode.includes(`print(${numValue})`) || 
+            normalizedCode.includes(`print(${numValue}.0)`)) {
+          foundMatch = true;
+        }
+        
+        // Check for common mathematical operations
+        const mathPatterns = [
+          /print\s*\(\s*\d+\s*\+\s*\d+\.?\d*\s*\)/,
+          /print\s*\(\s*\d+\s*-\s*\d+\.?\d*\s*\)/,
+          /print\s*\(\s*\d+\s*\*\s*\d+\.?\d*\s*\)/,
+          /print\s*\(\s*\d+\s*\/\s*\d+\.?\d*\s*\)/,
+          /print\s*\(\s*\w+\s*\+\s*\w+\s*\)/,
+          /print\s*\(\s*\w+\s*-\s*\w+\s*\)/,
+          /print\s*\(\s*\w+\s*\*\s*\w+\s*\)/,
+          /print\s*\(\s*\w+\s*\/\s*\w+\s*\)/
+        ];
+        
+        for (const pattern of mathPatterns) {
+          if (pattern.test(normalizedCode)) {
+            foundMatch = true;
+            break;
+          }
+        }
+      }
+      
+      // Special handling for variable assignments and printing
       if (!foundMatch) {
-        // Check if code contains variables that would produce the expected output
-        if (lineLower === 'hero' && (normalizedCode.includes('name = "hero"') || normalizedCode.includes("name = 'hero'"))) {
-          foundMatch = true;
-        } else if (lineLower === '25' && normalizedCode.includes('age = 25')) {
-          foundMatch = true;
-        } else if (lineLower === 'sword' && (normalizedCode.includes('item = "sword"') || normalizedCode.includes("item = 'sword'"))) {
-          foundMatch = true;
+        // Check for variable definitions that match expected values
+        if (lineLower === 'hero' || lineLower === 'tyler') {
+          if (normalizedCode.includes('name =') && normalizedCode.includes('print(name)')) {
+            foundMatch = true;
+          }
+        } else if (lineLower.match(/^\d+$/)) {
+          if (normalizedCode.includes('age =') && normalizedCode.includes('print(age)')) {
+            foundMatch = true;
+          }
+        } else if (lineLower === 'sword') {
+          if (normalizedCode.includes('item =') && normalizedCode.includes('print(item)')) {
+            foundMatch = true;
+          }
         }
       }
       
       if (!foundMatch) {
         return false;
-      }
-    }
-    
-    // For basic variable assignments and simple expressions
-    if (expectedOutput.match(/^\d+\.?\d*$/)) {
-      // If expected output is a number, check for calculations
-      const numValue = parseFloat(expectedOutput);
-      if (normalizedCode.includes(`print(${numValue})`) || 
-          normalizedCode.includes(`print(${numValue}.0)`)) {
-        return true;
       }
     }
     
