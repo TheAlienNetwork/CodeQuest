@@ -4,12 +4,13 @@ import questsData from "./data/comprehensive-quests.json";
 export async function initializeDatabase() {
   try {
     // Check if default user exists
-    let user = await storage.getUserByUsername("Hero");
+    let user = await storage.getUserByEmail("hero@codequest.com");
     
     if (!user) {
       // Create default user
       user = await storage.createUser({
-        username: "Hero",
+        email: "hero@codequest.com",
+        adventurersName: "Hero",
         password: "password",
         xp: 0,
         level: 1,
@@ -19,7 +20,7 @@ export async function initializeDatabase() {
         currentQuest: 1,
         completedQuests: []
       });
-      console.log("Created default user:", user.username);
+      console.log("Created default user:", user.adventurersName);
     }
 
     // Load quests into database

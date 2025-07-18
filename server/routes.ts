@@ -6,10 +6,14 @@ import { codeExecutionService } from "./services/code-execution";
 import { insertChatMessageSchema, insertCodeSubmissionSchema } from "@shared/schema";
 import { z } from "zod";
 import { initializeDatabase } from "./init-db";
+import authRoutes from "./auth-routes";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize database
   await initializeDatabase();
+  
+  // Use auth routes
+  app.use('/api', authRoutes);
   
   // Get current user info
   app.get("/api/user/:id", async (req, res) => {

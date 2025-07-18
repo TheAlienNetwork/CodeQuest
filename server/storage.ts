@@ -23,18 +23,18 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: number, updates: Partial<User>): Promise<User | undefined>;
   updateUserXP(id: number, xpGain: number): Promise<User | undefined>;
-  
+
   // Quest methods
   getQuest(id: number): Promise<Quest | undefined>;
   getQuestsByLevel(level: number): Promise<Quest[]>;
   getAllQuests(): Promise<Quest[]>;
   getQuestForUser(userId: number): Promise<Quest | undefined>;
   createQuest(quest: any): Promise<Quest>;
-  
+
   // Chat methods
   getChatMessages(userId: number, questId?: number): Promise<ChatMessage[]>;
   addChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
-  
+
   // Code submission methods
   addCodeSubmission(submission: InsertCodeSubmission): Promise<CodeSubmission>;
   getUserSubmissions(userId: number): Promise<CodeSubmission[]>;
@@ -53,7 +53,7 @@ export class MemStorage implements IStorage {
     this.chatMessages = new Map();
     this.codeSubmissions = new Map();
     this.currentId = 1;
-    
+
     // Load initial quests from JSON
     this.loadQuests();
     this.createDefaultUser();
@@ -105,25 +105,31 @@ export class MemStorage implements IStorage {
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.email === email,
-    );
+    return Array.from(this.users.values()).find(user => user.email === email);
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(user => user.username === username);
+  }
+
+  async createUser(userData: any): Promise<User> {
     const id = this.currentId++;
     const user: User = {
-      ...insertUser,
       id,
-      profileImageUrl: null,
-      xp: 0,
-      level: 1,
-      rank: "Code Newbie",
-      achievements: 0,
-      streak: 0,
-      currentQuest: 1, // Start with first quest
-      completedQuests: [],
+      email: userData.email,
+      adventurersName: userData.adventurersName,
+      username: userData.username || userData.adventurersName,
+      password: userData.password,
+      xp: userData.xp || 0,
+      level: userData.level || 1,
+      rank: userData.rank || "Code Newbie",
+      achievements: userData.achievements || 0,
+      streak: userData.streak || 0,
+      currentQuest: userData.currentQuest || 1,
+      completedQuests: userData.completedQuests || [],
+      profileImageUrl: userData.profileImageUrl || null,
       createdAt: new Date(),
+      updatedAt: new Date(),
     };
     this.users.set(id, user);
     return user;
@@ -134,7 +140,7 @@ export class MemStorage implements IStorage {
     if (!user) return undefined;
 
     const updatedUser = { ...user, ...updates };
-    
+
     // If currentQuest is being updated, mark previous quest as completed
     if (updates.currentQuest && updates.currentQuest !== user.currentQuest) {
       const completedQuests = [...(user.completedQuests || [])];
@@ -143,7 +149,7 @@ export class MemStorage implements IStorage {
       }
       updatedUser.completedQuests = completedQuests;
     }
-    
+
     this.users.set(id, updatedUser);
     return updatedUser;
   }
@@ -274,19 +280,19 @@ export class DatabaseStorage implements IStorage {
 
     const newXP = user.xp + xpGain;
     const newLevel = Math.floor(newXP / 500) + 1;
-    
+
     // Update completed quests if user completed current quest
     let completedQuests = user.completedQuests || [];
     const currentQuest = user.currentQuest;
-    
+
     const ranks = [
       "Code Newbie", "Script Kiddie", "Bug Hunter", "Code Warrior", 
       "Function Master", "Class Hero", "Algorithm Sage", "Data Wizard", 
       "System Architect", "Code Grandmaster"
     ];
-    
+
     const newRank = ranks[Math.min(newLevel - 1, ranks.length - 1)];
-    
+
     return await this.updateUser(id, {
       xp: newXP,
       level: newLevel,
@@ -311,7 +317,7 @@ export class DatabaseStorage implements IStorage {
   async getQuestForUser(userId: number): Promise<Quest | undefined> {
     const user = await this.getUser(userId);
     if (!user || !user.currentQuest) return undefined;
-    
+
     return await this.getQuest(user.currentQuest);
   }
 

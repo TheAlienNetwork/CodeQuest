@@ -48,6 +48,33 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = loginUserSchema.parse(req.body);
     
+    // Check for admin login
+    if (email === 'admin@codequest.com' && password === 'admin123') {
+      const adminUser = {
+        id: 999,
+        email: 'admin@codequest.com',
+        adventurersName: 'Admin',
+        username: 'admin',
+        xp: 999999,
+        level: 100,
+        rank: 'System Administrator',
+        achievements: 999,
+        streak: 999,
+        currentQuest: null,
+        completedQuests: [],
+        profileImageUrl: null,
+        isAdmin: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      
+      return res.json({
+        success: true,
+        user: adminUser,
+        message: 'Admin login successful'
+      });
+    }
+    
     // Find user by email
     const user = await storage.getUserByEmail(email);
     if (!user) {

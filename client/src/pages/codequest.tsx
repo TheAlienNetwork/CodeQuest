@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import CodeEditorWithHighlighting from '@/components/CodeEditorWithHighlighting';
-import TerminalOutput from '@/components/TerminalOutput';
+import { CodeEditor } from '@/components/CodeEditor';
+import { SimpleCodeEditor } from '@/components/SimpleCodeEditor';
+import { TerminalOutput } from '@/components/TerminalOutput';
 import AIChat from '@/components/AIChat';
 import QuestPanel from '@/components/QuestPanel';
 import XPBar from '@/components/XPBar';
@@ -83,7 +84,7 @@ export default function CodeQuest() {
     if (user) {
       const previousLevel = currentUser?.level || 1;
       setCurrentUser(user);
-      
+
       // Check for level up
       if (user.level > previousLevel) {
         setShowLevelUp(true);
@@ -156,7 +157,7 @@ export default function CodeQuest() {
       });
 
       const result = await response.json();
-      
+
       if (result.xpEarned > 0) {
         showXPGainAnimation(result.xpEarned);
       }
@@ -198,7 +199,7 @@ export default function CodeQuest() {
       });
 
       const result = await response.json();
-      
+
       if (result.xpEarned > 0) {
         showXPGainAnimation(result.xpEarned);
       }
@@ -242,14 +243,14 @@ export default function CodeQuest() {
       });
 
       const result = await response.json();
-      
+
       if (result.nextQuest) {
         setCode(result.nextQuest.startingCode || '');
         setQuestCompleted(false);
         setActiveTab('quest');
         refetchQuest();
         refetchUser();
-        
+
         toast({
           title: "New Quest Unlocked! 🚀",
           description: `Starting: ${result.nextQuest.title}`,
@@ -304,7 +305,7 @@ export default function CodeQuest() {
             isRunning={isRunning}
             isAnalyzing={isAnalyzing}
           />
-          
+
           {/* Terminal Output */}
           <TerminalOutput
             output={terminalOutput}

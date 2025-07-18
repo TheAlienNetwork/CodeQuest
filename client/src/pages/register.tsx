@@ -43,7 +43,13 @@ export default function Register({ onRegister, onShowLogin }: RegisterProps) {
     setIsLoading(true);
 
     try {
-      const response = await apiRequest('POST', '/api/register', { email, adventurersName, password });
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, adventurersName, password }),
+        credentials: 'include',
+      });
+
       const result = await response.json();
 
       if (result.success) {
