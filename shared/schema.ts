@@ -15,6 +15,11 @@ export const users = pgTable("users", {
   streak: integer("streak").notNull().default(0),
   currentQuest: integer("current_quest").default(1),
   completedQuests: integer("completed_quests").array().default([]),
+  unlockedAchievements: text("unlocked_achievements").array().default([]),
+  currentBadge: text("current_badge"),
+  averageCompletionTime: integer("average_completion_time").default(3600), // in seconds
+  hintsUsed: integer("hints_used").default(0),
+  helpfulMessages: integer("helpful_messages").default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
@@ -47,6 +52,13 @@ export const codeSubmissions = pgTable("code_submissions", {
   questId: integer("quest_id").notNull(),
   code: text("code").notNull(),
   isCorrect: boolean("is_correct").notNull(),
+  isSuccessful: boolean("is_successful").notNull().default(false),
+  isOptimal: boolean("is_optimal").notNull().default(false),
+  isCreative: boolean("is_creative").notNull().default(false),
+  executionTime: integer("execution_time").default(0), // in seconds
+  complexity: integer("complexity").default(1),
+  linesOfCode: integer("lines_of_code").default(0),
+  hintsUsed: integer("hints_used").default(0),
   output: text("output"),
   feedback: text("feedback"),
   xpEarned: integer("xp_earned").notNull().default(0),

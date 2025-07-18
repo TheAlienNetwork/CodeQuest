@@ -5,6 +5,8 @@ import { insertUserSchema, insertQuestSchema, insertChatMessageSchema, insertCod
 import { IStorage, storage } from "./storage";
 import { codeExecutionService } from "./services/code-execution";
 import { aiService } from "./services/ai-service";
+import { analyticsService } from "./services/analytics-service";
+import { gamificationService } from "./services/gamification-service";
 export function registerRoutes(app: Application) {
   // Authentication routes
   app.post('/api/register', async (req, res) => {
@@ -425,6 +427,205 @@ export function registerRoutes(app: Application) {
       });
     } catch (error) {
       res.status(500).json({ error: "Failed to complete quest" });
+    }
+  });
+
+  // Advanced Analytics Routes
+  app.get("/api/analytics/code-metrics", async (req, res) => {
+    try {
+      const { code } = req.query;
+      if (!code) {
+        return res.status(400).json({ error: "Code parameter required" });
+      }
+      
+      const metrics = analyticsService.analyzeCodeComplexity(code as string);
+      res.json(metrics);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to analyze code" });
+    }
+  });
+
+  app.get("/api/analytics/learning/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const analytics = await analyticsService.generateLearningAnalytics(userId);
+      res.json(analytics);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to generate learning analytics" });
+    }
+  });
+
+  app.get("/api/analytics/performance/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const performance = await analyticsService.generatePerformanceMetrics(userId);
+      res.json(performance);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to generate performance metrics" });
+    }
+  });
+
+  app.get("/api/recommendations/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const recommendations = await analyticsService.recommendQuests(userId);
+      res.json(recommendations);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to generate recommendations" });
+    }
+  });
+
+  // Gamification Routes
+  app.get("/api/achievements/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const achievements = await gamificationService.checkAchievements(userId);
+      res.json(achievements);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to check achievements" });
+    }
+  });
+
+  app.get("/api/challenges/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const challenges = await gamificationService.getDailyChallenges(userId);
+      res.json(challenges);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to get daily challenges" });
+    }
+  });
+
+  app.get("/api/leaderboard/:type?", async (req, res) => {
+    try {
+      const type = req.params.type as 'xp' | 'streak' | 'speed' || 'xp';
+      const limit = parseInt(req.query.limit as string) || 10;
+      const leaderboard = await gamificationService.generateLeaderboard(type, limit);
+      res.json(leaderboard);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to generate leaderboard" });
+    }
+  });
+
+  app.get("/api/rewards/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const rewards = await gamificationService.generatePersonalizedRewards(userId);
+      res.json(rewards);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to generate rewards" });
+    }
+  });
+
+  // Enhanced Code Execution with Advanced Features
+  app.post("/api/execute-advanced", async (req, res) => {
+    try {
+      const { code, userId, questId } = req.body;
+      
+      // Analyze code complexity before execution
+      const codeMetrics = analyticsService.analyzeCodeComplexity(code);
+      
+      // Execute code
+      const executionResult = await codeExecutionService.executeCode(code);
+      
+      // Calculate XP multiplier
+      const user = await storage.getUser(userId);
+      const quest = await storage.getQuest(questId);
+      
+      if (user && quest) {
+        const xpMultiplier = gamificationService.calculateXPMultiplier(
+          user, 
+          quest.difficulty, 
+          executionResult.executionTime || 0, 
+          0 // hints used - would be tracked separately
+        );
+        
+        const baseXP = quest.xpReward || 50;
+        const totalXP = Math.round(baseXP * xpMultiplier);
+        
+        // Check for new achievements
+        const newAchievements = await gamificationService.checkAchievements(userId);
+        
+        res.json({
+          ...executionResult,
+          codeMetrics,
+          xpMultiplier,
+          totalXP,
+          newAchievements,
+          recommendations: await analyticsService.recommendQuests(userId)
+        });
+      } else {
+        res.json({
+          ...executionResult,
+          codeMetrics
+        });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Failed to execute code with advanced features" });
+    }
+  });
+
+  // Real-time Progress Tracking
+  app.post("/api/track-progress", async (req, res) => {
+    try {
+      const { userId, questId, action, data } = req.body;
+      
+      // Track various user actions for analytics
+      const trackingData = {
+        userId,
+        questId,
+        action, // 'start', 'pause', 'resume', 'submit', 'hint', 'solution'
+        timestamp: new Date(),
+        data
+      };
+      
+      // Store tracking data (would be in a separate tracking table in production)
+      console.log('Tracking:', trackingData);
+      
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to track progress" });
+    }
+  });
+
+  // Smart Hint System
+  app.post("/api/smart-hint", async (req, res) => {
+    try {
+      const { userId, questId, currentCode, errorMessage } = req.body;
+      
+      const user = await storage.getUser(userId);
+      const quest = await storage.getQuest(questId);
+      
+      if (!user || !quest) {
+        return res.status(404).json({ error: "User or quest not found" });
+      }
+      
+      // Analyze current code for context-aware hints
+      const codeMetrics = analyticsService.analyzeCodeComplexity(currentCode || "");
+      
+      // Generate smart hint based on code analysis and error
+      let hint = await aiService.generateHint(quest.title, quest.description, currentCode || "");
+      
+      // Enhance hint with code analysis
+      if (codeMetrics.errorCount > 0) {
+        hint += "\\n\\n💡 Code Analysis: I noticed some potential issues in your code. Check for syntax errors and missing parentheses.";
+      }
+      
+      if (codeMetrics.complexity > 5) {
+        hint += "\\n\\n🔧 Optimization Tip: Your code seems complex. Try breaking it into smaller functions.";
+      }
+      
+      // Small XP reward for using smart hints
+      const updatedUser = await storage.updateUserXP(userId, 5);
+      
+      res.json({
+        hint,
+        codeMetrics,
+        xpEarned: 5,
+        user: updatedUser
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to generate smart hint" });
     }
   });
 

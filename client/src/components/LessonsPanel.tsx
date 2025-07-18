@@ -33,10 +33,10 @@ interface LessonsPanelProps {
 export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProps) {
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
 
-  const { data: user } = useQuery<User>({ queryKey: ['/api/user', userId] });
-  const { data: allQuests } = useQuery<Quest[]>({ queryKey: ['/api/quests'] });
+  const { data: user, isLoading: userLoading } = useQuery<User>({ queryKey: [`/api/user/${userId}`] });
+  const { data: allQuests, isLoading: questsLoading } = useQuery<Quest[]>({ queryKey: ['/api/quests'] });
 
-  if (!user || !allQuests || allQuests.length === 0) {
+  if (userLoading || questsLoading || !user || !allQuests || allQuests.length === 0) {
     return (
       <div className="h-full bg-[var(--cyber-dark)] text-white p-6 flex items-center justify-center">
         <div className="text-center">

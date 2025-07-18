@@ -79,32 +79,40 @@ export default function AIChat({ user, quest, onUserUpdate }: AIChatProps) {
     setIsLoading(true);
 
     try {
-      const response = await apiRequest('POST', '/api/chat', {
-        userId: user.id,
-        questId: quest?.id,
-        message: inputMessage.trim(),
-        isAI: false,
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: inputMessage.trim(),
+          userId: user.id,
+          questId: quest?.id || null,
+        }),
       });
 
       const result = await response.json();
 
       if (result.aiMessage) {
-        setMessages(prev => [...prev, result.aiMessage]);
+        setMessages(prev => [...prev, {
+          id: result.aiMessage.id,
+          message: result.aiMessage.message,
+          isAI: true,
+          timestamp: new Date(result.aiMessage.timestamp),
+        }]);
       }
 
-      if (result.xpEarned > 0 && onUserUpdate) {
-        const updatedUser = { ...user, xp: user.xp + result.xpEarned };
-        onUserUpdate(updatedUser);
+      if (result.user && onUserUpdate) {
+        onUserUpdate(result.user);
       }
     } catch (error) {
       console.error('Failed to send message:', error);
-      const errorMessage: ChatMessage = {
-        id: Date.now() + 1,
-        message: 'Sorry, I\'m having trouble connecting right now. Please try again!',
+      setMessages(prev => [...prev, {
+        id: Date.now(),
+        message: 'Sorry, I encountered an error. Please try again.',
         isAI: true,
         timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      }]);
     } finally {
       setIsLoading(false);
     }
