@@ -14,9 +14,11 @@ interface QuestPanelProps {
 export default function QuestPanel({ quest }: QuestPanelProps) {
   if (!quest) {
     return (
-      <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 p-4">
-        <div className="quest-card rounded-lg p-4 text-center">
-          <div className="text-gray-400">No active quest</div>
+      <div className="bg-[var(--cyber-gray)] p-4 rounded-lg m-4">
+        <div className="text-center text-gray-400">
+          <Target className="w-12 h-12 mx-auto mb-2" />
+          <p>No quest available</p>
+          <p className="text-sm mt-2">Check your connection or try refreshing</p>
         </div>
       </div>
     );
@@ -47,13 +49,13 @@ export default function QuestPanel({ quest }: QuestPanelProps) {
             {quest.difficulty}
           </div>
         </div>
-        
+
         <h4 className="font-bold text-white mb-2">{quest.title}</h4>
-        
+
         <p className="text-gray-300 text-sm mb-3">
           {quest.description}
         </p>
-        
+
         <div className="flex items-center justify-between">
           <div className="text-sm text-[var(--cyber-green)]">
             <Gem className="w-4 h-4 inline mr-1" />

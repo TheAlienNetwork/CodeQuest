@@ -69,9 +69,10 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   const { toast } = useToast();
 
   // Fetch current quest
-  const { data: quest, refetch: refetchQuest } = useQuery<Quest>({
+  const { data: quest, refetch: refetchQuest, isLoading: questLoading, error: questError } = useQuery<Quest>({
     queryKey: ['/api/quest', user?.id],
     enabled: !!user?.id,
+    retry: 1,
   });
 
   // Initialize code editor with quest starting code
@@ -290,12 +291,39 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
     }
   };
 
-  if (!user || !quest) {
+  if (!user) {
     return (
       <div className="min-h-screen bg-[var(--cyber-dark)] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--cyber-cyan)] mx-auto mb-4"></div>
           <p className="text-[var(--cyber-cyan)]">Loading CodeQuest...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (questLoading) {
+    return (
+      <div className="min-h-screen bg-[var(--cyber-dark)] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--cyber-cyan)] mx-auto mb-4"></div>
+          <p className="text-[var(--cyber-cyan)]">Loading your quest...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (questError) {
+    return (
+      <div className="min-h-screen bg-[var(--cyber-dark)] flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-400 mb-4">⚠️ Failed to load quest</div>
+          <button 
+            onClick={() => refetchQuest()}
+            className="btn-cyber px-4 py-2 rounded"
+          >
+            Retry
+          </button>
         </div>
       </div>
     );
