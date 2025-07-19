@@ -252,8 +252,12 @@ export default function CodeEditorWithHighlighting({
         continue;
       }
       
-      // Default: add single character
-      elements.push(remaining[0]);
+      // Default: add single character with white color
+      elements.push(
+        <span key={index++} style={{ color: '#FFFFFF' }}>
+          {remaining[0]}
+        </span>
+      );
       remaining = remaining.slice(1);
     }
     
@@ -310,7 +314,7 @@ export default function CodeEditorWithHighlighting({
             style={{
               fontFamily: 'JetBrains Mono, Consolas, "Courier New", monospace',
               lineHeight: '1.5',
-              color: 'transparent',
+              color: '#FFFFFF',
               backgroundColor: 'transparent',
             }}
           >
@@ -331,6 +335,7 @@ export default function CodeEditorWithHighlighting({
               tabSize: 4,
               backgroundColor: 'transparent',
               caretColor: '#00FFFF',
+              color: 'transparent',
             }}
             placeholder="# Write your Python code here..."
             spellCheck={false}
