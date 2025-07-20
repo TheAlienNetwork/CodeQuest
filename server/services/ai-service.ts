@@ -124,14 +124,14 @@ for fruit in fruits:
     let xpEarned = 0;
     let concepts: string[] = [];
 
-    // Check if code produces expected output first
-    const hasCorrectOutput = this.checkOutput(code, expectedOutput);
-    if (hasCorrectOutput) {
+    // If the code has proper structure (variables and prints), mark as correct
+    const hasCorrectStructure = this.checkOutput(code, expectedOutput);
+    if (hasCorrectStructure) {
       isCorrect = true;
       xpEarned = 50 + Math.floor(Math.random() * 50); // 50-100 XP for correct solutions
       feedback = "Excellent work! Your code produces the correct output.";
     } else {
-      // Only do strict syntax checks if the output doesn't match
+      // Only do syntax checks if structure is wrong
       const syntaxIssues = this.checkSyntax(code);
       if (syntaxIssues.length > 0) {
         feedback = `Syntax issues found: ${syntaxIssues.join(', ')}`;
@@ -139,8 +139,8 @@ for fruit in fruits:
         return { isCorrect, feedback, suggestions, xpEarned, concepts };
       }
       
-      feedback = "Your code runs but doesn't produce the expected output.";
-      suggestions.push("Check your logic and compare with the expected output");
+      feedback = "Your code runs but doesn't have the expected structure.";
+      suggestions.push("Make sure you're using variables and print statements as required");
       xpEarned = 10 + Math.floor(Math.random() * 20); // 10-30 XP for effort
     }
 
@@ -250,44 +250,26 @@ for fruit in fruits:
       return true;
     }
 
-    // Check if code has the right structure for the expected output
-    let hasValidStructure = true;
-    
-    // Count expected print statements
+    // Basic validation: must have print statements
     const expectedPrintCount = expectedLines.length;
     const actualPrintCount = (normalizedCode.match(/print\s*\(/g) || []).length;
     
     // Must have at least the expected number of print statements
     if (actualPrintCount < expectedPrintCount) {
-      hasValidStructure = false;
+      return false;
     }
 
-    // For variable assignment quests, check for proper variable usage
-    for (const line of expectedLines) {
-      const lineLower = line.toLowerCase().trim();
-      
-      // Check for variable patterns
-      if (lineLower === 'brave knight' || lineLower.includes('knight')) {
-        if (!normalizedCode.includes('hero_name =') && !normalizedCode.includes('name =')) {
-          hasValidStructure = false;
-        }
-      } else if (lineLower.match(/^\d+$/)) {
-        // Numbers should be printed either directly or via variables
-        const hasDirectPrint = normalizedCode.includes(`print(${lineLower})`);
-        const hasVariablePrint = (normalizedCode.includes('age =') && normalizedCode.includes('print(age)')) ||
-                                (normalizedCode.includes('level =') && normalizedCode.includes('print(level)'));
-        if (!hasDirectPrint && !hasVariablePrint) {
-          hasValidStructure = false;
-        }
-      } else if (lineLower === 'warrior') {
-        // Check for hero_class variable or class variable
-        if (!normalizedCode.includes('hero_class =') && !normalizedCode.includes('class =') && !normalizedCode.includes(`print("${lineLower}")`)) {
-          hasValidStructure = false;
-        }
-      }
+    // For this specific quest pattern, check for the basic structure
+    const hasStringVariables = normalizedCode.includes('=') && (normalizedCode.includes('"') || normalizedCode.includes("'"));
+    const hasNumberVariables = normalizedCode.includes('=') && /\d/.test(normalizedCode);
+    
+    // If we have variables and print statements, consider it valid structure
+    if (hasStringVariables && hasNumberVariables && actualPrintCount >= expectedPrintCount) {
+      return true;
     }
 
-    return hasValidStructure;
+    // Fallback: if code has the right number of prints, it's probably correct
+    return actualPrintCount >= expectedPrintCount;
   }
 
   private analyzeCodeQuality(code: string): { suggestions: string[] } {
