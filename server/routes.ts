@@ -213,20 +213,10 @@ export function registerRoutes(app: Application) {
 
       const result = await codeExecutionService.executeCode(code, userId);
       
-      // Award XP for running code (small amount to encourage testing)
-      let xpEarned = 0;
-      let updatedUser = null;
-      
-      if (result.exitCode === 0) {
-        // Award 5 XP for successful code execution
-        xpEarned = 5;
-        updatedUser = await storage.updateUserXP(userId, xpEarned);
-      }
-      
       res.json({
         ...result,
-        xpEarned,
-        user: updatedUser
+        xpEarned: 0,
+        user: null
       });
     } catch (error) {
       console.error('Code execution error:', error);
