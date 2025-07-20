@@ -378,11 +378,19 @@ html, body, #root {
   scrollbar-color: var(--cyber-cyan) var(--cyber-darker);
 }
 
-/* Force scrollbar visibility */
+/* Force scrollbar visibility and functionality */
 .lessons-scroll::-webkit-scrollbar {
   display: block !important;
+  width: 12px !important;
 }
 
 .lessons-scroll {
   overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure scrollable content */
+.lessons-scroll > * {
+  flex-shrink: 0;
 }
