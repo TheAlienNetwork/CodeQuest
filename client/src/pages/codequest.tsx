@@ -66,13 +66,23 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   const [activeTab, setActiveTab] = useState<'quest' | 'learning' | 'lessons'>('quest');
   const [selectedQuestId, setSelectedQuestId] = useState<number | null>(null);
   const [questCompleted, setQuestCompleted] = useState(false);
+  const [isRedoingQuest, setIsRedoingQuest] = useState(false);
   const { toast } = useToast();
 
   // Fetch current quest
   const { data: quest, isLoading: questLoading, error: questError, refetch } = useQuery<Quest>({
-    queryKey: ['/api/quest', user?.id],
+    queryKey: ['/api/quest', user?.id, selectedQuestId],
     queryFn: async () => {
       if (!user?.id) throw new Error('No user ID');
+      
+      // If a specific quest is selected (for redoing), fetch that quest
+      if (selectedQuestId) {
+        const response = await apiRequest('GET', `/api/quest-by-id/${selectedQuestId}`);
+        if (!response.ok) throw new Error('Failed to fetch selected quest');
+        return response.json();
+      }
+      
+      // Otherwise fetch current quest
       const response = await apiRequest('GET', `/api/quest/${user.id}`);
       if (!response.ok) throw new Error('Failed to fetch quest');
       return response.json();
@@ -86,11 +96,15 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
 
   // Initialize code editor with quest starting code
   useEffect(() => {
-    if (quest && quest.startingCode && !code) {
-      setCode(quest.startingCode);
-      setQuestCompleted(false);
+    if (quest && quest.startingCode) {
+      // Always reset code when switching quests or redoing
+      if (!code || selectedQuestId || isRedoingQuest) {
+        setCode(quest.startingCode);
+        setQuestCompleted(false);
+        setIsRedoingQuest(false);
+      }
     }
-  }, [quest, code]);
+  }, [quest, selectedQuestId, isRedoingQuest]);
 
   // Update current user when user data changes
   useEffect(() => {
@@ -161,11 +175,13 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
         userId: user.id,
         code,
         questId: quest?.id,
+        isRedoing: !!selectedQuestId, // Pass flag to indicate this is a redo
       });
 
       const result = await response.json();
 
-      if (result.xpEarned > 0) {
+      // Only award XP if not redoing a quest
+      if (result.xpEarned > 0 && !selectedQuestId) {
         showXPGainAnimation(result.xpEarned);
       }
 
@@ -182,21 +198,17 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
       }
 
       if (result.isCorrect) {
-        setQuestCompleted(true);
-        setAnalysis({
-          ...result,
-          feedback: feedbackMessage + "\n\n🎉 Quest completed! You can move to the next quest.",
-        });
-      } else {
-        setAnalysis({
-          ...result,
-          feedback: feedbackMessage
-        });
+        if (selectedQuestId) {
+          feedbackMessage += "\n\n🎉 Great job practicing this quest!";
+        } else {
+          setQuestCompleted(true);
+          feedbackMessage += "\n\n🎉 Quest completed! You can move to the next quest.";
+        }
       }
 
       toast({
         title: result.isCorrect ? "Great job! ✅" : "Code analyzed 🔍",
-        description: result.feedback,
+        description: selectedQuestId && result.isCorrect ? "Quest practice completed!" : result.feedback,
       });
 
       // Update terminal with execution results
@@ -206,8 +218,8 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
         setShowTerminal(true);
       }
 
-      // Update user data
-      if (result.user) {
+      // Update user data only if not redoing
+      if (result.user && !selectedQuestId) {
         onUserUpdate(result.user);
       }
     } catch (error) {
@@ -530,7 +542,21 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           {/* Tab Content */}
           <div className="flex-1 bg-[var(--cyber-gray)] overflow-hidden min-h-0 max-h-full relative z-20">
             {activeTab === 'quest' ? (
-              <QuestPanel quest={quest} />
+              <QuestPanel 
+                quest={quest} 
+                isRedoingQuest={!!selectedQuestId}
+                currentQuestId={user.currentQuest}
+                onReturnToCurrent={() => {
+                  setSelectedQuestId(null);
+                  setIsRedoingQuest(false);
+                  setCode('');
+                  refetch();
+                  toast({
+                    title: "Returned to Current Quest 🎯",
+                    description: "Back to your current progress",
+                  });
+                }}
+              />
             ) : activeTab === 'learning' ? (
               <div className="h-full p-4">
                 <LearningPanel
@@ -547,6 +573,15 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
                   onSelectQuest={(questId) => {
                     setSelectedQuestId(questId);
                     setActiveTab('quest');
+                    setIsRedoingQuest(true);
+                    setTerminalOutput('');
+                    setTerminalError('');
+                    setShowTerminal(false);
+                    
+                    toast({
+                      title: "Quest Selected 🎯",
+                      description: "Loading quest for practice...",
+                    });
                   }}
                 />
               </div>

@@ -149,7 +149,7 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
         <p className="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">
           Track your progress through the complete Python learning journey
         </p>
-        
+
         {/* Overall Progress */}
         <div className="bg-[var(--cyber-gray)] p-4 rounded-lg mb-4">
           <div className="flex items-center justify-between mb-2">
@@ -190,7 +190,7 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
           ))}
         </div>
       </div>
-      
+
       {/* Quest List - Scrollable Area */}
       <div 
         className="flex-1 overflow-y-scroll overflow-x-hidden px-3 sm:px-4 lg:px-6 pb-3 sm:pb-6 space-y-2 sm:space-y-4 lessons-scroll min-h-0 max-h-full" 
@@ -202,17 +202,23 @@ export default function LessonsPanel({ userId, onSelectQuest }: LessonsPanelProp
         }}
       >
         {filteredQuests.map((quest) => {
-          const status = getQuestStatus(quest.id);
-          const isAccessible = status === 'completed' || status === 'current' || status === 'available';
+          const isAccessible = quest.requiredLevel <= currentUser.level;
+          const isCompleted = currentUser.completedQuests?.includes(quest.id);
+          const isCurrent = quest.id === currentUser.currentQuest;
+
+          // Allow access to completed quests for redoing
+          const canAccess = isAccessible || isCompleted;
+          const status = isCompleted ? 'completed' : isCurrent ? 'current' : 'locked';
 
           return (
             <Card 
               key={quest.id}
               className={`border-[var(--cyber-cyan)]/30 bg-[var(--cyber-gray)] transition-all duration-200 
-                ${isAccessible ? 'hover:border-[var(--cyber-cyan)] cursor-pointer' : 'opacity-50 cursor-not-allowed'}
+                ${canAccess ? 'hover:border-[var(--cyber-cyan)] cursor-pointer' : 'opacity-50 cursor-not-allowed'}
                 ${status === 'current' ? 'border-[var(--cyber-cyan)] shadow-lg shadow-[var(--cyber-cyan)]/20' : ''}
+                ${status === 'completed' ? 'border-green-500/50' : ''}
               `}
-              onClick={() => isAccessible && onSelectQuest(quest.id)}
+              onClick={() => canAccess && onSelectQuest(quest.id)}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">

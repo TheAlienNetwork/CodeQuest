@@ -231,7 +231,7 @@ export function registerRoutes(app: Application) {
   // Analyze code with AI
   app.post("/api/analyze", async (req, res) => {
     try {
-      const { code, userId, questId } = req.body;
+      const { code, userId, questId, isRedoing } = req.body;
       
       if (!code || !userId) {
         return res.status(400).json({ error: "Code and userId are required" });
@@ -279,16 +279,16 @@ export function registerRoutes(app: Application) {
       // Use AI analysis for additional correctness check
       const aiCorrect = analysis.isCorrect && isCorrect;
 
-      // Award XP based on correctness
+      // Award XP based on correctness (only if not redoing)
       let xpEarned = 0;
       let updatedUser = user;
       
-      if (aiCorrect) {
+      if (aiCorrect && !isRedoing) {
         xpEarned = quest.xpReward;
         updatedUser = await storage.updateUserXP(userId, xpEarned) || user;
         
-        // Move to next quest if completed
-        if (user.currentQuest) {
+        // Move to next quest if completed (only if it's the current quest)
+        if (user.currentQuest === quest.id) {
           const nextQuestId = user.currentQuest + 1;
           const nextQuest = await storage.getQuest(nextQuestId);
           if (nextQuest) {
@@ -299,21 +299,23 @@ export function registerRoutes(app: Application) {
             }) || updatedUser;
           }
         }
-      } else if (analysis.xpEarned > 0) {
+      } else if (analysis.xpEarned > 0 && !isRedoing) {
         xpEarned = analysis.xpEarned;
         updatedUser = await storage.updateUserXP(userId, xpEarned) || user;
       }
 
-      // Save code submission
-      await storage.addCodeSubmission({
-        userId,
-        questId: quest.id,
-        code,
-        isCorrect: aiCorrect,
-        output: executionResult.output,
-        feedback: analysis.feedback,
-        xpEarned: xpEarned,
-      });
+      // Save code submission (only for current quest, not redo practice)
+      if (!isRedoing) {
+        await storage.addCodeSubmission({
+          userId,
+          questId: quest.id,
+          code,
+          isCorrect: aiCorrect,
+          output: executionResult.output,
+          feedback: analysis.feedback,
+          xpEarned: xpEarned,
+        });
+      }
 
       res.json({
         ...analysis,

@@ -13,9 +13,12 @@ interface QuestPanelProps {
       expectedOutput: string;
     }>;
   } | null;
+  isRedoingQuest?: boolean;
+  currentQuestId?: number;
+  onReturnToCurrent?: () => void;
 }
 
-export default function QuestPanel({ quest }: QuestPanelProps) {
+export default function QuestPanel({ quest, isRedoingQuest, currentQuestId, onReturnToCurrent }: QuestPanelProps) {
   if (!quest) {
     return (
       <div className="bg-[var(--cyber-gray)] p-4 rounded-lg m-4">
@@ -47,12 +50,31 @@ export default function QuestPanel({ quest }: QuestPanelProps) {
         <div className="flex items-center justify-between mb-2 sm:mb-4">
           <h3 className="text-lg sm:text-xl font-bold text-[var(--cyber-cyan)]">
             <Star className="w-5 h-5 sm:w-6 sm:h-6 inline mr-2" />
-            Current Quest
+            {isRedoingQuest ? 'Practice Quest' : 'Current Quest'}
           </h3>
           <div className={`px-3 py-1 rounded-full text-xs sm:text-sm font-bold uppercase ${getDifficultyColor(quest.difficulty)}`}>
             {quest.difficulty}
           </div>
         </div>
+
+        {isRedoingQuest && (
+          <div className="mb-4 p-3 bg-orange-500/20 border border-orange-500/50 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-orange-300 text-sm font-medium">🔄 Practicing Previous Quest</p>
+                <p className="text-gray-300 text-xs">This is for practice - no XP will be awarded</p>
+              </div>
+              {onReturnToCurrent && (
+                <button
+                  onClick={onReturnToCurrent}
+                  className="px-3 py-1 bg-[var(--cyber-cyan)] text-black text-xs font-bold rounded hover:bg-[var(--cyber-cyan)]/80 transition-colors"
+                >
+                  Return to Current
+                </button>
+              )}
+            </div>
+          </div>
+        )}
 
         <h4 className="font-bold text-white mb-2">{quest.title}</h4>
 
