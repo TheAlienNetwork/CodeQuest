@@ -120,7 +120,7 @@ export default function MilestonesPanel({ user, className = "" }: MilestonesPane
   ];
 
   return (
-    <div className={`h-full bg-[var(--cyber-dark)] text-white overflow-hidden flex flex-col ${className}`}>
+    <div className={`h-full bg-[var(--cyber-dark)] text-white flex flex-col ${className}`}>
       <div className="p-3 sm:p-4 lg:p-6 flex-shrink-0">
         <div className="mb-4 sm:mb-6">
           <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-1 sm:mb-2 text-[var(--cyber-cyan)]">
@@ -167,7 +167,10 @@ export default function MilestonesPanel({ user, className = "" }: MilestonesPane
       </div>
 
       {/* Scrollable Milestones List */}
-      <div className="flex-1 min-h-0 overflow-y-auto px-3 sm:px-4 lg:px-6 pb-4 scrollbar-thin scrollbar-thumb-[var(--cyber-cyan)] scrollbar-track-[var(--cyber-darker)] hover:scrollbar-thumb-[var(--cyber-blue)]">
+      <div className="flex-1 min-h-0 overflow-y-auto px-3 sm:px-4 lg:px-6 pb-4" style={{
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'var(--cyber-cyan) var(--cyber-darker)'
+      }}>
         <div className="space-y-3">
           {filteredMilestones.map((milestone) => {
             const { isUnlocked, progress } = getMilestoneProgress(milestone);

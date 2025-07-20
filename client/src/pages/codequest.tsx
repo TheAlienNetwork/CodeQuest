@@ -461,7 +461,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   }
 
   return (
-    <div className="bg-[var(--cyber-dark)] text-white min-h-screen flex flex-col">
+    <div className="bg-[var(--cyber-dark)] text-white h-screen flex flex-col">
       {/* Top Header with XP Bar */}
       <header className="bg-[var(--cyber-darker)] border-b border-[var(--cyber-cyan)]/30 px-6 py-4 flex-shrink-0 relative z-40">
         <div className="flex items-center justify-between">
@@ -475,7 +475,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
       </header>
 
       {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden main-content relative z-10">
+      <div className="flex flex-1 overflow-hidden main-content relative z-10 min-h-0">
         {/* Left Panel - Code Editor */}
         <div className="w-3/5 flex flex-col border-r border-[var(--cyber-cyan)]/30 relative z-10">
           <div className="flex-1 min-h-0">
@@ -551,7 +551,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           </div>
 
           {/* Tab Content */}
-          <div className="flex-1 bg-[var(--cyber-gray)] overflow-hidden min-h-0 max-h-full relative z-30">
+          <div className="flex-1 bg-[var(--cyber-gray)] overflow-hidden min-h-0 relative z-30">
             {activeTab === 'quest' ? (
               <QuestPanel 
                 quest={quest} 
@@ -569,7 +569,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
                 }}
               />
             ) : activeTab === 'learning' ? (
-              <div className="h-full p-4">
+              <div className="h-full p-4 overflow-auto">
                 <LearningPanel
                   quest={quest}
                   userLevel={user?.level || 1}
@@ -578,31 +578,27 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
                 />
               </div>
             ) : activeTab === 'lessons' ? (
-              <div className="h-full">
-                <LessonsPanel
-                  userId={user.id}
-                  onSelectQuest={(questId) => {
-                    setSelectedQuestId(questId);
-                    setActiveTab('quest');
-                    setIsRedoingQuest(true);
-                    setTerminalOutput('');
-                    setTerminalError('');
-                    setShowTerminal(false);
+              <LessonsPanel
+                userId={user.id}
+                onSelectQuest={(questId) => {
+                  setSelectedQuestId(questId);
+                  setActiveTab('quest');
+                  setIsRedoingQuest(true);
+                  setTerminalOutput('');
+                  setTerminalError('');
+                  setShowTerminal(false);
 
-                    toast({
-                      title: "Quest Selected 🎯",
-                      description: "Loading quest for practice...",
-                    });
-                  }}
-                />
-              </div>
+                  toast({
+                    title: "Quest Selected 🎯",
+                    description: "Loading quest for practice...",
+                  });
+                }}
+              />
             ) : (
-              <div className="h-full flex flex-col">
-                <MilestonesPanel
-                  user={user}
-                  className="flex-1 min-h-0"
-                />
-              </div>
+              <MilestonesPanel
+                user={user}
+                className="h-full"
+              />
             )}
           </div>
 
