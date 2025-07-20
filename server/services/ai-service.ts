@@ -553,7 +553,7 @@ game.battle()`
   }
 
   private checkOutput(code: string, expectedOutput: string): boolean {
-    // For code output checking, validate that the code structure produces the expected output
+    // Improved output checking that handles various quest patterns
     const normalizedCode = code.toLowerCase().replace(/\s+/g, ' ').trim();
     const expectedLines = expectedOutput.split('\n').map(line => line.trim()).filter(line => line.length > 0);
 
@@ -571,12 +571,23 @@ game.battle()`
       return false;
     }
 
-    // For this specific quest pattern, check for the basic structure
+    // Check for specific quest patterns
+    
+    // Quest 6 pattern: Dragon Scales, Phoenix Feathers, Unicorn Tears
+    if (expectedOutput.includes('Dragon Scales') && expectedOutput.includes('Phoenix Feathers') && expectedOutput.includes('Unicorn Tears')) {
+      const hasAllIngredients = normalizedCode.includes('dragon_scales') && 
+                               normalizedCode.includes('phoenix_feathers') && 
+                               normalizedCode.includes('unicorn_tears');
+      const hasProperPrints = normalizedCode.includes('print(') && actualPrintCount >= 3;
+      return hasAllIngredients && hasProperPrints;
+    }
+
+    // Quest 1-5 patterns: Basic variable and print checking
     const hasStringVariables = normalizedCode.includes('=') && (normalizedCode.includes('"') || normalizedCode.includes("'"));
     const hasNumberVariables = normalizedCode.includes('=') && /\d/.test(normalizedCode);
     
     // If we have variables and print statements, consider it valid structure
-    if (hasStringVariables && hasNumberVariables && actualPrintCount >= expectedPrintCount) {
+    if ((hasStringVariables || hasNumberVariables) && actualPrintCount >= expectedPrintCount) {
       return true;
     }
 
@@ -638,7 +649,7 @@ game.battle()`
     const feedbacks: string[] = [];
 
     for (const concept of concepts) {
-      if (this.programmingKnowledge.concepts[concept]) {
+      if (this.programmingKnowledge.concepts[concept as keyof typeof this.programmingKnowledge.concepts]) {
         feedbacks.push(`Great use of ${concept}!`);
       }
     }
@@ -986,13 +997,12 @@ game.battle()`
   }
 
   async getSolution(questId: number, userId: number): Promise<string> {
-    const solution = this.programmingKnowledge.questSolutions[questId];
+    const solution = this.programmingKnowledge.questSolutions[questId as keyof typeof this.programmingKnowledge.questSolutions];
     if (solution) {
       return `Here's the complete solution:\n\n${solution}\n\nThis solution demonstrates the key concepts needed for this quest.`;
     }
     
     return "Solution not available for this quest. Try working through it step by step!";
-
   }
 
   async getExplanation(questId: number, userId: number): Promise<string> {
