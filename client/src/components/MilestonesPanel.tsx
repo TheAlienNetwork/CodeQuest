@@ -168,7 +168,7 @@ export default function MilestonesPanel({ user, className = "" }: MilestonesPane
       </div>
 
       {/* Scrollable Milestones List */}
-      <div className="flex-1 overflow-y-auto px-3 sm:px-4 lg:px-6 pb-4 scrollbar-thin scrollbar-thumb-[var(--cyber-cyan)] scrollbar-track-[var(--cyber-darker)] hover:scrollbar-thumb-[var(--cyber-blue)]">
+      <div className="flex-1 min-h-0 overflow-y-auto px-3 sm:px-4 lg:px-6 pb-4 scrollbar-thin scrollbar-thumb-[var(--cyber-cyan)] scrollbar-track-[var(--cyber-darker)] hover:scrollbar-thumb-[var(--cyber-blue)]">
         <div className="space-y-3">
           {filteredMilestones.map((milestone) => {
             const { isUnlocked, progress } = getMilestoneProgress(milestone);

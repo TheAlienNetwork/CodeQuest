@@ -597,9 +597,10 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
                 />
               </div>
             ) : (
-              <div className="h-full">
+              <div className="h-full flex flex-col">
                 <MilestonesPanel
                   user={user}
+                  className="flex-1 min-h-0"
                 />
               </div>
             )}
