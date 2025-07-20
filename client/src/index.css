@@ -172,7 +172,7 @@
   /* Fix for tab positioning - Higher z-index and proper stacking */
   .tab-container {
     position: relative;
-    z-index: 50 !important;
+    z-index: 40 !important;
     min-height: 48px;
     background: var(--cyber-gray) !important;
   }
@@ -180,13 +180,13 @@
   /* Ensure proper layout stacking */
   header {
     position: relative;
-    z-index: 60 !important;
+    z-index: 50 !important;
   }
 
   /* Fix for main content positioning */
   .main-content {
     position: relative;
-    z-index: 1;
+    z-index: 10 !important;
     flex: 1;
     min-height: 0;
   }

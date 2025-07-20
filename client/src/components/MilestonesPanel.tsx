@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -40,17 +39,17 @@ const milestones: Milestone[] = [
   { id: 'xp_5000', name: 'Master Coder', description: 'Reach 5,000 XP', xpRequired: 5000, icon: Crown, color: 'bg-purple-500', badge: 'Master', reward: '👑 Master Badge', category: 'xp' },
   { id: 'xp_10000', name: 'Code Legend', description: 'Reach 10,000 XP', xpRequired: 10000, icon: Gem, color: 'bg-pink-500', badge: 'Legend', reward: '💎 Legend Badge', category: 'xp' },
   { id: 'xp_25000', name: 'Grand Master', description: 'Reach 25,000 XP', xpRequired: 25000, icon: Award, color: 'bg-gradient-to-r from-yellow-400 to-orange-500', badge: 'Grand Master', reward: '🌟 Grand Master Badge', category: 'xp' },
-  
+
   // Quest Milestones
   { id: 'quest_5', name: 'Quest Starter', description: 'Complete 5 quests', xpRequired: 0, icon: Target, color: 'bg-cyan-500', badge: 'Starter', reward: '🎯 Quest Starter Badge', category: 'quests' },
   { id: 'quest_10', name: 'Quest Explorer', description: 'Complete 10 quests', xpRequired: 0, icon: Medal, color: 'bg-indigo-500', badge: 'Explorer', reward: '🏅 Quest Explorer Badge', category: 'quests' },
   { id: 'quest_20', name: 'Quest Champion', description: 'Complete 20 quests', xpRequired: 0, icon: Trophy, color: 'bg-orange-500', badge: 'Champion', reward: '🏆 Quest Champion Badge', category: 'quests' },
-  
+
   // Streak Milestones
   { id: 'streak_3', name: 'Hot Streak', description: 'Maintain 3-day streak', xpRequired: 0, icon: Zap, color: 'bg-yellow-400', badge: 'Streaker', reward: '🔥 Hot Streak Badge', category: 'streak' },
   { id: 'streak_7', name: 'Weekly Warrior', description: 'Maintain 7-day streak', xpRequired: 0, icon: Star, color: 'bg-green-400', badge: 'Weekly Warrior', reward: '⭐ Weekly Badge', category: 'streak' },
   { id: 'streak_30', name: 'Monthly Master', description: 'Maintain 30-day streak', xpRequired: 0, icon: Crown, color: 'bg-purple-600', badge: 'Monthly Master', reward: '👑 Monthly Badge', category: 'streak' },
-  
+
   // Special Milestones
   { id: 'special_perfectionist', name: 'Perfectionist', description: 'Complete 5 quests without hints', xpRequired: 0, icon: Gem, color: 'bg-pink-400', badge: 'Perfectionist', reward: '💎 Perfect Badge', category: 'special' },
 ];
@@ -58,7 +57,7 @@ const milestones: Milestone[] = [
 export default function MilestonesPanel({ user, className = "" }: MilestonesPanelProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  // Handle case where user data is not available
+  // Early return if user is not available
   if (!user) {
     return (
       <div className={`h-full bg-[var(--cyber-dark)] text-white overflow-hidden flex items-center justify-center ${className}`}>
@@ -130,7 +129,7 @@ export default function MilestonesPanel({ user, className = "" }: MilestonesPane
           <p className="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">
             Unlock special badges and rewards by reaching XP milestones
           </p>
-          
+
           {/* Progress Overview */}
           <Card className="bg-[var(--cyber-darker)] border-[var(--cyber-blue)] mb-4">
             <CardContent className="p-4">
@@ -173,7 +172,7 @@ export default function MilestonesPanel({ user, className = "" }: MilestonesPane
           {filteredMilestones.map((milestone) => {
             const { isUnlocked, progress } = getMilestoneProgress(milestone);
             const IconComponent = milestone.icon;
-            
+
             return (
               <Card 
                 key={milestone.id} 
@@ -188,7 +187,7 @@ export default function MilestonesPanel({ user, className = "" }: MilestonesPane
                     <div className={`p-2 rounded-full ${isUnlocked ? milestone.color : 'bg-gray-600'}`}>
                       <IconComponent className="w-4 h-4 text-white" />
                     </div>
-                    
+
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">
                         <h3 className={`font-semibold ${isUnlocked ? 'text-[var(--cyber-cyan)]' : 'text-gray-300'}`}>
@@ -200,11 +199,11 @@ export default function MilestonesPanel({ user, className = "" }: MilestonesPane
                           </Badge>
                         )}
                       </div>
-                      
+
                       <p className="text-sm text-gray-400 mb-2">
                         {milestone.description}
                       </p>
-                      
+
                       <div className="mb-2">
                         <div className="flex justify-between text-xs text-gray-400 mb-1">
                           <span>Progress</span>
@@ -212,7 +211,7 @@ export default function MilestonesPanel({ user, className = "" }: MilestonesPane
                         </div>
                         <Progress value={progress} className="h-1" />
                       </div>
-                      
+
                       <div className="flex items-center justify-between text-xs">
                         <div className="flex items-center gap-2">
                           <Badge variant="outline" className="text-[var(--cyber-cyan)] border-[var(--cyber-cyan)]">

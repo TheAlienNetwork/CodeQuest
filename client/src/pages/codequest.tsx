@@ -505,7 +505,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
         {/* Right Panel - Tabs for Quest/Learning & AI Chat */}
         <div className="w-2/5 flex flex-col min-h-0 max-h-full relative z-10">
           {/* Tab Navigation */}
-          <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-2 sm:px-4 py-2 flex-shrink-0 tab-container relative z-30">
+          <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-2 sm:px-4 py-2 flex-shrink-0 tab-container relative z-40">
             <div className="flex space-x-1 overflow-x-auto">
               <button
                 onClick={() => setActiveTab('quest')}
@@ -551,7 +551,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           </div>
 
           {/* Tab Content */}
-          <div className="flex-1 bg-[var(--cyber-gray)] overflow-hidden min-h-0 max-h-full relative z-20">
+          <div className="flex-1 bg-[var(--cyber-gray)] overflow-hidden min-h-0 max-h-full relative z-30">
             {activeTab === 'quest' ? (
               <QuestPanel 
                 quest={quest} 
@@ -607,7 +607,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
           </div>
 
           {/* AI Chat - Fixed Height */}
-          <div className="h-96 sm:h-[28rem] flex-shrink-0 border-t border-[var(--cyber-cyan)]/30 relative z-20">
+          <div className="h-96 sm:h-[28rem] flex-shrink-0 border-t border-[var(--cyber-cyan)]/30 relative z-30">
             <AIChat 
               user={currentUser || user}
               quest={selectedQuestId ? { id: selectedQuestId, title: '', description: '' } : quest}
