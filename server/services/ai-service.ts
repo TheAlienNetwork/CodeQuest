@@ -109,8 +109,8 @@ for fruit in fruits:
       console.error("AI Analysis Error:", error);
       return {
         isCorrect: false,
-        feedback: "Code analysis encountered an error. Please check your syntax and try again.",
-        suggestions: [],
+        feedback: "Analysis failed. Unable to analyze code at this time.",
+        suggestions: ["Please try again later"],
         xpEarned: 0,
         concepts: []
       };
@@ -124,21 +124,21 @@ for fruit in fruits:
     let xpEarned = 0;
     let concepts: string[] = [];
 
-    // Basic syntax checks
-    const syntaxIssues = this.checkSyntax(code);
-    if (syntaxIssues.length > 0) {
-      feedback = `Syntax issues found: ${syntaxIssues.join(', ')}`;
-      suggestions = ['Check your syntax carefully', 'Make sure all quotes and parentheses are matched'];
-      return { isCorrect, feedback, suggestions, xpEarned, concepts };
-    }
-
-    // Check if code produces expected output
+    // Check if code produces expected output first
     const hasCorrectOutput = this.checkOutput(code, expectedOutput);
     if (hasCorrectOutput) {
       isCorrect = true;
       xpEarned = 50 + Math.floor(Math.random() * 50); // 50-100 XP for correct solutions
       feedback = "Excellent work! Your code produces the correct output.";
     } else {
+      // Only do strict syntax checks if the output doesn't match
+      const syntaxIssues = this.checkSyntax(code);
+      if (syntaxIssues.length > 0) {
+        feedback = `Syntax issues found: ${syntaxIssues.join(', ')}`;
+        suggestions = ['Check your syntax carefully', 'Make sure all quotes and parentheses are matched'];
+        return { isCorrect, feedback, suggestions, xpEarned, concepts };
+      }
+      
       feedback = "Your code runs but doesn't produce the expected output.";
       suggestions.push("Check your logic and compare with the expected output");
       xpEarned = 10 + Math.floor(Math.random() * 20); // 10-30 XP for effort
@@ -241,10 +241,7 @@ for fruit in fruits:
   }
 
   private checkOutput(code: string, expectedOutput: string): boolean {
-    // For code output checking, we should be more lenient and focus on
-    // whether the code structure is correct rather than exact output matching
-    // since the actual execution result is already checked elsewhere
-    
+    // For code output checking, validate that the code structure produces the expected output
     const normalizedCode = code.toLowerCase().replace(/\s+/g, ' ').trim();
     const expectedLines = expectedOutput.split('\n').map(line => line.trim()).filter(line => line.length > 0);
 
@@ -271,7 +268,7 @@ for fruit in fruits:
       
       // Check for variable patterns
       if (lineLower === 'brave knight' || lineLower.includes('knight')) {
-        if (!normalizedCode.includes('name =') || !normalizedCode.includes('print(name)')) {
+        if (!normalizedCode.includes('hero_name =') && !normalizedCode.includes('name =')) {
           hasValidStructure = false;
         }
       } else if (lineLower.match(/^\d+$/)) {
@@ -282,10 +279,9 @@ for fruit in fruits:
         if (!hasDirectPrint && !hasVariablePrint) {
           hasValidStructure = false;
         }
-      } else if (lineLower === 'warrior' || lineLower === 'sword') {
-        // String values should be printed via variables
-        if (!normalizedCode.includes('weapon =') && !normalizedCode.includes('item =') && 
-            !normalizedCode.includes('class =') && !normalizedCode.includes(`print("${lineLower}")`)) {
+      } else if (lineLower === 'warrior') {
+        // Check for hero_class variable or class variable
+        if (!normalizedCode.includes('hero_class =') && !normalizedCode.includes('class =') && !normalizedCode.includes(`print("${lineLower}")`)) {
           hasValidStructure = false;
         }
       }
