@@ -599,7 +599,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
             ) : (
               <div className="h-full">
                 <MilestonesPanel
-                  userId={user.id}
+                  user={user}
                 />
               </div>
             )}

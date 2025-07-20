@@ -58,15 +58,28 @@ const milestones: Milestone[] = [
 export default function MilestonesPanel({ user, className = "" }: MilestonesPanelProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
+  // Handle case where user data is not available
+  if (!user) {
+    return (
+      <div className={`h-full bg-[var(--cyber-dark)] text-white overflow-hidden flex items-center justify-center ${className}`}>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--cyber-cyan)] mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading milestones...</p>
+        </div>
+      </div>
+    );
+  }
+
   const getMilestoneProgress = (milestone: Milestone): { isUnlocked: boolean; progress: number } => {
     switch (milestone.category) {
       case 'xp':
+        const userXP = user?.xp || 0;
         return {
-          isUnlocked: user.xp >= milestone.xpRequired,
-          progress: Math.min(100, (user.xp / milestone.xpRequired) * 100)
+          isUnlocked: userXP >= milestone.xpRequired,
+          progress: Math.min(100, (userXP / milestone.xpRequired) * 100)
         };
       case 'quests':
-        const questCount = user.completedQuests?.length || 0;
+        const questCount = user?.completedQuests?.length || 0;
         const requiredQuests = parseInt(milestone.id.split('_')[1]);
         return {
           isUnlocked: questCount >= requiredQuests,
@@ -74,15 +87,17 @@ export default function MilestonesPanel({ user, className = "" }: MilestonesPane
         };
       case 'streak':
         const requiredStreak = parseInt(milestone.id.split('_')[1]);
+        const userStreak = user?.streak || 0;
         return {
-          isUnlocked: user.streak >= requiredStreak,
-          progress: Math.min(100, (user.streak / requiredStreak) * 100)
+          isUnlocked: userStreak >= requiredStreak,
+          progress: Math.min(100, (userStreak / requiredStreak) * 100)
         };
       case 'special':
         // Mock special milestone progress
+        const xpForSpecial = user?.xp || 0;
         return {
-          isUnlocked: user.xp >= 500, // Simple check for demo
-          progress: user.xp >= 500 ? 100 : 50
+          isUnlocked: xpForSpecial >= 500, // Simple check for demo
+          progress: xpForSpecial >= 500 ? 100 : 50
         };
       default:
         return { isUnlocked: false, progress: 0 };
