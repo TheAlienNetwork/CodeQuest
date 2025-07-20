@@ -251,162 +251,43 @@
 }
 
 .animate-glow {
-  animation: glow 2s ease-in-out infinite alternate;
-}
-
-/* Monaco Editor Overrides */
-.monaco-editor {
-  background: var(--cyber-darker) !important;
-}
-
-.monaco-editor .margin {
-  background: var(--cyber-darker) !important;
-}
-
-.monaco-editor .monaco-editor-background {
-  background: var(--cyber-darker) !important;
-}
-
-.monaco-editor .current-line {
-  background: hsla(180, 100%, 50%, 0.1) !important;
-}
-
-.monaco-editor .line-numbers {
-  color: hsla(180, 100%, 50%, 0.6) !important;
-}
-
-/* Scrollbar styles for webkit browsers */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--cyber-dark);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, var(--cyber-cyan), var(--cyber-purple));
-  border-radius: 4px;
-  border: 1px solid var(--cyber-dark);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-pink));
-}
-
-/* Custom scrollbar for chat messages */
-.chat-messages::-webkit-scrollbar {
-  width: 6px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb {
-  background: rgba(34, 197, 255, 0.6);
-  border-radius: 3px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb:hover {
-  background: rgba(34, 197, 255, 0.8);
-}
-
-/* Mobile chat scrolling */
-@media (max-width: 767px) {
-  .chat-messages {
-    max-height: 200px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
-/* Enhanced lessons scroll styling - Force visibility */
-.lessons-scroll {
-  scrollbar-width: auto !important;
-  scrollbar-color: var(--cyber-cyan) var(--cyber-gray) !important;
-}
-
-.lessons-scroll::-webkit-scrollbar {
-  width: 16px !important;
-  height: 16px !important;
-  display: block !important;
-}
-
-.lessons-scroll::-webkit-scrollbar-track {
-  background: var(--cyber-gray) !important;
-  border-radius: 8px !important;
-}
-
-.lessons-scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--cyber-cyan) 0%, var(--cyber-purple) 50%, var(--cyber-pink) 100%) !important;
-  border-radius: 8px !important;
-  border: 2px solid var(--cyber-dark) !important;
-  box-shadow: inset 0 0 3px rgba(0, 255, 255, 0.3) !important;
-  min-height: 40px !important;
-}
-
-.lessons-scroll::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--cyber-purple) 0%, var(--cyber-pink) 50%, var(--cyber-cyan) 100%) !important;
-  box-shadow: 0 0 15px var(--cyber-cyan), inset 0 0 8px rgba(0, 255, 255, 0.5) !important;
-}
-
-.lessons-scroll::-webkit-scrollbar-corner {
-  background: var(--cyber-gray) !important;
-}
-
-/* Mobile responsive utilities */
-@media (max-width: 1023px) {
-  .mobile-hidden {
-    display: none !important;
+    animation: glow 2s ease-in-out infinite alternate;
   }
 
-  /* Mobile layout adjustments */
-  body {
-    overflow-x: hidden;
-    overflow-y: auto;
+  /* Custom Scrollbar Styles */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--cyber-cyan) var(--cyber-darker);
   }
 
-  .mobile-scroll {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
   }
 
-  /* Stack panels vertically on mobile */
-  .mobile-stack {
-    flex-direction: column !important;
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: var(--cyber-darker);
+    border-radius: 4px;
   }
 
-  .mobile-full-width {
-    width: 100% !important;
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: var(--cyber-cyan);
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
   }
-}
 
-@media (min-width: 1024px) {
-  .desktop-hidden {
-    display: none !important;
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: var(--cyber-blue);
   }
-}
 
-/* Touch targets for mobile */
-@media (max-width: 767px) {
-  button, .clickable {
-    min-height: 44px;
-    min-width: 44px;
+  .scrollbar-thumb-\[var\(--cyber-cyan\)\]::-webkit-scrollbar-thumb {
+    background: var(--cyber-cyan);
   }
-}
 
-/* Responsive text sizing */
-.responsive-text {
-  font-size: 0.875rem;
-}
-
-@media (min-width: 640px) {
-  .responsive-text {
-    font-size: 1rem;
+  .scrollbar-track-\[var\(--cyber-darker\)\]::-webkit-scrollbar-track {
+    background: var(--cyber-darker);
   }
-}
 
-@media (min-width: 1024px) {
-  .responsive-text {
-    font-size: 1.125rem;
+  .hover\:scrollbar-thumb-\[var\(--cyber-blue\)\]:hover::-webkit-scrollbar-thumb {
+    background: var(--cyber-blue);
   }
 }
