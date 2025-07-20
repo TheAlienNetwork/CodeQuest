@@ -152,7 +152,7 @@ export class GamificationService {
     }
   ];
 
-  // Check for new achievements
+  // Check for new achievements and milestones
   async checkAchievements(userId: number): Promise<Achievement[]> {
     const user = await storage.getUser(userId);
     const submissions = await storage.getUserSubmissions(userId);
@@ -162,6 +162,7 @@ export class GamificationService {
     const newAchievements: Achievement[] = [];
     const userAchievements = user.unlockedAchievements || [];
     
+    // Check traditional achievements
     for (const achievement of this.achievements) {
       if (!userAchievements.includes(achievement.id)) {
         if (await this.isAchievementUnlocked(achievement, user, submissions)) {
@@ -179,7 +180,71 @@ export class GamificationService {
       }
     }
     
+    // Check milestone achievements
+    const milestoneAchievements = await this.checkMilestoneAchievements(user, userAchievements);
+    newAchievements.push(...milestoneAchievements);
+    
     return newAchievements;
+  }
+
+  // Check milestone-based achievements
+  private async checkMilestoneAchievements(user: any, userAchievements: string[]): Promise<Achievement[]> {
+    const milestoneAchievements: Achievement[] = [];
+    
+    // XP Milestones
+    const xpMilestones = [
+      { id: 'milestone_xp_100', threshold: 100, name: 'First Steps Milestone', xp: 25 },
+      { id: 'milestone_xp_500', threshold: 500, name: 'Explorer Milestone', xp: 50 },
+      { id: 'milestone_xp_1000', threshold: 1000, name: 'Hunter Milestone', xp: 100 },
+      { id: 'milestone_xp_2500', threshold: 2500, name: 'Warrior Milestone', xp: 150 },
+      { id: 'milestone_xp_5000', threshold: 5000, name: 'Master Milestone', xp: 250 },
+      { id: 'milestone_xp_10000', threshold: 10000, name: 'Legend Milestone', xp: 500 },
+      { id: 'milestone_xp_25000', threshold: 25000, name: 'Grand Master Milestone', xp: 1000 }
+    ];
+    
+    for (const milestone of xpMilestones) {
+      if (user.xp >= milestone.threshold && !userAchievements.includes(milestone.id)) {
+        milestoneAchievements.push({
+          id: milestone.id,
+          name: milestone.name,
+          description: `Reached ${milestone.threshold} XP!`,
+          icon: '🏆',
+          xpReward: milestone.xp,
+          rarity: 'common',
+          unlockedAt: new Date()
+        });
+        
+        // Update user with milestone achievement
+        await storage.updateUser(user.id, {
+          unlockedAchievements: [...userAchievements, milestone.id],
+          xp: user.xp + milestone.xp
+        });
+      }
+    }
+    
+    // Quest Milestones
+    const completedCount = user.completedQuests?.length || 0;
+    const questMilestones = [
+      { id: 'milestone_quest_5', threshold: 5, name: 'Quest Starter Milestone', xp: 75 },
+      { id: 'milestone_quest_10', threshold: 10, name: 'Quest Explorer Milestone', xp: 150 },
+      { id: 'milestone_quest_20', threshold: 20, name: 'Quest Champion Milestone', xp: 300 }
+    ];
+    
+    for (const milestone of questMilestones) {
+      if (completedCount >= milestone.threshold && !userAchievements.includes(milestone.id)) {
+        milestoneAchievements.push({
+          id: milestone.id,
+          name: milestone.name,
+          description: `Completed ${milestone.threshold} quests!`,
+          icon: '🎯',
+          xpReward: milestone.xp,
+          rarity: 'rare',
+          unlockedAt: new Date()
+        });
+      }
+    }
+    
+    return milestoneAchievements;
   }
 
   // Get daily challenges

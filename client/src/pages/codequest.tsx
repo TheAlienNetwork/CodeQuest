@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Trophy, Flame } from 'lucide-react';
+import MilestonesPanel from '@/components/MilestonesPanel';
 
 interface User {
   id: number;
@@ -63,7 +64,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   const [showXPGain, setShowXPGain] = useState(0);
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [activeTab, setActiveTab] = useState<'quest' | 'learning' | 'lessons'>('quest');
+  const [activeTab, setActiveTab] = useState<'quest' | 'learning' | 'lessons' | 'milestones'>('quest');
   const [selectedQuestId, setSelectedQuestId] = useState<number | null>(null);
   const [questCompleted, setQuestCompleted] = useState(false);
   const [isRedoingQuest, setIsRedoingQuest] = useState(false);
@@ -74,14 +75,14 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
     queryKey: ['/api/quest', user?.id, selectedQuestId],
     queryFn: async () => {
       if (!user?.id) throw new Error('No user ID');
-      
+
       // If a specific quest is selected (for redoing), fetch that quest
       if (selectedQuestId) {
         const response = await apiRequest('GET', `/api/quest-by-id/${selectedQuestId}`);
         if (!response.ok) throw new Error('Failed to fetch selected quest');
         return response.json();
       }
-      
+
       // Otherwise fetch current quest
       const response = await apiRequest('GET', `/api/quest/${user.id}`);
       if (!response.ok) throw new Error('Failed to fetch quest');
@@ -536,6 +537,16 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
               >
                 🎓 Lessons
               </button>
+              <button
+                onClick={() => setActiveTab('milestones')}
+                className={`px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded transition-colors whitespace-nowrap flex-shrink-0 ${
+                  activeTab === 'milestones'
+                    ? 'bg-[var(--cyber-cyan)] text-black'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                🏆 Milestones
+              </button>
             </div>
           </div>
 
@@ -566,7 +577,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
                   showNextButton={questCompleted}
                 />
               </div>
-            ) : (
+            ) : activeTab === 'lessons' ? (
               <div className="h-full">
                 <LessonsPanel
                   userId={user.id}
@@ -577,12 +588,18 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
                     setTerminalOutput('');
                     setTerminalError('');
                     setShowTerminal(false);
-                    
+
                     toast({
                       title: "Quest Selected 🎯",
                       description: "Loading quest for practice...",
                     });
                   }}
+                />
+              </div>
+            ) : (
+              <div className="h-full">
+                <MilestonesPanel
+                  userId={user.id}
                 />
               </div>
             )}
