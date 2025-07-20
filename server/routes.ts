@@ -212,7 +212,22 @@ export function registerRoutes(app: Application) {
       }
 
       const result = await codeExecutionService.executeCode(code, userId);
-      res.json(result);
+      
+      // Award XP for running code (small amount to encourage testing)
+      let xpEarned = 0;
+      let updatedUser = null;
+      
+      if (result.exitCode === 0) {
+        // Award 5 XP for successful code execution
+        xpEarned = 5;
+        updatedUser = await storage.updateUserXP(userId, xpEarned);
+      }
+      
+      res.json({
+        ...result,
+        xpEarned,
+        user: updatedUser
+      });
     } catch (error) {
       console.error('Code execution error:', error);
       res.status(500).json({ 
@@ -255,10 +270,21 @@ export function registerRoutes(app: Application) {
       );
 
       // Check if code is correct based on execution results
-      const isCorrect = executionResult.exitCode === 0 && 
-                       testCases.some((testCase: any) => 
-                         executionResult.output.trim() === testCase.expectedOutput.trim()
-                       );
+      let isCorrect = false;
+      let passedTestCases = 0;
+      
+      if (executionResult.exitCode === 0) {
+        // Check each test case
+        for (const testCase of testCases) {
+          const actualOutput = executionResult.output.trim();
+          const expectedOutput = testCase.expectedOutput.trim();
+          
+          if (actualOutput === expectedOutput) {
+            passedTestCases++;
+            isCorrect = true;
+          }
+        }
+      }
 
       // Use AI analysis for additional correctness check
       const aiCorrect = analysis.isCorrect && isCorrect;
@@ -305,6 +331,11 @@ export function registerRoutes(app: Application) {
         executionResult,
         xpEarned: xpEarned,
         user: updatedUser,
+        testResults: {
+          passed: passedTestCases,
+          total: testCases.length,
+          allPassed: passedTestCases === testCases.length
+        }
       });
     } catch (error) {
       console.error("Analysis error:", error);

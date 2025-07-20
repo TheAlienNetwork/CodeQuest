@@ -130,17 +130,11 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
       setTerminalOutput(result.output || '');
       setTerminalError(result.error || '');
 
-      // Check if the output matches expected output for quest completion
-      if (quest && result.output && result.exitCode === 0) {
-        const expectedOutput = quest.testCases[0]?.expectedOutput;
-        if (expectedOutput && result.output.trim() === expectedOutput.trim()) {
-          // Quest completed successfully
-          setQuestCompleted(true);
-          showXPGainAnimation(quest.xpReward);
-          toast({
-            title: "Quest Completed! 🎉",
-            description: `You earned ${quest.xpReward} XP!`,
-          });
+      // Handle XP reward from running code
+      if (result.xpEarned > 0) {
+        showXPGainAnimation(result.xpEarned);
+        if (result.user) {
+          onUserUpdate(result.user);
         }
       }
     } catch (error) {
@@ -175,8 +169,29 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
         showXPGainAnimation(result.xpEarned);
       }
 
+      // Check if all test cases passed
+      const testResults = result.testResults;
+      let feedbackMessage = result.feedback;
+
+      if (testResults) {
+        if (testResults.allPassed) {
+          feedbackMessage += `\n\n✅ PASSED: All ${testResults.total} test case(s) passed!`;
+        } else {
+          feedbackMessage += `\n\n❌ FAILED: ${testResults.passed}/${testResults.total} test case(s) passed.`;
+        }
+      }
+
       if (result.isCorrect) {
         setQuestCompleted(true);
+        setAnalysis({
+          ...result,
+          feedback: feedbackMessage + "\n\n🎉 Quest completed! You can move to the next quest.",
+        });
+      } else {
+        setAnalysis({
+          ...result,
+          feedback: feedbackMessage
+        });
       }
 
       toast({
@@ -338,10 +353,10 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
         setQuestCompleted(false);
         setCode(result.nextQuest.startingCode || '');
         setActiveTab('quest');
-        
+
         // Refetch quest data
         refetch();
-        
+
         if (result.user) {
           onUserUpdate(result.user);
         }
@@ -370,7 +385,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
         description: "Failed to load next quest",
         variant: "destructive",
       });
-      
+
       // Remove transition class on error too
       const mainContent = document.querySelector('.main-content');
       if (mainContent) {
@@ -537,7 +552,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
               </div>
             )}
           </div>
-          
+
           {/* AI Chat - Fixed Height */}
           <div className="h-80 sm:h-96 flex-shrink-0 border-t border-[var(--cyber-cyan)]/30 relative z-20">
             <AIChat 

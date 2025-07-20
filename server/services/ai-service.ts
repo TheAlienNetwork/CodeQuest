@@ -71,14 +71,14 @@ print(result)`,
 for fruit in fruits:
     print(fruit)`,
     },
-    
+
     commonMistakes: {
       'indentation': 'Python uses indentation to define code blocks',
       'syntax': 'Check for missing colons, parentheses, or quotes',
       'naming': 'Use descriptive variable names',
       'logic': 'Review your algorithm step by step'
     },
-    
+
     hints: {
       'beginner': [
         'Start with simple print statements',
@@ -164,7 +164,7 @@ for fruit in fruits:
 
   private checkSyntax(code: string): string[] {
     const issues: string[] = [];
-    
+
     // Check for unmatched parentheses
     const openParens = (code.match(/\(/g) || []).length;
     const closeParens = (code.match(/\)/g) || []).length;
@@ -199,20 +199,20 @@ for fruit in fruits:
   private checkOutput(code: string, expectedOutput: string): boolean {
     const normalizedCode = code.toLowerCase().replace(/\s+/g, ' ').trim();
     const normalizedExpected = expectedOutput.toLowerCase().replace(/\s+/g, ' ').trim();
-    
+
     // Split expected output into lines for multi-line matching
     const expectedLines = expectedOutput.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-    
+
     // If no expected output lines, return true
     if (expectedLines.length === 0) {
       return true;
     }
-    
+
     // Check each expected line
     for (const line of expectedLines) {
       const lineLower = line.toLowerCase();
       let foundMatch = false;
-      
+
       // Check for direct print statements with the expected output
       const printPatterns = [
         `print("${line}")`,
@@ -222,24 +222,24 @@ for fruit in fruits:
         `print('${lineLower}')`,
         `print(${lineLower})`
       ];
-      
+
       for (const pattern of printPatterns) {
         if (normalizedCode.includes(pattern.toLowerCase())) {
           foundMatch = true;
           break;
         }
       }
-      
+
       // Check for mathematical expressions that evaluate to the expected result
       if (!foundMatch && line.match(/^\d+\.?\d*$/)) {
         const numValue = parseFloat(line);
-        
+
         // Check for direct number printing
         if (normalizedCode.includes(`print(${numValue})`) || 
             normalizedCode.includes(`print(${numValue}.0)`)) {
           foundMatch = true;
         }
-        
+
         // Check for common mathematical operations
         const mathPatterns = [
           /print\s*\(\s*\d+\s*\+\s*\d+\.?\d*\s*\)/,
@@ -251,7 +251,7 @@ for fruit in fruits:
           /print\s*\(\s*\w+\s*\*\s*\w+\s*\)/,
           /print\s*\(\s*\w+\s*\/\s*\w+\s*\)/
         ];
-        
+
         for (const pattern of mathPatterns) {
           if (pattern.test(normalizedCode)) {
             foundMatch = true;
@@ -259,7 +259,7 @@ for fruit in fruits:
           }
         }
       }
-      
+
       // Special handling for variable assignments and printing
       if (!foundMatch) {
         // Check for variable definitions that match expected values
@@ -277,18 +277,18 @@ for fruit in fruits:
           }
         }
       }
-      
+
       if (!foundMatch) {
         return false;
       }
     }
-    
+
     return true;
   }
 
   private analyzeCodeQuality(code: string): { suggestions: string[] } {
     const suggestions: string[] = [];
-    
+
     // Check for good variable naming
     const variables = code.match(/\b[a-zA-Z_][a-zA-Z0-9_]*\s*=/g);
     if (variables) {
@@ -321,7 +321,7 @@ for fruit in fruits:
 
   private extractConcepts(code: string): string[] {
     const concepts: string[] = [];
-    
+
     if (code.includes('print(')) concepts.push('print');
     if (code.includes('=') && !code.includes('==')) concepts.push('variables');
     if (code.includes('"') || code.includes("'")) concepts.push('strings');
@@ -331,20 +331,20 @@ for fruit in fruits:
     if (code.includes('if ')) concepts.push('conditionals');
     if (code.includes('[') || code.includes(']')) concepts.push('lists');
     if (code.includes('class ')) concepts.push('classes');
-    
+
     return concepts;
   }
 
   private generateEducationalFeedback(code: string, questTitle: string): string {
     const concepts = this.extractConcepts(code);
     const feedbacks: string[] = [];
-    
+
     for (const concept of concepts) {
       if (this.programmingKnowledge.concepts[concept]) {
         feedbacks.push(`Great use of ${concept}!`);
       }
     }
-    
+
     return feedbacks.join(' ');
   }
 
@@ -395,13 +395,13 @@ for fruit in fruits:
       "No worries, every great programmer gets stuck sometimes! Let's break this down step by step.",
       "That's what I'm here for! Tell me what's confusing you and we'll figure it out together.",
     ];
-    
+
     let response = responses[Math.floor(Math.random() * responses.length)];
-    
+
     if (currentQuest) {
       response += ` For your current quest "${currentQuest.title}", try thinking about what the problem is asking you to do first.`;
     }
-    
+
     return response;
   }
 
@@ -409,7 +409,7 @@ for fruit in fruits:
     const levelHints = this.programmingKnowledge.hints[
       userLevel <= 2 ? 'beginner' : userLevel <= 5 ? 'intermediate' : 'advanced'
     ];
-    
+
     const hint = levelHints[Math.floor(Math.random() * levelHints.length)];
     return `Here's a hint for you: ${hint}`;
   }
@@ -421,7 +421,7 @@ for fruit in fruits:
         return `Great question! ${concept.charAt(0).toUpperCase() + concept.slice(1)} are ${explanation}. Would you like me to explain more about how to use them?`;
       }
     }
-    
+
     return "I'd be happy to explain! Could you be more specific about what concept you'd like me to explain?";
   }
 
@@ -481,18 +481,18 @@ for fruit in fruits:
       const { join } = await import('path');
       const { fileURLToPath } = await import('url');
       const { dirname } = await import('path');
-      
+
       const __filename = fileURLToPath(import.meta.url || 'file://' + __filename);
       const __dirname = dirname(__filename);
-      
+
       const questsPath = join(__dirname, '../data/comprehensive-quests.json');
       const questsData = JSON.parse(readFileSync(questsPath, 'utf8'));
       const quest = questsData.find((q: any) => q.id === questId);
-      
+
       if (quest && quest.solutionCode) {
         return `Here's the complete solution:\n\n${quest.solutionCode}\n\nThis solution demonstrates the key concepts needed for this quest.`;
       }
-      
+
       // Fallback solutions for first few quests
       const fallbackSolutions: { [key: number]: string } = {
         1: 'print("Hello, World!")',
@@ -501,14 +501,14 @@ for fruit in fruits:
         4: 'level = 1\nif level == 1:\n    print("Welcome, brave adventurer!")',
         5: 'for i in range(1, 6):\n    print(f"Casting spell {i}")'
       };
-      
+
       if (fallbackSolutions[questId]) {
         return `Here's the complete solution:\n\n${fallbackSolutions[questId]}\n\nThis solution demonstrates the key concepts needed for this quest.`;
       }
     } catch (error) {
       console.error('Error loading quest solution:', error);
     }
-    
+
     return 'Sorry, I couldn\'t retrieve the solution for this quest. Try working through it step by step!';
   }
 
@@ -523,7 +523,7 @@ for fruit in fruits:
     };
 
     const defaultExplanation = 'This quest teaches important programming concepts. Break down the problem: read the description carefully, identify what output is expected, and think about which Python concepts (variables, loops, conditions, etc.) you need to use.';
-    
+
     return questExplanations[questId] || defaultExplanation;
   }
 
@@ -534,7 +534,7 @@ for fruit in fruits:
       "Check your indentation - Python is very picky about proper spacing!",
       "Make sure all your parentheses, brackets, and quotes are properly matched.",
     ];
-    
+
     return tips[Math.floor(Math.random() * tips.length)];
   }
 
@@ -545,7 +545,7 @@ for fruit in fruits:
       "I'm here to support your coding adventure. What would you like to explore next?",
       "Programming is like solving puzzles - each challenge makes you stronger!",
     ];
-    
+
     return responses[Math.floor(Math.random() * responses.length)];
   }
 
@@ -566,23 +566,23 @@ for fruit in fruits:
       "Consider using print statements to debug your logic.",
       "Break the problem into smaller, manageable pieces.",
     ];
-    
+
     // Customize hints based on quest content
     if (questTitle.toLowerCase().includes('function')) {
       hints.push("Remember: functions start with 'def' and need a colon at the end.");
       hints.push("Don't forget to return a value if the function needs to give back a result.");
     }
-    
+
     if (questTitle.toLowerCase().includes('loop')) {
       hints.push("Think about what you want to repeat and how many times.");
       hints.push("Remember to update your loop variable to avoid infinite loops.");
     }
-    
+
     if (questTitle.toLowerCase().includes('class')) {
       hints.push("Classes are templates for creating objects. Start with __init__.");
       hints.push("Methods in classes need 'self' as their first parameter.");
     }
-    
+
     return hints[Math.floor(Math.random() * hints.length)];
   }
 }
