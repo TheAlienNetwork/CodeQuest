@@ -1,0 +1,722 @@
+[
+  {
+    "id": 1,
+    "title": "🏰 The Village Awakening",
+    "description": "Welcome, brave hero! Your adventure begins in a sleepy village. Send your first message to the world by printing 'Hello, Adventure!' to wake up the village.",
+    "difficulty": "beginner",
+    "xpReward": 50,
+    "estimatedTime": "3 min",
+    "startingCode": "# Welcome to the mystical land of CodeQuest!\n# The village sleeps... wake them up with your first spell!\n# Print 'Hello, Adventure!' to begin your journey\n\n",
+    "solutionCode": "print('Hello, Adventure!')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Hello, Adventure!"
+      }
+    ],
+    "concepts": ["print", "strings", "basic syntax", "console output"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 2,
+    "title": "📜 The Hero Registration",
+    "description": "The village elder needs to register you as a new hero! Create magical containers (variables) to store your hero name, level, and chosen class.",
+    "difficulty": "beginner",
+    "xpReward": 75,
+    "estimatedTime": "5 min",
+    "startingCode": "# The village elder prepares your hero scroll!\n# Create a variable 'hero_name' with your hero's name\n# Create a variable 'level' with the number 1\n# Create a variable 'hero_class' with your chosen class\n# Print all three to complete your registration\n\n",
+    "solutionCode": "hero_name = 'Brave Knight'\nlevel = 1\nhero_class = 'Warrior'\nprint(hero_name)\nprint(level)\nprint(hero_class)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Brave Knight\n1\nWarrior"
+      }
+    ],
+    "concepts": ["variables", "strings", "integers", "variable assignment", "data types"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 3,
+    "title": "⚡ The Power Crystal Chamber",
+    "description": "Deep in the crystal caves, you find power crystals! Calculate your total magical power by combining physical strength with mystical energy.",
+    "difficulty": "beginner",
+    "xpReward": 100,
+    "estimatedTime": "6 min",
+    "startingCode": "# The crystals glow with ancient power!\n# Create a strength crystal with value 15\n# Create a magic crystal with value 8.5 (use decimal)\n# Combine their powers and print your total magic power\n\n",
+    "solutionCode": "strength_crystal = 15\nmagic_crystal = 8.5\ntotal_power = strength_crystal + magic_crystal\nprint(total_power)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "23.5"
+      }
+    ],
+    "concepts": ["variables", "integers", "floats", "arithmetic", "mathematical operations"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 4,
+    "title": "🧙‍♂️ The Wise Gatekeeper",
+    "description": "A mystical gatekeeper blocks your path and tests your wisdom! Answer differently based on your hero level to prove you're worthy.",
+    "difficulty": "beginner",
+    "xpReward": 125,
+    "estimatedTime": "8 min",
+    "startingCode": "# The gatekeeper's eyes glow with ancient knowledge\nhero_level = 1\n\n# If hero_level equals 1, print 'I seek wisdom and adventure'\n# Otherwise, print 'I am a seasoned hero seeking greater challenges'\n\n",
+    "solutionCode": "hero_level = 1\n\nif hero_level == 1:\n    print('I seek wisdom and adventure')\nelse:\n    print('I am a seasoned hero seeking greater challenges')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "I seek wisdom and adventure"
+      }
+    ],
+    "concepts": ["conditionals", "if statements", "comparison operators", "boolean logic"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 5,
+    "title": "🏟️ The Arena Training",
+    "description": "Welcome to the training arena! Master the art of repetition by counting your training rounds. Show your dedication by completing 5 practice rounds.",
+    "difficulty": "beginner",
+    "xpReward": 150,
+    "estimatedTime": "10 min",
+    "startingCode": "# The arena master calls for training!\n# Count from 1 to 5 to show your dedication\n# Use a for loop with range(1, 6)\n# Print each training round number\n\n",
+    "solutionCode": "for round_num in range(1, 6):\n    print(round_num)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "1\n2\n3\n4\n5"
+      }
+    ],
+    "concepts": ["loops", "for loops", "range", "iteration", "counting"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 6,
+    "title": "🎯 The Archery Challenge",
+    "description": "The village archery master challenges you to target practice! Ask for your name and number of arrows, then simulate each shot in the training grounds.",
+    "difficulty": "beginner",
+    "xpReward": 175,
+    "estimatedTime": "12 min",
+    "startingCode": "# The archery master prepares your challenge!\n# Ask for the archer's name using input()\n# Ask how many arrows they want to shoot\n# Use a loop to simulate shooting each arrow\n\n",
+    "solutionCode": "archer_name = input('What is your name, archer? ')\narrow_count = int(input('How many arrows do you want to shoot? '))\n\nfor shot in range(1, arrow_count + 1):\n    print(f'{archer_name} shoots arrow {shot}!')\n\nprint('Excellent shooting!')",
+    "testCases": [
+      {
+        "input": "Robin\n3",
+        "expectedOutput": "What is your name, archer? How many arrows do you want to shoot? Robin shoots arrow 1!\nRobin shoots arrow 2!\nRobin shoots arrow 3!\nExcellent shooting!"
+      }
+    ],
+    "concepts": ["input", "type conversion", "user interaction", "for loops", "string interpolation"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 7,
+    "title": "🌟 The Star Pattern Forge",
+    "description": "In the magical forge, create star patterns for enchanted armor! Use loops to craft a pyramid pattern that grows stronger with each level.",
+    "difficulty": "beginner",
+    "xpReward": 200,
+    "estimatedTime": "15 min",
+    "startingCode": "# The forge master needs star patterns for enchanted armor!\n# Create a pyramid pattern with 5 levels\n# Each level should have that many stars\n# Level 1: *, Level 2: **, Level 3: ***, etc.\n\n",
+    "solutionCode": "for level in range(1, 6):\n    print('*' * level)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "*\n**\n***\n****\n*****"
+      }
+    ],
+    "concepts": ["loops", "string multiplication", "patterns", "for loops", "range"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 8,
+    "title": "🔍 The Word Detective",
+    "description": "A mysterious scroll contains palindromic magic words! Help the village librarian identify which words read the same forwards and backwards.",
+    "difficulty": "beginner",
+    "xpReward": 175,
+    "estimatedTime": "12 min",
+    "startingCode": "# The ancient scroll contains these mysterious words\nmagic_words = ['racecar', 'sword', 'level', 'dragon', 'madam']\n\n# Check each word to see if it's a palindrome\n# Print 'word: Magical' if it's a palindrome, 'word: Normal' if not\n\n",
+    "solutionCode": "magic_words = ['racecar', 'sword', 'level', 'dragon', 'madam']\n\nfor word in magic_words:\n    if word == word[::-1]:\n        print(f'{word}: Magical')\n    else:\n        print(f'{word}: Normal')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "racecar: Magical\nsword: Normal\nlevel: Magical\ndragon: Normal\nmadam: Magical"
+      }
+    ],
+    "concepts": ["strings", "slicing", "conditionals", "string reversal", "for loops"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 9,
+    "title": "⚔️ The Weapon Arsenal",
+    "description": "Every hero needs a mighty weapon collection! Create your arsenal and display each weapon to strike fear into your enemies.",
+    "difficulty": "beginner", 
+    "xpReward": 175,
+    "estimatedTime": "12 min",
+    "startingCode": "# Forge your legendary weapon collection!\n# Create a list called 'weapons' with: 'Dragonblade', 'Elvish Bow', 'Staff of Power'\n# Display each weapon in your arsenal using a loop\n\n",
+    "solutionCode": "weapons = ['Dragonblade', 'Elvish Bow', 'Staff of Power']\n\nfor weapon in weapons:\n    print(weapon)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Dragonblade\nElvish Bow\nStaff of Power"
+      }
+    ],
+    "concepts": ["lists", "for loops", "iteration", "list creation", "data structures"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 10,
+    "title": "🛡️ The Protection Spell",
+    "description": "Master your first spell! Create a reusable protection function that shields you from danger. True wizards never repeat their incantations!",
+    "difficulty": "intermediate",
+    "xpReward": 225,
+    "estimatedTime": "15 min",
+    "startingCode": "# Learn your first spell, young mage!\n# Create a function called 'cast_protection'\n# It should print 'Shield of light surrounds you!'\n# Then call the function to activate the spell\n\n",
+    "solutionCode": "def cast_protection():\n    print('Shield of light surrounds you!')\n\ncast_protection()",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Shield of light surrounds you!"
+      }
+    ],
+    "concepts": ["functions", "function definition", "function calls", "code reusability"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 11,
+    "title": "⚔️ The Battle Calculator",
+    "description": "Create a magical battle calculator! Pass attack power to a function and return double damage for critical hits.",
+    "difficulty": "intermediate",
+    "xpReward": 250,
+    "estimatedTime": "18 min",
+    "startingCode": "# Create a function called 'calculate_damage'\n# It should take 'attack_power' as a parameter\n# Return attack_power * 2 (critical hit!)\n# Test it with attack_power = 10\n\n",
+    "solutionCode": "def calculate_damage(attack_power):\n    return attack_power * 2\n\nresult = calculate_damage(10)\nprint(result)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "20"
+      }
+    ],
+    "concepts": ["functions", "parameters", "return values", "function calls"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 12,
+    "title": "🌙 The Night Watch",
+    "description": "Guard the village through the night! Use a while loop to keep watch until dawn breaks at hour 6.",
+    "difficulty": "intermediate",
+    "xpReward": 275,
+    "estimatedTime": "20 min",
+    "startingCode": "# Create a night watch simulation\n# Start at hour 0 (midnight)\n# Use a while loop to count hours until dawn (6 AM)\n# Print each hour of your watch\n\n",
+    "solutionCode": "hour = 0\nwhile hour < 6:\n    print(f'Hour {hour}: Standing watch...')\n    hour += 1\nprint('Dawn breaks! Watch is over.')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Hour 0: Standing watch...\nHour 1: Standing watch...\nHour 2: Standing watch...\nHour 3: Standing watch...\nHour 4: Standing watch...\nHour 5: Standing watch...\nDawn breaks! Watch is over."
+      }
+    ],
+    "concepts": ["while loops", "counters", "incrementation", "loop conditions"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 13,
+    "title": "🗝️ The Character Profile",
+    "description": "Create a character profile using a dictionary! Store your hero's vital information in a magical tome.",
+    "difficulty": "intermediate",
+    "xpReward": 300,
+    "estimatedTime": "18 min",
+    "startingCode": "# Create a dictionary with your character's stats\n# Include: name, class, level, health, mana\n# Print each stat in a readable format\n\n",
+    "solutionCode": "character = {\n    'name': 'Hero',\n    'class': 'Warrior',\n    'level': 5,\n    'health': 100,\n    'mana': 50\n}\n\nfor key, value in character.items():\n    print(f'{key}: {value}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "name: Hero\nclass: Warrior\nlevel: 5\nhealth: 100\nmana: 50"
+      }
+    ],
+    "concepts": ["dictionaries", "key-value pairs", "dictionary creation", "dictionary iteration"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 14,
+    "title": "🎲 The Dice of Fate",
+    "description": "Create a function to roll magical dice! Use the random module to determine your fate in battle.",
+    "difficulty": "intermediate",
+    "xpReward": 325,
+    "estimatedTime": "20 min",
+    "startingCode": "# Create a function called roll_dice that takes number of sides\n# Import random module\n# Return a random number between 1 and the number of sides\n# Roll a 6-sided dice 3 times and print results\n\n",
+    "solutionCode": "import random\n\ndef roll_dice(sides):\n    return random.randint(1, sides)\n\nfor i in range(3):\n    result = roll_dice(6)\n    print(f'Roll {i+1}: {result}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Roll 1: 3\nRoll 2: 6\nRoll 3: 2"
+      }
+    ],
+    "concepts": ["functions", "parameters", "return values", "random module", "imports"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 15,
+    "title": "🏰 The Castle Builder",
+    "description": "Build a mighty fortress using nested loops! Create a castle wall pattern with stone blocks.",
+    "difficulty": "intermediate",
+    "xpReward": 350,
+    "estimatedTime": "25 min",
+    "startingCode": "# Build a castle wall using nested loops\n# Create a 5x5 pattern using '#' characters\n# Each row should have 5 '#' characters\n\n",
+    "solutionCode": "for row in range(5):\n    for col in range(5):\n        print('#', end=' ')\n    print()  # New line after each row",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "# # # # # \n# # # # # \n# # # # # \n# # # # # \n# # # # # "
+      }
+    ],
+    "concepts": ["nested loops", "print formatting", "patterns", "end parameter"],
+    "requiredLevel": 4
+  },
+  {
+    "id": 16,
+    "title": "🧙‍♂️ The Wizard Class",
+    "description": "Create a powerful Wizard class with magical abilities! Learn the ancient art of object-oriented magic.",
+    "difficulty": "intermediate",
+    "xpReward": 400,
+    "estimatedTime": "30 min",
+    "startingCode": "# Create a Wizard class\n# Add __init__ method with name and mana\n# Add cast_spell method that reduces mana by 10\n# Create a wizard and cast 3 spells\n\n",
+    "solutionCode": "class Wizard:\n    def __init__(self, name, mana):\n        self.name = name\n        self.mana = mana\n    \n    def cast_spell(self, spell_name):\n        if self.mana >= 10:\n            self.mana -= 10\n            print(f'{self.name} casts {spell_name}! Mana: {self.mana}')\n        else:\n            print(f'{self.name} is out of mana!')\n\nwizard = Wizard('Gandalf', 50)\nwizard.cast_spell('Fireball')\nwizard.cast_spell('Lightning')\nwizard.cast_spell('Heal')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Gandalf casts Fireball! Mana: 40\nGandalf casts Lightning! Mana: 30\nGandalf casts Heal! Mana: 20"
+      }
+    ],
+    "concepts": ["classes", "objects", "__init__", "methods", "self", "object-oriented programming"],
+    "requiredLevel": 5
+  },
+  {
+    "id": 17,
+    "title": "🗡️ The Arena Battle",
+    "description": "Create an epic battle system! Two fighters clash in the arena until one emerges victorious.",
+    "difficulty": "advanced",
+    "xpReward": 500,
+    "estimatedTime": "35 min",
+    "startingCode": "# Create a battle system\n# Two fighters with health and attack power\n# They take turns attacking until one reaches 0 health\n# Print the battle progress\n\n",
+    "solutionCode": "class Fighter:\n    def __init__(self, name, health, attack):\n        self.name = name\n        self.health = health\n        self.attack = attack\n    \n    def attack_enemy(self, enemy):\n        enemy.health -= self.attack\n        print(f'{self.name} attacks {enemy.name} for {self.attack} damage!')\n        print(f'{enemy.name} health: {enemy.health}')\n\nfighter1 = Fighter('Hero', 100, 25)\nfighter2 = Fighter('Goblin', 80, 20)\n\nwhile fighter1.health > 0 and fighter2.health > 0:\n    fighter1.attack_enemy(fighter2)\n    if fighter2.health <= 0:\n        print(f'{fighter1.name} wins!')\n        break\n    fighter2.attack_enemy(fighter1)\n    if fighter1.health <= 0:\n        print(f'{fighter2.name} wins!')\n        break",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Hero attacks Goblin for 25 damage!\nGoblin health: 55\nGoblin attacks Hero for 20 damage!\nHero health: 80\nHero attacks Goblin for 25 damage!\nGoblin health: 30\nGoblin attacks Hero for 20 damage!\nHero health: 60\nHero attacks Goblin for 25 damage!\nGoblin health: 5\nGoblin attacks Hero for 20 damage!\nHero health: 40\nHero attacks Goblin for 25 damage!\nGoblin health: -20\nHero wins!"
+      }
+    ],
+    "concepts": ["classes", "while loops", "game logic", "conditional statements", "object interaction"],
+    "requiredLevel": 6
+  },
+  {
+    "id": 18,
+    "title": "🛡️ The Error Guardian",
+    "description": "Handle errors like a true guardian! Protect your code from crashing with try-except blocks.",
+    "difficulty": "advanced",
+    "xpReward": 550,
+    "estimatedTime": "25 min",
+    "startingCode": "# Create a safe division function\n# Handle division by zero errors\n# Ask user for two numbers and divide them safely\n# Keep asking until they enter 'quit'\n\n",
+    "solutionCode": "def safe_divide(a, b):\n    try:\n        result = a / b\n        return result\n    except ZeroDivisionError:\n        print('Error: Cannot divide by zero!')\n        return None\n    except ValueError:\n        print('Error: Please enter valid numbers!')\n        return None\n\nwhile True:\n    try:\n        num1 = input('Enter first number (or quit): ')\n        if num1.lower() == 'quit':\n            break\n        num2 = input('Enter second number: ')\n        \n        num1 = float(num1)\n        num2 = float(num2)\n        \n        result = safe_divide(num1, num2)\n        if result is not None:\n            print(f'Result: {result}')\n    except ValueError:\n        print('Please enter valid numbers!')",
+    "testCases": [
+      {
+        "input": "10\n2\nquit",
+        "expectedOutput": "Enter first number (or quit): Enter second number: Result: 5.0\nEnter first number (or quit): "
+      }
+    ],
+    "concepts": ["try-except", "error handling", "exceptions", "input validation", "while loops"],
+    "requiredLevel": 7
+  },
+  {
+    "id": 19,
+    "title": "🎨 The List Comprehension Master",
+    "description": "Master the ancient art of list comprehensions! Create powerful data transformations with elegant Python magic.",
+    "difficulty": "advanced",
+    "xpReward": 600,
+    "estimatedTime": "30 min",
+    "startingCode": "# Create list comprehensions to:\n# 1. Generate squares of numbers 1-10\n# 2. Filter even numbers from 1-20\n# 3. Create a list of character names with their lengths\n\n",
+    "solutionCode": "# Generate squares of numbers 1-10\nsquares = [x**2 for x in range(1, 11)]\nprint('Squares:', squares)\n\n# Filter even numbers from 1-20\nevens = [x for x in range(1, 21) if x % 2 == 0]\nprint('Even numbers:', evens)\n\n# Create list of character names with their lengths\nnames = ['Hero', 'Wizard', 'Archer', 'Warrior']\nname_lengths = [f'{name}: {len(name)}' for name in names]\nprint('Name lengths:', name_lengths)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Squares: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]\nEven numbers: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]\nName lengths: ['Hero: 4', 'Wizard: 6', 'Archer: 6', 'Warrior: 7']"
+      }
+    ],
+    "concepts": ["list comprehensions", "filtering", "mapping", "conditional expressions"],
+    "requiredLevel": 8
+  },
+  {
+    "id": 20,
+    "title": "✨ The Decorator Sage",
+    "description": "Learn the ultimate art of decorators! Enhance your functions with magical wrapper spells that add timing abilities.",
+    "difficulty": "expert",
+    "xpReward": 700,
+    "estimatedTime": "40 min",
+    "startingCode": "# Create a timing decorator\n# Measure how long functions take to execute\n# Apply it to a function that calculates fibonacci numbers\n\n",
+    "solutionCode": "import time\n\ndef timing_decorator(func):\n    def wrapper(*args, **kwargs):\n        start_time = time.time()\n        result = func(*args, **kwargs)\n        end_time = time.time()\n        print(f'{func.__name__} took {end_time - start_time:.4f} seconds')\n        return result\n    return wrapper\n\n@timing_decorator\ndef fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)\n\nresult = fibonacci(10)\nprint(f'Fibonacci(10) = {result}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "fibonacci took 0.0001 seconds\nFibonacci(10) = 55"
+      }
+    ],
+    "concepts": ["decorators", "function wrapping", "higher-order functions", "recursion", "timing"],
+    "requiredLevel": 10
+  },
+  {
+    "id": 21,
+    "title": "🔤 The String Spell",
+    "description": "Learn the power of string manipulation! Combine your hero's first and last name to create your full identity.",
+    "difficulty": "beginner",
+    "xpReward": 60,
+    "estimatedTime": "4 min",
+    "startingCode": "# The ancient tome of names awaits!\n# Create variables for first_name and last_name\n# Combine them with a space between to create full_name\n# Print your hero's complete identity\n\nfirst_name = 'Brave'\nlast_name = 'Knight'\n# Your code here\n",
+    "solutionCode": "first_name = 'Brave'\nlast_name = 'Knight'\nfull_name = first_name + ' ' + last_name\nprint(full_name)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Brave Knight"
+      }
+    ],
+    "concepts": ["strings", "string concatenation", "variables", "string interpolation"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 22,
+    "title": "🎯 The Target Practice",
+    "description": "Practice your aim at the training grounds! Calculate how many arrows hit the target using basic math.",
+    "difficulty": "beginner",
+    "xpReward": 70,
+    "estimatedTime": "5 min",
+    "startingCode": "# At the archery range, count your success!\n# You shot 20 arrows total\n# 15 hit the target, 5 missed\n# Calculate your accuracy percentage\n\ntotal_arrows = 20\nhits = 15\n# Calculate accuracy as a percentage and print it\n",
+    "solutionCode": "total_arrows = 20\nhits = 15\naccuracy = (hits / total_arrows) * 100\nprint(accuracy)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "75.0"
+      }
+    ],
+    "concepts": ["arithmetic", "division", "multiplication", "percentages", "mathematical operations"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 23,
+    "title": "🏺 The Potion Ingredients",
+    "description": "Help the village alchemist organize potion ingredients! Count how many of each ingredient you have.",
+    "difficulty": "beginner",
+    "xpReward": 80,
+    "estimatedTime": "6 min",
+    "startingCode": "# The alchemist's ingredient list needs organization!\n# Count the ingredients: dragon_scales, phoenix_feathers, unicorn_tears\n# Print each ingredient with its count\n\ndragon_scales = 7\nphoenix_feathers = 3\nunicorn_tears = 12\n\n# Print each ingredient with a descriptive message\n",
+    "solutionCode": "dragon_scales = 7\nphoenix_feathers = 3\nunicorn_tears = 12\n\nprint('Dragon Scales:', dragon_scales)\nprint('Phoenix Feathers:', phoenix_feathers)\nprint('Unicorn Tears:', unicorn_tears)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Dragon Scales: 7\nPhoenix Feathers: 3\nUnicorn Tears: 12"
+      }
+    ],
+    "concepts": ["variables", "print formatting", "strings", "integers"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 24,
+    "title": "🌡️ The Weather Oracle",
+    "description": "The weather oracle tests your wisdom! Predict the weather based on temperature readings.",
+    "difficulty": "beginner",
+    "xpReward": 90,
+    "estimatedTime": "7 min",
+    "startingCode": "# The weather oracle presents you with a temperature\ntemperature = 25\n\n# If temperature is above 30, print 'Hot day ahead!'\n# If temperature is above 20, print 'Pleasant weather!'\n# Otherwise, print 'Bundle up, it's cold!'\n",
+    "solutionCode": "temperature = 25\n\nif temperature > 30:\n    print('Hot day ahead!')\nelif temperature > 20:\n    print('Pleasant weather!')\nelse:\n    print('Bundle up, it\\'s cold!')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Pleasant weather!"
+      }
+    ],
+    "concepts": ["conditionals", "if statements", "elif", "comparison operators"],
+    "requiredLevel": 1
+  },
+  {
+    "id": 25,
+    "title": "🎪 The Magic Number Game",
+    "description": "The carnival magician challenges you to a number guessing game! Check if the player's guess matches the magic number.",
+    "difficulty": "beginner",
+    "xpReward": 100,
+    "estimatedTime": "8 min",
+    "startingCode": "# The magician's magic number is 42\n# The player's guess is 35\n# Compare them and give appropriate feedback\n\nmagic_number = 42\nplayer_guess = 35\n\n# If guess equals magic number, print 'Correct! You found the magic number!'\n# If guess is too low, print 'Too low! Try higher!'\n# If guess is too high, print 'Too high! Try lower!'\n",
+    "solutionCode": "magic_number = 42\nplayer_guess = 35\n\nif player_guess == magic_number:\n    print('Correct! You found the magic number!')\nelif player_guess < magic_number:\n    print('Too low! Try higher!')\nelse:\n    print('Too high! Try lower!')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Too low! Try higher!"
+      }
+    ],
+    "concepts": ["conditionals", "comparison operators", "if statements", "elif", "else"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 26,
+    "title": "📖 The Spell Book Pages",
+    "description": "Turn the pages of an ancient spell book! Use a loop to read through all the magical pages.",
+    "difficulty": "beginner",
+    "xpReward": 110,
+    "estimatedTime": "10 min",
+    "startingCode": "# The spell book has 5 pages\n# Read each page by printing 'Reading page X' for each page number\n# Use a for loop with range(1, 6) to iterate through pages 1-5\n",
+    "solutionCode": "for page in range(1, 6):\n    print('Reading page', page)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Reading page 1\nReading page 2\nReading page 3\nReading page 4\nReading page 5"
+      }
+    ],
+    "concepts": ["for loops", "range", "iteration", "loop variables"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 27,
+    "title": "🗡️ The Weapon Collection",
+    "description": "Organize your weapon collection! Store different weapons in a magical list and display them all.",
+    "difficulty": "beginner",
+    "xpReward": 120,
+    "estimatedTime": "8 min",
+    "startingCode": "# Create a list of weapons in your arsenal\n# Include: 'Sword', 'Bow', 'Staff', 'Dagger'\n# Print each weapon using a for loop\n",
+    "solutionCode": "weapons = ['Sword', 'Bow', 'Staff', 'Dagger']\n\nfor weapon in weapons:\n    print(weapon)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Sword\nBow\nStaff\nDagger"
+      }
+    ],
+    "concepts": ["lists", "list creation", "for loops", "iteration"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 28,
+    "title": "🏃‍♂️ The Training Counter",
+    "description": "Count your training sessions! Use a while loop to track your progress until you reach your daily goal.",
+    "difficulty": "beginner",
+    "xpReward": 130,
+    "estimatedTime": "12 min",
+    "startingCode": "# You need to complete 5 training sessions\n# Start with 0 sessions completed\n# Use a while loop to count up to 5\n# Print 'Training session X completed' for each session\n",
+    "solutionCode": "sessions_completed = 0\ntarget_sessions = 5\n\nwhile sessions_completed < target_sessions:\n    sessions_completed += 1\n    print('Training session', sessions_completed, 'completed')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Training session 1 completed\nTraining session 2 completed\nTraining session 3 completed\nTraining session 4 completed\nTraining session 5 completed"
+      }
+    ],
+    "concepts": ["while loops", "counters", "incrementation", "loop control"],
+    "requiredLevel": 2
+  },
+  {
+    "id": 29,
+    "title": "🎨 The Pattern Master",
+    "description": "Create beautiful patterns with nested loops! Draw a triangle pattern using stars.",
+    "difficulty": "intermediate",
+    "xpReward": 200,
+    "estimatedTime": "15 min",
+    "startingCode": "# Create a triangle pattern with stars\n# Row 1: 1 star, Row 2: 2 stars, Row 3: 3 stars, etc.\n# Make it 5 rows tall\n# Use nested loops to create the pattern\n",
+    "solutionCode": "for row in range(1, 6):\n    for star in range(row):\n        print('*', end='')\n    print()  # New line after each row",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "*\n**\n***\n****\n*****"
+      }
+    ],
+    "concepts": ["nested loops", "patterns", "print formatting", "end parameter"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 30,
+    "title": "📚 The Library Catalog",
+    "description": "Organize the magical library! Create a function to catalog books and calculate the total number of pages.",
+    "difficulty": "intermediate",
+    "xpReward": 250,
+    "estimatedTime": "20 min",
+    "startingCode": "# Create a function called 'catalog_book' that takes title and pages as parameters\n# The function should print the book info and return the number of pages\n# Call the function for three books and sum the total pages\n",
+    "solutionCode": "def catalog_book(title, pages):\n    print(f'Book: {title} - {pages} pages')\n    return pages\n\ntotal_pages = 0\ntotal_pages += catalog_book('Spell Guide', 250)\ntotal_pages += catalog_book('Hero Tales', 180)\ntotal_pages += catalog_book('Dragon Lore', 320)\n\nprint(f'Total pages in library: {total_pages}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Book: Spell Guide - 250 pages\nBook: Hero Tales - 180 pages\nBook: Dragon Lore - 320 pages\nTotal pages in library: 750"
+      }
+    ],
+    "concepts": ["functions", "parameters", "return values", "f-strings", "function calls"],
+    "requiredLevel": 4
+  },
+  {
+    "id": 31,
+    "title": "🏪 The Marketplace Calculator",
+    "description": "Help merchants calculate their profits! Create functions to handle different types of transactions.",
+    "difficulty": "intermediate",
+    "xpReward": 280,
+    "estimatedTime": "25 min",
+    "startingCode": "# Create functions for marketplace calculations\n# calculate_profit(cost, selling_price) - returns profit\n# calculate_tax(amount, tax_rate) - returns tax amount\n# final_total(subtotal, tax) - returns final amount\n# Use these to process a transaction\n",
+    "solutionCode": "def calculate_profit(cost, selling_price):\n    return selling_price - cost\n\ndef calculate_tax(amount, tax_rate):\n    return amount * tax_rate\n\ndef final_total(subtotal, tax):\n    return subtotal + tax\n\n# Process a transaction\ncost = 50\nselling_price = 75\nprofit = calculate_profit(cost, selling_price)\nprint(f'Profit: {profit}')\n\nsubtotal = 100\ntax_rate = 0.1\ntax = calculate_tax(subtotal, tax_rate)\ntotal = final_total(subtotal, tax)\nprint(f'Tax: {tax}')\nprint(f'Total: {total}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Profit: 25\nTax: 10.0\nTotal: 110.0"
+      }
+    ],
+    "concepts": ["functions", "parameters", "return values", "calculations", "modular programming"],
+    "requiredLevel": 4
+  },
+  {
+    "id": 32,
+    "title": "🎮 The Score Tracker",
+    "description": "Track high scores in the arena games! Use lists and loops to manage player scores.",
+    "difficulty": "intermediate",
+    "xpReward": 300,
+    "estimatedTime": "18 min",
+    "startingCode": "# Create a list of player scores: [850, 920, 750, 1100, 680]\n# Find and print the highest score\n# Find and print the lowest score\n# Calculate and print the average score\n",
+    "solutionCode": "scores = [850, 920, 750, 1100, 680]\n\nhighest_score = max(scores)\nlowest_score = min(scores)\naverage_score = sum(scores) / len(scores)\n\nprint(f'Highest score: {highest_score}')\nprint(f'Lowest score: {lowest_score}')\nprint(f'Average score: {average_score}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Highest score: 1100\nLowest score: 680\nAverage score: 860.0"
+      }
+    ],
+    "concepts": ["lists", "built-in functions", "max", "min", "sum", "len", "averages"],
+    "requiredLevel": 3
+  },
+  {
+    "id": 33,
+    "title": "🔐 The Password Validator",
+    "description": "Create a security system for the castle! Check if passwords meet the royal security standards.",
+    "difficulty": "intermediate",
+    "xpReward": 320,
+    "estimatedTime": "22 min",
+    "startingCode": "# Create a function validate_password(password) that checks:\n# - Length is at least 8 characters\n# - Contains at least one number\n# - Contains at least one uppercase letter\n# Test with password 'SecurePass123'\n",
+    "solutionCode": "def validate_password(password):\n    if len(password) < 8:\n        return False\n    \n    has_number = False\n    has_uppercase = False\n    \n    for char in password:\n        if char.isdigit():\n            has_number = True\n        if char.isupper():\n            has_uppercase = True\n    \n    return has_number and has_uppercase\n\ntest_password = 'SecurePass123'\nif validate_password(test_password):\n    print('Password is valid')\nelse:\n    print('Password is invalid')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Password is valid"
+      }
+    ],
+    "concepts": ["functions", "string methods", "conditionals", "boolean logic", "input validation"],
+    "requiredLevel": 4
+  },
+  {
+    "id": 34,
+    "title": "🏆 The Tournament Bracket",
+    "description": "Organize the grand tournament! Use dictionaries to track participants and their match results.",
+    "difficulty": "intermediate",
+    "xpReward": 350,
+    "estimatedTime": "25 min",
+    "startingCode": "# Create a dictionary of tournament participants:\n# {'Arthur': 3, 'Lancelot': 2, 'Percival': 4, 'Gawain': 1}\n# The numbers represent wins\n# Find and print the champion (most wins)\n# Print all participants sorted by wins (descending)\n",
+    "solutionCode": "participants = {'Arthur': 3, 'Lancelot': 2, 'Percival': 4, 'Gawain': 1}\n\n# Find champion\nchampion = max(participants, key=participants.get)\nprint(f'Champion: {champion} with {participants[champion]} wins')\n\n# Sort by wins descending\nsorted_participants = sorted(participants.items(), key=lambda x: x[1], reverse=True)\nprint('\\nTournament Results:')\nfor name, wins in sorted_participants:\n    print(f'{name}: {wins} wins')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Champion: Percival with 4 wins\n\nTournament Results:\nPercival: 4 wins\nArthur: 3 wins\nLancelot: 2 wins\nGawain: 1 wins"
+      }
+    ],
+    "concepts": ["dictionaries", "max function", "sorting", "lambda functions", "key-value pairs"],
+    "requiredLevel": 5
+  },
+  {
+    "id": 35,
+    "title": "🌟 The Constellation Mapper",
+    "description": "Map the night sky! Use nested data structures to represent constellations and their stars.",
+    "difficulty": "advanced",
+    "xpReward": 450,
+    "estimatedTime": "35 min",
+    "startingCode": "# Create a nested structure for constellations\n# Each constellation has a name and a list of star dictionaries\n# Each star has 'name', 'brightness', and 'coordinates' (x, y)\n# Create Orion constellation with 3 stars and display the information\n",
+    "solutionCode": "constellations = {\n    'Orion': {\n        'stars': [\n            {'name': 'Betelgeuse', 'brightness': 0.5, 'coordinates': (5, 7)},\n            {'name': 'Rigel', 'brightness': 0.1, 'coordinates': (2, 3)},\n            {'name': 'Bellatrix', 'brightness': 1.6, 'coordinates': (7, 8)}\n        ]\n    }\n}\n\nfor constellation_name, constellation_data in constellations.items():\n    print(f'Constellation: {constellation_name}')\n    for star in constellation_data['stars']:\n        print(f'  Star: {star[\"name\"]}')\n        print(f'  Brightness: {star[\"brightness\"]}')\n        print(f'  Coordinates: {star[\"coordinates\"]}')\n        print()",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Constellation: Orion\n  Star: Betelgeuse\n  Brightness: 0.5\n  Coordinates: (5, 7)\n\n  Star: Rigel\n  Brightness: 0.1\n  Coordinates: (2, 3)\n\n  Star: Bellatrix\n  Brightness: 1.6\n  Coordinates: (7, 8)\n"
+      }
+    ],
+    "concepts": ["nested data structures", "dictionaries", "lists", "data modeling", "complex iteration"],
+    "requiredLevel": 6
+  },
+  {
+    "id": 36,
+    "title": "🏰 The Castle Defense System",
+    "description": "Design an advanced defense system using classes! Create Tower objects that can be upgraded and managed.",
+    "difficulty": "advanced",
+    "xpReward": 500,
+    "estimatedTime": "40 min",
+    "startingCode": "# Create a Tower class with:\n# - __init__(self, name, damage, range)\n# - upgrade(self) method that increases damage by 10 and range by 5\n# - get_info(self) method that returns formatted string with tower stats\n# Create two towers and upgrade one of them\n",
+    "solutionCode": "class Tower:\n    def __init__(self, name, damage, range):\n        self.name = name\n        self.damage = damage\n        self.range = range\n        self.level = 1\n    \n    def upgrade(self):\n        self.damage += 10\n        self.range += 5\n        self.level += 1\n        print(f'{self.name} upgraded to level {self.level}')\n    \n    def get_info(self):\n        return f'{self.name} (Level {self.level}): Damage={self.damage}, Range={self.range}'\n\n# Create towers\narrow_tower = Tower('Arrow Tower', 25, 15)\ncannon_tower = Tower('Cannon Tower', 50, 10)\n\nprint('Initial towers:')\nprint(arrow_tower.get_info())\nprint(cannon_tower.get_info())\n\n# Upgrade arrow tower\narrow_tower.upgrade()\n\nprint('\\nAfter upgrade:')\nprint(arrow_tower.get_info())",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Initial towers:\nArrow Tower (Level 1): Damage=25, Range=15\nCannon Tower (Level 1): Damage=50, Range=10\nArrow Tower upgraded to level 2\n\nAfter upgrade:\nArrow Tower (Level 2): Damage=35, Range=20"
+      }
+    ],
+    "concepts": ["classes", "objects", "__init__", "methods", "self", "object-oriented programming"],
+    "requiredLevel": 7
+  },
+  {
+    "id": 37,
+    "title": "🎯 The Precision Archer",
+    "description": "Master advanced algorithms! Implement a binary search to find the perfect arrow trajectory.",
+    "difficulty": "advanced",
+    "xpReward": 550,
+    "estimatedTime": "45 min",
+    "startingCode": "# Implement binary search to find a target value in a sorted list\n# List represents arrow trajectories (angles): [5, 12, 18, 25, 31, 38, 45, 52, 67, 74]\n# Search for angle 31 and return its index\n# Print each step of the search process\n",
+    "solutionCode": "def binary_search(arr, target):\n    left = 0\n    right = len(arr) - 1\n    steps = 0\n    \n    while left <= right:\n        steps += 1\n        mid = (left + right) // 2\n        mid_value = arr[mid]\n        \n        print(f'Step {steps}: Checking index {mid}, value {mid_value}')\n        \n        if mid_value == target:\n            print(f'Target {target} found at index {mid} in {steps} steps')\n            return mid\n        elif mid_value < target:\n            left = mid + 1\n            print(f'Target is larger, searching right half')\n        else:\n            right = mid - 1\n            print(f'Target is smaller, searching left half')\n    \n    return -1\n\ntrajectories = [5, 12, 18, 25, 31, 38, 45, 52, 67, 74]\ntarget_angle = 31\n\nresult = binary_search(trajectories, target_angle)",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Step 1: Checking index 4, value 31\nTarget 31 found at index 4 in 1 steps"
+      }
+    ],
+    "concepts": ["algorithms", "binary search", "recursion", "efficiency", "problem solving"],
+    "requiredLevel": 8
+  },
+  {
+    "id": 38,
+    "title": "🧙‍♂️ The Spell Inheritance Master",
+    "description": "Master the art of magical inheritance! Create a spell hierarchy with base and specialized spell classes.",
+    "difficulty": "advanced",
+    "xpReward": 600,
+    "estimatedTime": "50 min",
+    "startingCode": "# Create a base Spell class with name, mana_cost, and cast() method\n# Create FireSpell class that inherits from Spell and adds burn_damage\n# Create IceSpell class that inherits from Spell and adds freeze_duration\n# Override cast() in each subclass to show specific effects\n",
+    "solutionCode": "class Spell:\n    def __init__(self, name, mana_cost):\n        self.name = name\n        self.mana_cost = mana_cost\n    \n    def cast(self):\n        return f'Casting {self.name} (Cost: {self.mana_cost} mana)'\n\nclass FireSpell(Spell):\n    def __init__(self, name, mana_cost, burn_damage):\n        super().__init__(name, mana_cost)\n        self.burn_damage = burn_damage\n    \n    def cast(self):\n        base = super().cast()\n        return f'{base} - Burns for {self.burn_damage} damage!'\n\nclass IceSpell(Spell):\n    def __init__(self, name, mana_cost, freeze_duration):\n        super().__init__(name, mana_cost)\n        self.freeze_duration = freeze_duration\n    \n    def cast(self):\n        base = super().cast()\n        return f'{base} - Freezes for {self.freeze_duration} seconds!'\n\n# Create and cast spells\nfireball = FireSpell('Fireball', 25, 15)\nfrost_bolt = IceSpell('Frost Bolt', 20, 3)\n\nprint(fireball.cast())\nprint(frost_bolt.cast())",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Casting Fireball (Cost: 25 mana) - Burns for 15 damage!\nCasting Frost Bolt (Cost: 20 mana) - Freezes for 3 seconds!"
+      }
+    ],
+    "concepts": ["inheritance", "super()", "method overriding", "object-oriented programming", "polymorphism"],
+    "requiredLevel": 8
+  },
+  {
+    "id": 39,
+    "title": "🔮 The Crystal Ball Prophet",
+    "description": "Implement advanced error handling! Create a prophecy system that gracefully handles various magical failures.",
+    "difficulty": "expert",
+    "xpReward": 700,
+    "estimatedTime": "45 min",
+    "startingCode": "# Create a prophecy system with custom exceptions\n# ProphecyError for general prophecy failures\n# CrystalCloudyError when crystal is unclear\n# Implement divine_prophecy() function with comprehensive error handling\n",
+    "solutionCode": "class ProphecyError(Exception):\n    \"\"\"Base exception for prophecy-related errors\"\"\"\n    pass\n\nclass CrystalCloudyError(ProphecyError):\n    \"\"\"Raised when the crystal ball is too cloudy to read\"\"\"\n    pass\n\ndef divine_prophecy(crystal_clarity, question_complexity):\n    try:\n        if crystal_clarity < 0.3:\n            raise CrystalCloudyError('Crystal ball is too cloudy for divination')\n        \n        if question_complexity > 0.8:\n            raise ProphecyError('Question is too complex for mortal comprehension')\n        \n        # Simulate prophecy generation\n        prophecy_power = crystal_clarity * (1 - question_complexity)\n        \n        if prophecy_power > 0.5:\n            return f'Clear prophecy: Your future shines bright with {prophecy_power:.2f} clarity!'\n        else:\n            return f'Vague prophecy: The signs are unclear, only {prophecy_power:.2f} clarity achieved.'\n            \n    except CrystalCloudyError as e:\n        return f'Crystal Error: {e}'\n    except ProphecyError as e:\n        return f'Prophecy Error: {e}'\n    except Exception as e:\n        return f'Unexpected magical interference: {e}'\n    finally:\n        print('Prophecy session concluded. Crystal ball cooling down.')\n\n# Test different scenarios\nprint(divine_prophecy(0.8, 0.3))  # Clear prophecy\nprint(divine_prophecy(0.2, 0.5))  # Cloudy crystal\nprint(divine_prophecy(0.5, 0.9))  # Complex question",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "Clear prophecy: Your future shines bright with 0.56 clarity!\nProphecy session concluded. Crystal ball cooling down.\nCrystal Error: Crystal ball is too cloudy for divination\nProphecy session concluded. Crystal ball cooling down.\nProphecy Error: Question is too complex for mortal comprehension\nProphecy session concluded. Crystal ball cooling down."
+      }
+    ],
+    "concepts": ["exceptions", "custom exceptions", "try-except", "finally", "error handling"],
+    "requiredLevel": 9
+  },
+  {
+    "id": 40,
+    "title": "🚀 The Quantum Spell Generator",
+    "description": "Master the ultimate Python magic! Create a dynamic spell factory using advanced generator functions and context managers.",
+    "difficulty": "expert",
+    "xpReward": 800,
+    "estimatedTime": "60 min",
+    "startingCode": "# Create a spell generator that yields infinite spells\n# Implement a SpellFactory context manager\n# Use yield, context managers (__enter__, __exit__), and advanced Python features\n",
+    "solutionCode": "import random\nfrom contextlib import contextmanager\n\ndef infinite_spell_generator():\n    \"\"\"Generator that creates infinite unique spells\"\"\"\n    elements = ['Fire', 'Ice', 'Lightning', 'Earth', 'Wind', 'Dark', 'Light']\n    actions = ['Bolt', 'Shield', 'Blast', 'Wave', 'Storm', 'Barrier']\n    \n    spell_count = 0\n    while True:\n        spell_count += 1\n        element = random.choice(elements)\n        action = random.choice(actions)\n        power = random.randint(10, 100)\n        \n        yield {\n            'id': spell_count,\n            'name': f'{element} {action}',\n            'power': power,\n            'description': f'A magical {action.lower()} of {element.lower()} energy'\n        }\n\nclass SpellFactory:\n    def __init__(self, max_spells=5):\n        self.max_spells = max_spells\n        self.created_spells = 0\n    \n    def __enter__(self):\n        print(f'🔮 Spell Factory activated (Max spells: {self.max_spells})')\n        self.generator = infinite_spell_generator()\n        return self\n    \n    def __exit__(self, exc_type, exc_val, exc_tb):\n        print(f'✨ Spell Factory deactivated. Created {self.created_spells} spells.')\n        if exc_type:\n            print(f'Factory closed due to error: {exc_val}')\n        return False  # Don't suppress exceptions\n    \n    def create_spell(self):\n        if self.created_spells >= self.max_spells:\n            raise StopIteration('Maximum spell limit reached')\n        \n        spell = next(self.generator)\n        self.created_spells += 1\n        return spell\n\n# Use the spell factory\ntry:\n    with SpellFactory(3) as factory:\n        for _ in range(4):  # Try to create more than allowed\n            spell = factory.create_spell()\n            print(f\"Created: {spell['name']} (Power: {spell['power']})\")\nexcept StopIteration as e:\n    print(f'Spell creation stopped: {e}')",
+    "testCases": [
+      {
+        "input": "",
+        "expectedOutput": "🔮 Spell Factory activated (Max spells: 3)\nCreated: Fire Bolt (Power: 45)\nCreated: Ice Shield (Power: 67)\nCreated: Lightning Blast (Power: 23)\nSpell creation stopped: Maximum spell limit reached\n✨ Spell Factory deactivated. Created 3 spells."
+      }
+    ],
+    "concepts": ["generators", "context managers", "__enter__", "__exit__", "yield", "advanced Python"],
+    "requiredLevel": 10
+  }
+]
