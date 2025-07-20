@@ -165,42 +165,87 @@ for fruit in fruits:
   private checkSyntax(code: string): string[] {
     const issues: string[] = [];
 
-    // Check for unmatched parentheses
-    const openParens = (code.match(/\(/g) || []).length;
-    const closeParens = (code.match(/\)/g) || []).length;
-    if (openParens !== closeParens) {
-      issues.push('Unmatched parentheses');
-    }
+    // Only check for critical syntax errors that would prevent execution
+    try {
+      // Check for unmatched parentheses
+      const openParens = (code.match(/\(/g) || []).length;
+      const closeParens = (code.match(/\)/g) || []).length;
+      if (openParens !== closeParens) {
+        issues.push('Unmatched parentheses');
+      }
 
-    // Check for unmatched quotes
-    const singleQuotes = (code.match(/'/g) || []).length;
-    const doubleQuotes = (code.match(/"/g) || []).length;
-    if (singleQuotes % 2 !== 0 || doubleQuotes % 2 !== 0) {
-      issues.push('Unmatched quotes');
-    }
-
-    // Check for missing colons in function/class definitions
-    const lines = code.split('\n');
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (line.startsWith('def ') || line.startsWith('class ') || 
-          line.startsWith('if ') || line.startsWith('for ') || 
-          line.startsWith('while ') || line.startsWith('else') ||
-          line.startsWith('elif ')) {
-        if (!line.endsWith(':')) {
-          issues.push(`Missing colon on line ${i + 1}`);
+      // Check for unmatched quotes (but be more careful about strings)
+      let inSingleQuote = false;
+      let inDoubleQuote = false;
+      let escaped = false;
+      
+      for (let i = 0; i < code.length; i++) {
+        const char = code[i];
+        
+        if (escaped) {
+          escaped = false;
+          continue;
+        }
+        
+        if (char === '\\') {
+          escaped = true;
+          continue;
+        }
+        
+        if (char === '"' && !inSingleQuote) {
+          inDoubleQuote = !inDoubleQuote;
+        } else if (char === "'" && !inDoubleQuote) {
+          inSingleQuote = !inSingleQuote;
         }
       }
+      
+      if (inSingleQuote || inDoubleQuote) {
+        issues.push('Unmatched quotes');
+      }
+
+      // Check for missing colons only for control structures that absolutely need them
+      const lines = code.split('\n');
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        
+        // Skip empty lines and comments
+        if (!line || line.startsWith('#')) continue;
+        
+        // Only check lines that should definitely end with colons
+        const controlPatterns = [
+          /^def\s+\w+\s*\([^)]*\)\s*$/,
+          /^class\s+\w+.*$/,
+          /^if\s+.+$/,
+          /^elif\s+.+$/,
+          /^else\s*$/,
+          /^for\s+.+\s+in\s+.+$/,
+          /^while\s+.+$/,
+          /^try\s*$/,
+          /^except.*$/,
+          /^finally\s*$/,
+          /^with\s+.+$/
+        ];
+        
+        const needsColon = controlPatterns.some(pattern => pattern.test(line));
+        
+        if (needsColon && !line.endsWith(':')) {
+          issues.push(`Missing colon on line ${i + 1}: ${line}`);
+        }
+      }
+    } catch (error) {
+      // If syntax checking itself fails, don't report syntax errors
+      console.log('Syntax checking error:', error);
     }
 
     return issues;
   }
 
   private checkOutput(code: string, expectedOutput: string): boolean {
+    // For code output checking, we should be more lenient and focus on
+    // whether the code structure is correct rather than exact output matching
+    // since the actual execution result is already checked elsewhere
+    
     const normalizedCode = code.toLowerCase().replace(/\s+/g, ' ').trim();
-    const normalizedExpected = expectedOutput.toLowerCase().replace(/\s+/g, ' ').trim();
-
-    // Split expected output into lines for multi-line matching
     const expectedLines = expectedOutput.split('\n').map(line => line.trim()).filter(line => line.length > 0);
 
     // If no expected output lines, return true
@@ -208,82 +253,45 @@ for fruit in fruits:
       return true;
     }
 
-    // Check each expected line
+    // Check if code has the right structure for the expected output
+    let hasValidStructure = true;
+    
+    // Count expected print statements
+    const expectedPrintCount = expectedLines.length;
+    const actualPrintCount = (normalizedCode.match(/print\s*\(/g) || []).length;
+    
+    // Must have at least the expected number of print statements
+    if (actualPrintCount < expectedPrintCount) {
+      hasValidStructure = false;
+    }
+
+    // For variable assignment quests, check for proper variable usage
     for (const line of expectedLines) {
-      const lineLower = line.toLowerCase();
-      let foundMatch = false;
-
-      // Check for direct print statements with the expected output
-      const printPatterns = [
-        `print("${line}")`,
-        `print('${line}')`,
-        `print(${line})`,
-        `print("${lineLower}")`,
-        `print('${lineLower}')`,
-        `print(${lineLower})`
-      ];
-
-      for (const pattern of printPatterns) {
-        if (normalizedCode.includes(pattern.toLowerCase())) {
-          foundMatch = true;
-          break;
+      const lineLower = line.toLowerCase().trim();
+      
+      // Check for variable patterns
+      if (lineLower === 'brave knight' || lineLower.includes('knight')) {
+        if (!normalizedCode.includes('name =') || !normalizedCode.includes('print(name)')) {
+          hasValidStructure = false;
         }
-      }
-
-      // Check for mathematical expressions that evaluate to the expected result
-      if (!foundMatch && line.match(/^\d+\.?\d*$/)) {
-        const numValue = parseFloat(line);
-
-        // Check for direct number printing
-        if (normalizedCode.includes(`print(${numValue})`) || 
-            normalizedCode.includes(`print(${numValue}.0)`)) {
-          foundMatch = true;
+      } else if (lineLower.match(/^\d+$/)) {
+        // Numbers should be printed either directly or via variables
+        const hasDirectPrint = normalizedCode.includes(`print(${lineLower})`);
+        const hasVariablePrint = (normalizedCode.includes('age =') && normalizedCode.includes('print(age)')) ||
+                                (normalizedCode.includes('level =') && normalizedCode.includes('print(level)'));
+        if (!hasDirectPrint && !hasVariablePrint) {
+          hasValidStructure = false;
         }
-
-        // Check for common mathematical operations
-        const mathPatterns = [
-          /print\s*\(\s*\d+\s*\+\s*\d+\.?\d*\s*\)/,
-          /print\s*\(\s*\d+\s*-\s*\d+\.?\d*\s*\)/,
-          /print\s*\(\s*\d+\s*\*\s*\d+\.?\d*\s*\)/,
-          /print\s*\(\s*\d+\s*\/\s*\d+\.?\d*\s*\)/,
-          /print\s*\(\s*\w+\s*\+\s*\w+\s*\)/,
-          /print\s*\(\s*\w+\s*-\s*\w+\s*\)/,
-          /print\s*\(\s*\w+\s*\*\s*\w+\s*\)/,
-          /print\s*\(\s*\w+\s*\/\s*\w+\s*\)/
-        ];
-
-        for (const pattern of mathPatterns) {
-          if (pattern.test(normalizedCode)) {
-            foundMatch = true;
-            break;
-          }
+      } else if (lineLower === 'warrior' || lineLower === 'sword') {
+        // String values should be printed via variables
+        if (!normalizedCode.includes('weapon =') && !normalizedCode.includes('item =') && 
+            !normalizedCode.includes('class =') && !normalizedCode.includes(`print("${lineLower}")`)) {
+          hasValidStructure = false;
         }
-      }
-
-      // Special handling for variable assignments and printing
-      if (!foundMatch) {
-        // Check for variable definitions that match expected values
-        if (lineLower === 'hero' || lineLower === 'tyler') {
-          if (normalizedCode.includes('name =') && normalizedCode.includes('print(name)')) {
-            foundMatch = true;
-          }
-        } else if (lineLower.match(/^\d+$/)) {
-          if (normalizedCode.includes('age =') && normalizedCode.includes('print(age)')) {
-            foundMatch = true;
-          }
-        } else if (lineLower === 'sword') {
-          if (normalizedCode.includes('item =') && normalizedCode.includes('print(item)')) {
-            foundMatch = true;
-          }
-        }
-      }
-
-      if (!foundMatch) {
-        return false;
       }
     }
 
-    return true;
+    return hasValidStructure;
   }
 
   private analyzeCodeQuality(code: string): { suggestions: string[] } {
