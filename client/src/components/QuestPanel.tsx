@@ -16,9 +16,11 @@ interface QuestPanelProps {
   isRedoingQuest?: boolean;
   currentQuestId?: number;
   onReturnToCurrent?: () => void;
+  showNextButton?: boolean;
+  onNextQuest?: () => void;
 }
 
-export default function QuestPanel({ quest, isRedoingQuest, currentQuestId, onReturnToCurrent }: QuestPanelProps) {
+export default function QuestPanel({ quest, isRedoingQuest, currentQuestId, onReturnToCurrent, showNextButton, onNextQuest }: QuestPanelProps) {
   if (!quest) {
     return (
       <div className="bg-[var(--cyber-gray)] p-4 rounded-lg m-4">
@@ -113,6 +115,18 @@ export default function QuestPanel({ quest, isRedoingQuest, currentQuestId, onRe
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Next Quest Button */}
+        {showNextButton && !isRedoingQuest && onNextQuest && (
+          <div className="mt-4 flex justify-center">
+            <button
+              onClick={onNextQuest}
+              className="px-6 py-3 bg-gradient-to-r from-[var(--cyber-cyan)] to-[var(--cyber-blue)] text-black font-bold rounded-lg hover:from-[var(--cyber-blue)] hover:to-[var(--cyber-pink)] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-[var(--cyber-cyan)]/50 animate-pulse-glow"
+            >
+              🚀 Next Quest
+            </button>
           </div>
         )}
       </div>

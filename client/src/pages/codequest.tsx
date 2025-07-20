@@ -567,6 +567,8 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
                 quest={quest} 
                 isRedoingQuest={!!selectedQuestId}
                 currentQuestId={user.currentQuest}
+                showNextButton={questCompleted}
+                onNextQuest={handleNextQuest}
                 onReturnToCurrent={() => {
                   setSelectedQuestId(null);
                   setIsRedoingQuest(false);
