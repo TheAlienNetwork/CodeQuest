@@ -8,6 +8,10 @@ interface QuestPanelProps {
     difficulty: string;
     xpReward: number;
     estimatedTime: string;
+    testCases?: Array<{
+      input: string;
+      expectedOutput: string;
+    }>;
   } | null;
 }
 
@@ -56,7 +60,7 @@ export default function QuestPanel({ quest }: QuestPanelProps) {
           {quest.description}
         </p>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-4">
           <div className="text-sm text-[var(--cyber-green)]">
             <Gem className="w-4 h-4 inline mr-1" />
             Reward: {quest.xpReward} XP
@@ -66,6 +70,28 @@ export default function QuestPanel({ quest }: QuestPanelProps) {
             Est. {quest.estimatedTime}
           </div>
         </div>
+
+        {/* Expected Output Section */}
+        {quest.testCases && quest.testCases.length > 0 && (
+          <div className="mt-4 p-3 bg-[var(--cyber-dark)] rounded-lg border border-[var(--cyber-cyan)]/30">
+            <h5 className="font-bold text-[var(--cyber-cyan)] mb-2 text-sm">Expected Output:</h5>
+            <div className="space-y-2">
+              {quest.testCases.map((testCase, index) => (
+                <div key={index} className="text-sm">
+                  {testCase.input && (
+                    <div className="text-gray-400">
+                      <span className="font-medium">Input:</span> {testCase.input}
+                    </div>
+                  )}
+                  <div className="text-[var(--cyber-green)] font-mono">
+                    <span className="font-medium text-gray-400">Output:</span> {testCase.expectedOutput}
+                  </div>
+                  {index < quest.testCases.length - 1 && <div className="border-t border-gray-600 my-2"></div>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
