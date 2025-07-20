@@ -36,8 +36,8 @@ export async function initializeDatabase() {
           await storage.deleteQuest(quest.id);
         }
         console.log('✅ Cleared all existing quests');
-      } else if (existingQuests.length === 20) {
-        console.log('✅ RPG curriculum already loaded correctly');
+      } else if (existingQuests.length === 40) {
+        console.log('✅ Expanded RPG curriculum already loaded correctly');
         return;
       }
       
