@@ -84,8 +84,8 @@ export default function QuestPanel({ quest }: QuestPanelProps) {
                     </div>
                   )}
                   <div className="text-[var(--cyber-green)] font-mono">
-                    <span className="font-medium text-gray-400">Output:</span>
-                    <pre className="whitespace-pre-wrap inline ml-1">{testCase.expectedOutput}</pre>
+                    <div className="font-medium text-gray-400 mb-1">Output:</div>
+                    <pre className="whitespace-pre-wrap">{testCase.expectedOutput}</pre>
                   </div>
                   {index < quest.testCases.length - 1 && <div className="border-t border-gray-600 my-2"></div>}
                 </div>
