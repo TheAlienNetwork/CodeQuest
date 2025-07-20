@@ -64,7 +64,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   const [showXPGain, setShowXPGain] = useState(0);
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [activeTab, setActiveTab] = useState<'quest' | 'learning' | 'lessons' | 'milestones'>('quest');
+  const [activeTab, setActiveTab] = useState<'quest' | 'learning' | 'lessons' | 'milestones' | 'ai-tutor'>('quest');
   const [selectedQuestId, setSelectedQuestId] = useState<number | null>(null);
   const [questCompleted, setQuestCompleted] = useState(false);
   const [isRedoingQuest, setIsRedoingQuest] = useState(false);
@@ -547,6 +547,16 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
               >
                 🏆 Milestones
               </button>
+              <button
+                onClick={() => setActiveTab('ai-tutor')}
+                className={`px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded transition-colors whitespace-nowrap flex-shrink-0 ${
+                  activeTab === 'ai-tutor'
+                    ? 'bg-[var(--cyber-cyan)] text-black'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                🤖 AI Tutor
+              </button>
             </div>
           </div>
 
@@ -594,21 +604,20 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
                   });
                 }}
               />
-            ) : (
+            ) : activeTab === 'milestones' ? (
               <MilestonesPanel
                 user={user}
                 className="h-full"
               />
+            ) : (
+              <div className="h-full relative z-30">
+                <AIChat 
+                  user={currentUser || user}
+                  quest={selectedQuestId ? { id: selectedQuestId, title: '', description: '' } : quest}
+                  onUserUpdate={onUserUpdate}
+                />
+              </div>
             )}
-          </div>
-
-          {/* AI Chat - Fixed Height */}
-          <div className="h-96 sm:h-[28rem] flex-shrink-0 border-t border-[var(--cyber-cyan)]/30 relative z-30">
-            <AIChat 
-              user={currentUser || user}
-              quest={selectedQuestId ? { id: selectedQuestId, title: '', description: '' } : quest}
-              onUserUpdate={onUserUpdate}
-            />
           </div>
         </div>
       </div>
