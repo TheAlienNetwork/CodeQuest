@@ -259,7 +259,7 @@ export function registerRoutes(app: Application) {
         testCases[0]?.expectedOutput || ""
       );
 
-      // Check if code is correct based on execution results
+      // Check if code is correct based on execution results only
       let isCorrect = false;
       let passedTestCases = 0;
       
@@ -271,19 +271,20 @@ export function registerRoutes(app: Application) {
           
           if (actualOutput === expectedOutput) {
             passedTestCases++;
-            isCorrect = true;
           }
         }
+        // Quest is correct if all test cases pass
+        isCorrect = passedTestCases === testCases.length;
       }
 
-      // Use AI analysis for additional correctness check
-      const aiCorrect = analysis.isCorrect && isCorrect;
+      // Use execution result for correctness, not AI analysis
+      const finalCorrect = isCorrect;
 
       // Award XP based on correctness (only if not redoing)
       let xpEarned = 0;
       let updatedUser = user;
       
-      if (aiCorrect && !isRedoing) {
+      if (finalCorrect && !isRedoing) {
         xpEarned = quest.xpReward;
         updatedUser = await storage.updateUserXP(userId, xpEarned) || user;
         
@@ -310,7 +311,7 @@ export function registerRoutes(app: Application) {
           userId,
           questId: quest.id,
           code,
-          isCorrect: aiCorrect,
+          isCorrect: finalCorrect,
           output: executionResult.output,
           feedback: analysis.feedback,
           xpEarned: xpEarned,
@@ -319,7 +320,7 @@ export function registerRoutes(app: Application) {
 
       res.json({
         ...analysis,
-        isCorrect: aiCorrect,
+        isCorrect: finalCorrect,
         executionResult,
         xpEarned: xpEarned,
         user: updatedUser,
