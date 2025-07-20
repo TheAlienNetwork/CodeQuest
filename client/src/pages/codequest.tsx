@@ -463,7 +463,7 @@ export default function CodeQuest({ user, onUserUpdate, onLogout, onShowProfile 
   return (
     <div className="bg-[var(--cyber-dark)] text-white min-h-screen flex flex-col">
       {/* Top Header with XP Bar */}
-      <header className="bg-[var(--cyber-darker)] border-b border-[var(--cyber-cyan)]/30 px-6 py-4 flex-shrink-0 z-50 relative">
+      <header className="bg-[var(--cyber-darker)] border-b border-[var(--cyber-cyan)]/30 px-6 py-4 flex-shrink-0 relative z-40">
         <div className="flex items-center justify-between">
           <XPBar
             user={user}

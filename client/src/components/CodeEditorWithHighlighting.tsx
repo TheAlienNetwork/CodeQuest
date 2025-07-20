@@ -267,18 +267,18 @@ export default function CodeEditorWithHighlighting({
   return (
     <div className="flex flex-col h-full">
       {/* Editor Header */}
-      <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-4 py-3 flex items-center justify-between">
+      <div className="bg-[var(--cyber-gray)] border-b border-[var(--cyber-cyan)]/30 px-4 py-3 flex items-center justify-between relative z-50">
         <div className="flex items-center space-x-2">
           <div className="w-3 h-3 bg-red-500 rounded-full"></div>
           <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
           <div className="w-3 h-3 bg-green-500 rounded-full"></div>
           <span className="text-sm font-mono text-gray-400 ml-4">main.py</span>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 relative z-50">
           <Button
             onClick={onRunCode}
             disabled={isRunning}
-            className="btn-cyber-sm"
+            className="btn-cyber-sm relative z-50"
           >
             <Play className="w-4 h-4 mr-1" />
             {isRunning ? 'Running...' : 'Run (F5)'}
@@ -286,7 +286,7 @@ export default function CodeEditorWithHighlighting({
           <Button
             onClick={onAnalyzeCode}
             disabled={isAnalyzing}
-            className="btn-cyber-sm"
+            className="btn-cyber-sm relative z-50"
           >
             <Bot className="w-4 h-4 mr-1" />
             {isAnalyzing ? 'Analyzing...' : 'Analyze'}

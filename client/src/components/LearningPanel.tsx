@@ -334,10 +334,10 @@ export default function LearningPanel({ quest, userLevel, onNextQuest, showNextB
 
       {/* Next Quest Button */}
       {showNextButton && (
-        <div className="border-t border-[var(--cyber-cyan)]/30 p-4">
+        <div className="border-t border-[var(--cyber-cyan)]/30 p-4 relative z-50">
           <Button
             onClick={onNextQuest}
-            className="w-full btn-cyber flex items-center justify-center space-x-2"
+            className="w-full btn-cyber flex items-center justify-center space-x-2 relative z-50"
           >
             <span>Next Quest</span>
             <ChevronRight className="w-4 h-4" />
