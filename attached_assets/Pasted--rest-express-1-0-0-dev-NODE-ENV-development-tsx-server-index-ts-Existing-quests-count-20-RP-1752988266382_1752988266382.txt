@@ -1,0 +1,37 @@
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+Existing quests count: 20
+✅ RPG curriculum already loaded correctly
+5:09:25 AM [express] serving on port 5000
+Browserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+5:09:30 AM [express] GET /api/user/3 304 in 19ms :: {"id":3,"email":"hero1@codequest.com","adventure…
+Fetching quest for user 3
+User 3 found: Tester1, currentQuest: 4
+Total quests available: 20
+Found quest for user 3: 4 - 🧙‍♂️ The Wise Gatekeeper
+5:09:31 AM [express] GET /api/quest/3 304 in 85ms :: {"id":4,"title":"🧙‍♂️ The Wise Gatekeeper","de…
+5:09:31 AM [express] GET /api/chat/3/4 304 in 18ms :: []
+5:10:52 AM [vite] hmr update /src/components/MilestonesPanel.tsx, /src/index.css?v=E51YeKoH8DmkHG5i7xVzp
+5:10:54 AM [vite] Internal server error: [postcss] /home/runner/workspace/client/src/index.css:293:1: Unexpected }
+  Plugin: vite:css
+  File: /home/runner/workspace/client/src/index.css:293:0
+  291|      background: var(--cyber-blue);
+  292|    }
+  293|  }
+     |  ^
+      at Input.error (/home/runner/workspace/node_modules/postcss/lib/input.js:106:16)
+      at Parser.unexpectedClose (/home/runner/workspace/node_modules/postcss/lib/parser.js:585:22)
+      at Parser.end (/home/runner/workspace/node_modules/postcss/lib/parser.js:330:12)
+      at Parser.parse (/home/runner/workspace/node_modules/postcss/lib/parser.js:454:16)
+      at parse (/home/runner/workspace/node_modules/postcss/lib/parse.js:11:12)
+      at new LazyResult (/home/runner/workspace/node_modules/postcss/lib/lazy-result.js:133:16)
+      at Processor.process (/home/runner/workspace/node_modules/postcss/lib/processor.js:53:14)
+      at compileCSS (/home/runner/workspace/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:36898:59)
+      at async TransformPluginContext.transform (/home/runner/workspace/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:36171:11)
+      at async PluginContainer.transform (/home/runner/workspace/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49099:18)
+      at async loadAndTransform (/home/runner/workspace/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:51977:27)
+      at async viteTransformMiddleware (/home/runner/workspace/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:62105:24)
